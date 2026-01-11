@@ -71,7 +71,8 @@ class DatabaseManager:
                         username TEXT UNIQUE,
                         email TEXT UNIQUE,
                         hashed_password TEXT,
-                        created_at TEXT
+                        created_at TEXT,
+                        is_admin BOOLEAN DEFAULT FALSE
                     )
                 ''')
             else:
@@ -81,9 +82,22 @@ class DatabaseManager:
                         username TEXT UNIQUE,
                         email TEXT UNIQUE,
                         hashed_password TEXT,
-                        created_at TEXT
+                        created_at TEXT,
+                        is_admin BOOLEAN DEFAULT 0
                     )
                 ''')
+            
+            # Migration: Add is_admin if not exists
+            if self.db_type == 'postgres':
+                cursor.execute("SELECT column_name FROM information_schema.columns WHERE table_name='users'")
+                columns = [row[0] for row in cursor.fetchall()]
+                if "is_admin" not in columns:
+                    cursor.execute("ALTER TABLE users ADD COLUMN is_admin BOOLEAN DEFAULT FALSE")
+            else:
+                cursor.execute("PRAGMA table_info(users)")
+                columns = [info[1] for info in cursor.fetchall()]
+                if "is_admin" not in columns:
+                    cursor.execute("ALTER TABLE users ADD COLUMN is_admin BOOLEAN DEFAULT 0")
             
             conn.commit()
         except Exception as e:
@@ -435,3 +449,35 @@ class DatabaseManager:
             return False
         finally:
             conn.close()
+
+    def get_all_users(self) -> List[dict]:
+        conn = self.get_connection()
+        try:
+            if self.db_type == 'sqlite':
+                conn.row_factory = sqlite3.Row
+                cursor = conn.cursor()
+            else:
+                cursor = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+            
+            self._execute(cursor, "SELECT id, username, email, created_at, is_admin FROM users ORDER BY id DESC")
+            rows = cursor.fetchall()
+            return [dict(row) for row in rows]
+        except Exception as e:
+            print(f"Get All Users Error: {e}")
+            return []
+        finally:
+            conn.close()
+
+    def delete_user(self, user_id: int):
+        conn = self.get_connection()
+        try:
+            cursor = conn.cursor()
+            self._execute(cursor, "DELETE FROM users WHERE id = ?", (user_id,))
+            conn.commit()
+            return True
+        except Exception as e:
+            print(f"Delete User Error: {e}")
+            return False
+        finally:
+            conn.close()
+

@@ -47,7 +47,17 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
     user = db.get_user(username)
     if user is None:
         raise credentials_exception
+    if user is None:
+        raise credentials_exception
     return user
+
+async def get_current_admin_user(current_user: dict = Depends(get_current_user)):
+    if not current_user.get('is_admin'):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Admin yetkisi gerekiyor"
+        )
+    return current_user
 
 # --- CORS ---
 app.add_middleware(
@@ -87,7 +97,12 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends()):
     access_token = create_access_token(
         data={"sub": user['username']}, expires_delta=access_token_expires
     )
-    return {"access_token": access_token, "token_type": "bearer", "username": user['username']}
+    return {
+        "access_token": access_token, 
+        "token_type": "bearer", 
+        "username": user['username'],
+        "is_admin": user.get('is_admin', False)
+    }
 
 class ForgotPasswordRequest(BaseModel):
     email: str
@@ -166,6 +181,22 @@ async def reset_password(request: ResetPasswordRequest):
              
     except Exception as e:
         raise HTTPException(status_code=400, detail="İşlem başarısız.")
+
+# --- Admin Endpoints ---
+@app.get("/admin/users")
+def get_all_users_admin(current_user: dict = Depends(get_current_admin_user)):
+    db = DatabaseManager()
+    return db.get_all_users()
+
+@app.delete("/admin/users/{user_id}")
+def delete_user_admin(user_id: int, current_user: dict = Depends(get_current_admin_user)):
+    if user_id == current_user['id']:
+        raise HTTPException(status_code=400, detail="Kendinizi silemezsiniz.")
+        
+    db = DatabaseManager()
+    if db.delete_user(user_id):
+        return {"status": "success", "message": "Kullanıcı silindi"}
+    raise HTTPException(status_code=500, detail="Silme başarısız")
 
 @app.get("/")
 def read_root():

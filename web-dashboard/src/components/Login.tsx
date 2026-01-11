@@ -3,7 +3,7 @@ import { User, Lock, ArrowRight, Eye, EyeOff } from 'lucide-react';
 import { API_URL } from '../services/api';
 
 interface LoginProps {
-    onLoginSuccess: (token: string, username: string) => void;
+    onLoginSuccess: (token: string, username: string, isAdmin: boolean) => void;
     onSwitchToRegister: () => void;
     onSwitchToForgotPassword: () => void;
 }
@@ -36,7 +36,7 @@ export function Login({ onLoginSuccess, onSwitchToRegister, onSwitchToForgotPass
                 throw new Error(data.detail || 'Giriş başarısız');
             }
 
-            onLoginSuccess(data.access_token, data.username);
+            onLoginSuccess(data.access_token, data.username, data.is_admin);
         } catch (err: any) {
             setError(err.message);
         } finally {

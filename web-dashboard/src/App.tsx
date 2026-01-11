@@ -1,14 +1,15 @@
 import { useState, useEffect } from 'react';
 import { FunAnalysis } from './components/FunAnalysis';
 import { Contact } from './components/Contact';
-import { BarChart2, LogOut, Mail } from 'lucide-react';
+import { BarChart2, LogOut, Mail, Shield } from 'lucide-react';
 import { Login } from './components/Login';
 import { Register } from './components/Register';
 
 import { ForgotPassword } from './components/ForgotPassword';
 import { ResetPassword } from './components/ResetPassword';
+import { AdminPanel } from './components/AdminPanel';
 
-type View = 'fun' | 'agent' | 'flirt' | 'contact';
+type View = 'fun' | 'agent' | 'flirt' | 'contact' | 'admin';
 type AuthState = 'login' | 'register' | 'authenticated' | 'forgot-password' | 'reset-password';
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
   const [authState, setAuthState] = useState<AuthState>('login');
   // const [accessToken, setAccessToken] = useState<string | null>(null); // Unused
   const [username, setUsername] = useState<string | null>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   // Check for token on load
   useEffect(() => {
@@ -34,15 +36,18 @@ function App() {
     if (token && user) {
       // setAccessToken(token);
       setUsername(user);
+      setIsAdmin(localStorage.getItem('is_admin') === 'true');
       setAuthState('authenticated');
     }
   }, []);
 
-  const handleLoginSuccess = (token: string, user: string) => {
+  const handleLoginSuccess = (token: string, user: string, admin: boolean) => {
     localStorage.setItem('access_token', token);
     localStorage.setItem('username', user);
+    localStorage.setItem('is_admin', String(admin));
     // setAccessToken(token);
     setUsername(user);
+    setIsAdmin(admin);
     setAuthState('authenticated');
     // Clear URL if we were on reset page
     if (window.location.pathname === '/reset-password') {
@@ -55,8 +60,10 @@ function App() {
   const confirmLogout = () => {
     localStorage.removeItem('access_token');
     localStorage.removeItem('username');
+    localStorage.removeItem('is_admin');
     // setAccessToken(null);
     setUsername(null);
+    setIsAdmin(false);
     setAuthState('login');
     setShowLogoutConfirm(false);
   };
@@ -168,6 +175,19 @@ function App() {
               <Mail size={18} />
               İletişim
             </button>
+
+            {isAdmin && (
+              <button
+                onClick={() => setCurrentView('admin')}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all whitespace-nowrap ${currentView === 'admin'
+                  ? 'bg-red-500/20 text-red-300 shadow-lg backdrop-blur-sm border border-red-500/30'
+                  : 'text-slate-400 hover:text-red-300 hover:bg-red-500/10'
+                  }`}
+              >
+                <Shield size={18} />
+                Yönetim Paneli
+              </button>
+            )}
           </div>
         </div>
       </div>
@@ -175,6 +195,7 @@ function App() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-24 space-y-8">
         {currentView === 'fun' && <FunAnalysis />}
         {currentView === 'contact' && <Contact />}
+        {currentView === 'admin' && <AdminPanel />}
         {/* {currentView === 'agent' && <AgentAnalysis />} */}
         {/* {currentView === 'flirt' && <FlirtAnalysis />} */}
       </main>
