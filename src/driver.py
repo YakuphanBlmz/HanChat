@@ -8,6 +8,7 @@ from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 
 # Configure logging
+os.makedirs('logs', exist_ok=True)
 logging.basicConfig(
     filename='logs/app.log',
     level=logging.INFO,

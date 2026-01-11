@@ -265,7 +265,9 @@ async def analyze_file(file: UploadFile = File(...), current_user: dict = Depend
         
         # Write to debug_log.txt for agent to see
         try:
-            log_path = "/app/logs/debug_log.txt"
+            log_dir = "/app/logs"
+            os.makedirs(log_dir, exist_ok=True)
+            log_path = os.path.join(log_dir, "debug_log.txt")
             with open(log_path, "w", encoding="utf-8") as f:
                 f.write(f"File Length: {len(text)}\n")
                 f.write(f"First 500 chars:\n{text[:500]}\n")
