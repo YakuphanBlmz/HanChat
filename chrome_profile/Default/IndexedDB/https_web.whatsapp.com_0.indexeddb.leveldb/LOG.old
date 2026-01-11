@@ -1,0 +1,14 @@
+2025/12/07-00:49:24.314 1bdc Reusing MANIFEST C:\Users\Yakuphan\Desktop\Whatsapp Bot\chrome_profile\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-021203
+2025/12/07-00:49:24.315 1bdc Recovering log #23858
+2025/12/07-00:49:24.320 1bdc Reusing old log C:\Users\Yakuphan\Desktop\Whatsapp Bot\chrome_profile\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/023858.log 
+2025/12/07-00:49:25.325 b774 Level-0 table #23875: started
+2025/12/07-00:49:25.331 b774 Level-0 table #23875: 285318 bytes OK
+2025/12/07-00:49:25.333 b774 Delete type=0 #23858
+2025/12/07-00:49:25.333 1bdc Manual compaction at level-0 from '\x00L\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00M\x00\x00\x00' @ 0 : 0; will stop at '\x00L\x00\x00\x05' @ 48671246 : 1
+2025/12/07-00:49:25.334 1bdc Compacting 1@0 + 1@1 files
+2025/12/07-00:49:25.338 1bdc Generated table #23876@0: 4314 keys, 136876 bytes
+2025/12/07-00:49:25.340 1bdc Generated table #23877@0: 80 keys, 8006 bytes
+2025/12/07-00:49:25.340 1bdc Compacted 1@0 + 1@1 files => 144882 bytes
+2025/12/07-00:49:25.340 1bdc compacted to: files[ 0 2 21 67 0 0 0 ]
+2025/12/07-00:49:25.341 1bdc Delete type=2 #23875
+2025/12/07-00:49:25.341 1bdc Manual compaction at level-0 from '\x00L\x00\x00\x05' @ 48671246 : 1 .. '\x00M\x00\x00\x00' @ 0 : 0; will stop at (end)

@@ -1,0 +1,13 @@
+selenium
+webdriver-manager
+pandas
+nltk
+emoji
+fastapi
+uvicorn
+psycopg2-binary
+
+passlib[bcrypt]
+python-jose[cryptography]
+python-multipart
+google-generativeai

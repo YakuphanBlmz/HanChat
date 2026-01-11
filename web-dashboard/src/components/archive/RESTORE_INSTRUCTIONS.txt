@@ -1,0 +1,21 @@
+// 1. Add Import
+import { RealTimeAnalysis } from './components/RealTimeAnalysis';
+// Note: You will need to move RealTimeAnalysis.tsx back from archive to components folder first!
+
+// 2. Add 'realtime' to View type
+type View = 'fun' | 'agent' | 'flirt' | 'realtime';
+
+// 3. Add Button to Navigation (inside the <div className="flex space-x-4...">)
+<button
+  onClick={() => setCurrentView('realtime')}
+  className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all whitespace-nowrap ${currentView === 'realtime'
+    ? 'bg-white/20 text-white shadow-lg backdrop-blur-sm border border-white/10'
+    : 'text-slate-400 hover:text-white hover:bg-white/10'
+    }`}
+>
+  <Activity size={18} />
+  Gerçek Zamanlı
+</button>
+
+// 4. Add Component Rendering (inside <main>)
+{currentView === 'realtime' && <RealTimeAnalysis />}

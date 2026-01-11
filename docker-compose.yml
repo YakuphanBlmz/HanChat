@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://hanchat:secretpassword@db:5432/hanchat_db
+      - DATABASE_URL=${DATABASE_URL}
+      - SECRET_KEY=${SECRET_KEY}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - MAIL_USERNAME=${MAIL_USERNAME}
+      - MAIL_PASSWORD=${MAIL_PASSWORD}
+      # - SELENIUM_URL=http://chrome:4444/wd/hub
+    depends_on:
+      - db
+    volumes:
+      - ./src:/app/src # Hot reload for dev, optional in prod
+      - debug_logs:/app/logs
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+  db:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_USER=hanchat
+      - POSTGRES_PASSWORD=secretpassword
+      - POSTGRES_DB=hanchat_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+  # chrome:
+  #   image: selenium/standalone-chrome:latest
+  #   shm_size: "2gb" # Recommended to avoid crashes
+  #   restart: unless-stopped
+  #   ports:
+  #     - "4444:4444"
+  #     - "7900:7900" # VNC for debug viewing
+  #   volumes:
+  #     - chrome_data:/home/seluser/chrome_profile # Persistent profile
+  #   environment:
+  #     - SE_NODE_MAX_SESSIONS=1
+
+volumes:
+  postgres_data:
+  debug_logs:
+  chrome_data:
