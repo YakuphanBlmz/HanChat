@@ -182,24 +182,6 @@ async def reset_password(request: ResetPasswordRequest):
     except Exception as e:
         raise HTTPException(status_code=400, detail="İşlem başarısız.")
 
-# --- TEMPORARY SETUP ENDPOINT (Delete after use) ---
-@app.get("/secret-setup-admin")
-def make_me_admin():
-    db = DatabaseManager()
-    conn = db.get_connection()
-    try:
-        cursor = conn.cursor()
-        if db.db_type == 'postgres':
-             cursor.execute("UPDATE users SET is_admin = TRUE WHERE username = 'WannaCry'")
-        else:
-             cursor.execute("UPDATE users SET is_admin = 1 WHERE username = 'WannaCry'")
-        conn.commit()
-        return {"status": "success", "message": "WannaCry artık Admin! 👑"}
-    except Exception as e:
-        return {"status": "error", "message": str(e)}
-    finally:
-        conn.close()
-
 # --- Admin Endpoints ---
 @app.get("/admin/users")
 def get_all_users_admin(current_user: dict = Depends(get_current_admin_user)):
