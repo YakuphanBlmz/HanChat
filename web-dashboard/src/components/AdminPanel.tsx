@@ -93,41 +93,41 @@ export function AdminPanel() {
     if (error) return <div className="text-red-400 text-center p-10 flex flex-col items-center gap-2"><ShieldAlert size={48} />{error}</div>;
 
     return (
-        <div className="max-w-6xl mx-auto p-6 pt-0 space-y-8">
+        <div className="max-w-6xl mx-auto mt-8 bg-white rounded-2xl shadow-sm border border-gray-100 p-6 space-y-8">
             {/* Header & Stats */}
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
                 <div className="flex items-center gap-3">
-                    <div className="p-3 bg-indigo-500/20 rounded-2xl border border-indigo-500/30">
-                        <Shield className="text-indigo-400" size={32} />
+                    <div className="p-3 bg-indigo-50 rounded-2xl border border-indigo-100">
+                        <Shield className="text-indigo-600" size={32} />
                     </div>
                     <div>
-                        <h2 className="text-3xl font-bold text-white">Yönetim Paneli</h2>
-                        <p className="text-slate-300 text-sm">Sistem durumu ve kullanıcı yönetimi</p>
+                        <h2 className="text-3xl font-bold text-gray-900">Yönetim Paneli</h2>
+                        <p className="text-gray-500 text-sm">Sistem durumu ve kullanıcı yönetimi</p>
                     </div>
                 </div>
 
                 {/* Stat Cards */}
                 <div className="grid grid-cols-2 gap-4">
-                    <div className="bg-slate-800 p-4 rounded-xl border border-slate-700 flex items-center gap-4 min-w-[180px]">
-                        <div className="p-3 bg-blue-500/20 rounded-lg text-blue-400"><Users size={24} /></div>
+                    <div className="bg-gray-50 p-4 rounded-xl border border-gray-200 flex items-center gap-4 min-w-[180px]">
+                        <div className="p-3 bg-blue-100 rounded-lg text-blue-600"><Users size={24} /></div>
                         <div>
-                            <div className="text-2xl font-bold text-white">{users.length}</div>
-                            <div className="text-xs text-slate-300">Toplam Kullanıcı</div>
+                            <div className="text-2xl font-bold text-gray-900">{users.length}</div>
+                            <div className="text-xs text-gray-500">Toplam Kullanıcı</div>
                         </div>
                     </div>
-                    <div className="bg-slate-800 p-4 rounded-xl border border-slate-700 flex items-center gap-4 min-w-[180px]">
-                        <div className="p-3 bg-purple-500/20 rounded-lg text-purple-400"><Shield size={24} /></div>
+                    <div className="bg-gray-50 p-4 rounded-xl border border-gray-200 flex items-center gap-4 min-w-[180px]">
+                        <div className="p-3 bg-purple-100 rounded-lg text-purple-600"><Shield size={24} /></div>
                         <div>
-                            <div className="text-2xl font-bold text-white">{users.filter(u => u.is_admin).length}</div>
-                            <div className="text-xs text-slate-300">Yönetici</div>
+                            <div className="text-2xl font-bold text-gray-900">{users.filter(u => u.is_admin).length}</div>
+                            <div className="text-xs text-gray-500">Yönetici</div>
                         </div>
                     </div>
                 </div>
             </div>
 
             {/* User List */}
-            <div className="bg-gradient-to-br from-slate-900/90 to-slate-800/90 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden shadow-2xl shadow-black/50 ring-1 ring-white/5">
-                <div className="p-6 border-b border-white/5 bg-white/5 flex justify-between items-center">
+            <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden shadow-2xl shadow-black/20 ring-1 ring-black/5">
+                <div className="p-6 border-b border-white/10 bg-white/5 flex justify-between items-center">
                     <h3 className="text-lg font-semibold text-white flex items-center gap-2">
                         <Activity size={18} className="text-indigo-400" />
                         Kayıtlı Kullanıcılar
@@ -138,7 +138,7 @@ export function AdminPanel() {
                 </div>
                 <div className="overflow-x-auto">
                     <table className="w-full text-left">
-                        <thead className="bg-black/40 text-slate-400 text-xs uppercase tracking-wider font-semibold">
+                        <thead className="bg-black/30 text-slate-400 text-xs uppercase tracking-wider font-semibold">
                             <tr>
                                 <th className="p-4 pl-6">Kullanıcı</th>
                                 <th className="p-4">Rol</th>
