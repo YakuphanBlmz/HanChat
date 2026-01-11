@@ -53,7 +53,7 @@ export function Login({ onLoginSuccess, onSwitchToRegister, onSwitchToForgotPass
                     <p className="mt-2 text-sm text-slate-400">Devam etmek için giriş yapın</p>
                 </div>
 
-                <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+                <form className="mt-8 space-y-6" onSubmit={handleSubmit} autoComplete="off">
                     {error && (
                         <div className="p-3 text-sm text-red-200 bg-red-900/50 border border-red-800 rounded-lg">
                             {error}
@@ -72,6 +72,7 @@ export function Login({ onLoginSuccess, onSwitchToRegister, onSwitchToForgotPass
                                 onChange={(e) => setUsername(e.target.value)}
                                 className="block w-full pl-10 pr-3 py-3 border border-slate-600 rounded-lg bg-slate-900/50 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                                 placeholder="Kullanıcı Adı"
+                                autoComplete="off"
                             />
                         </div>
 
@@ -86,6 +87,7 @@ export function Login({ onLoginSuccess, onSwitchToRegister, onSwitchToForgotPass
                                 onChange={(e) => setPassword(e.target.value)}
                                 className="block w-full pl-10 pr-10 py-3 border border-slate-600 rounded-lg bg-slate-900/50 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                                 placeholder="Şifre"
+                                autoComplete="new-password"
                             />
                             <button
                                 type="button"
