@@ -143,6 +143,7 @@ class ContactMessage(BaseModel):
 @app.post("/contact")
 async def contact_form(msg: ContactMessage):
     # 1. Save to Database
+    db = DatabaseManager()
     db.save_contact_message(msg.name, msg.surname, msg.email, msg.subject, msg.message)
     
     # 2. Send Notification Email

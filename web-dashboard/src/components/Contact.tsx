@@ -33,6 +33,11 @@ export function Contact() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+
+        if (!window.confirm("Mesajınızı göndermek istediğinize emin misiniz?")) {
+            return;
+        }
+
         setStatus('loading');
 
         try {
