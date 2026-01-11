@@ -194,9 +194,17 @@ def delete_user_admin(user_id: int, current_user: dict = Depends(get_current_adm
         raise HTTPException(status_code=400, detail="Kendinizi silemezsiniz.")
         
     db = DatabaseManager()
+    db = DatabaseManager()
     if db.delete_user(user_id):
         return {"status": "success", "message": "Kullanıcı silindi"}
     raise HTTPException(status_code=500, detail="Silme başarısız")
+
+@app.get("/admin/users/{user_id}/messages")
+def get_user_messages_admin(user_id: int, current_user: dict = Depends(get_current_admin_user)):
+    db = DatabaseManager()
+    # reuse existing get_messages logic
+    messages = db.get_messages(user_id=user_id)
+    return messages
 
 @app.get("/")
 def read_root():
