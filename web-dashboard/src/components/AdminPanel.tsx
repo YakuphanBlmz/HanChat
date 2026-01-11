@@ -126,21 +126,24 @@ export function AdminPanel() {
             </div>
 
             {/* User List */}
-            <div className="bg-slate-800/50 backdrop-blur-lg border border-white/10 rounded-2xl overflow-hidden shadow-xl">
-                <div className="p-6 border-b border-white/10">
+            <div className="bg-gradient-to-br from-slate-900/90 to-slate-800/90 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden shadow-2xl shadow-black/50 ring-1 ring-white/5">
+                <div className="p-6 border-b border-white/5 bg-white/5 flex justify-between items-center">
                     <h3 className="text-lg font-semibold text-white flex items-center gap-2">
-                        <Activity size={18} className="text-emerald-400" />
+                        <Activity size={18} className="text-indigo-400" />
                         Kayıtlı Kullanıcılar
                     </h3>
+                    <div className="text-xs text-slate-400 font-mono bg-black/30 px-3 py-1 rounded-full border border-white/5">
+                        Tablo: users
+                    </div>
                 </div>
                 <div className="overflow-x-auto">
                     <table className="w-full text-left">
-                        <thead className="bg-black/20 text-gray-300 text-sm uppercase tracking-wider">
+                        <thead className="bg-black/40 text-slate-400 text-xs uppercase tracking-wider font-semibold">
                             <tr>
-                                <th className="p-4">Kullanıcı</th>
+                                <th className="p-4 pl-6">Kullanıcı</th>
                                 <th className="p-4">Rol</th>
                                 <th className="p-4">Kayıt Tarihi</th>
-                                <th className="p-4 text-right">İşlemler</th>
+                                <th className="p-4 pr-6 text-right">İşlemler</th>
                             </tr>
                         </thead>
                         <tbody className="text-gray-200 divide-y divide-white/5">
