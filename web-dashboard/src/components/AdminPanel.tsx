@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Trash2, Shield, ShieldAlert, User, MessageCircle, X, Users, Activity } from 'lucide-react';
+import { FileText, Trash2, Shield, ShieldAlert, User, MessageCircle, X, Users, Activity } from 'lucide-react';
 import { API_URL } from '../services/api';
 
 interface UserData {
@@ -17,8 +17,17 @@ interface MessageData {
     timestamp: string;
 }
 
+interface UploadData {
+    id: number;
+    filename: string;
+    username: string;
+    email: string;
+    upload_time: string;
+}
+
 export function AdminPanel() {
     const [users, setUsers] = useState<UserData[]>([]);
+    const [uploads, setUploads] = useState<UploadData[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
 
@@ -28,7 +37,11 @@ export function AdminPanel() {
     const [msgLoading, setMsgLoading] = useState(false);
 
     useEffect(() => {
-        fetchUsers();
+        const fetchData = async () => {
+            await Promise.all([fetchUsers(), fetchUploads()]);
+            setLoading(false);
+        };
+        fetchData();
     }, []);
 
     const fetchUsers = async () => {
@@ -46,8 +59,22 @@ export function AdminPanel() {
             }
         } catch (err) {
             setError('Sunucuya bağlanılamadı.');
-        } finally {
-            setLoading(false);
+        }
+    };
+
+    const fetchUploads = async () => {
+        try {
+            const token = localStorage.getItem('access_token');
+            const response = await fetch(`${API_URL}/admin/uploads`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                setUploads(data);
+            }
+        } catch (err) {
+            console.error("Failed to fetch uploads", err);
         }
     };
 
@@ -196,6 +223,61 @@ export function AdminPanel() {
                                     </td>
                                 </tr>
                             ))}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            {/* Upload History Table */}
+            <div className="bg-gradient-to-br from-indigo-900 via-slate-800 to-slate-900 text-white backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden shadow-2xl shadow-indigo-500/10 ring-1 ring-black/5 mt-8">
+                <div className="p-6 border-b border-white/10 bg-white/5 flex justify-between items-center">
+                    <h3 className="text-lg font-semibold text-white flex items-center gap-2">
+                        <FileText size={18} className="text-pink-400" />
+                        Son Yüklenen Sohbet Dosyaları
+                    </h3>
+                    <div className="text-xs text-slate-400 font-mono bg-black/30 px-3 py-1 rounded-full border border-white/5">
+                        Tablo: file_uploads
+                    </div>
+                </div>
+                <div className="overflow-x-auto max-h-96 overflow-y-auto custom-scrollbar">
+                    <table className="w-full text-left">
+                        <thead className="bg-black/30 text-slate-400 text-xs uppercase tracking-wider font-semibold sticky top-0 backdrop-blur-md">
+                            <tr>
+                                <th className="p-4 pl-6">Kullanıcı</th>
+                                <th className="p-4">Dosya Adı</th>
+                                <th className="p-4 text-right pr-6">Yükleme Tarihi</th>
+                            </tr>
+                        </thead>
+                        <tbody className="text-gray-200 divide-y divide-white/5">
+                            {uploads.length === 0 ? (
+                                <tr>
+                                    <td colSpan={3} className="p-8 text-center text-slate-500">
+                                        Henüz yüklenmiş dosya yok.
+                                    </td>
+                                </tr>
+                            ) : (
+                                uploads.map(file => (
+                                    <tr key={file.id} className="hover:bg-white/5 transition-colors">
+                                        <td className="p-4 pl-6">
+                                            <div className="flex items-center gap-3">
+                                                <div className="w-8 h-8 rounded-lg bg-pink-500/20 text-pink-400 flex items-center justify-center">
+                                                    <User size={16} />
+                                                </div>
+                                                <div>
+                                                    <div className="font-bold text-white text-sm">{file.username || 'Bilinmeyen'}</div>
+                                                    <div className="text-xs text-slate-400">{file.email}</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td className="p-4 text-sm font-mono text-indigo-200">
+                                            {file.filename}
+                                        </td>
+                                        <td className="p-4 text-sm text-slate-300 text-right pr-6">
+                                            {new Date(file.upload_time).toLocaleString('tr-TR')}
+                                        </td>
+                                    </tr>
+                                ))
+                            )}
                         </tbody>
                     </table>
                 </div>

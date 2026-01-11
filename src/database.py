@@ -36,6 +36,83 @@ class DatabaseManager:
         self.init_tracking_db()
         self.init_users_db()
         self.init_contact_db()
+        self.init_files_db()
+
+    # ... (existing methods)
+
+    def init_files_db(self):
+        conn = self.get_connection()
+        try:
+            cursor = conn.cursor()
+            
+            if self.db_type == 'postgres':
+                cursor.execute('''
+                    CREATE TABLE IF NOT EXISTS file_uploads (
+                        id SERIAL PRIMARY KEY,
+                        user_id INTEGER,
+                        filename TEXT,
+                        file_size INTEGER,
+                        upload_time TEXT
+                    )
+                ''')
+            else:
+                cursor.execute('''
+                    CREATE TABLE IF NOT EXISTS file_uploads (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        user_id INTEGER,
+                        filename TEXT,
+                        file_size INTEGER,
+                        upload_time TEXT,
+                        FOREIGN KEY (user_id) REFERENCES users (id)
+                    )
+                ''')
+            conn.commit()
+        except Exception as e:
+            print(f"Init Files DB Error: {e}")
+        finally:
+            conn.close()
+
+    def log_file_upload(self, user_id, filename, file_size):
+        conn = self.get_connection()
+        try:
+            cursor = conn.cursor()
+            query = '''
+                INSERT INTO file_uploads (user_id, filename, file_size, upload_time)
+                VALUES (?, ?, ?, ?)
+            '''
+            self._execute(cursor, query, (user_id, filename, file_size, datetime.now().isoformat()))
+            conn.commit()
+            return True
+        except Exception as e:
+            print(f"Log File Upload Error: {e}")
+            return False
+        finally:
+            conn.close()
+
+    def get_all_file_uploads(self):
+        conn = self.get_connection()
+        try:
+            if self.db_type == 'sqlite':
+                conn.row_factory = sqlite3.Row
+                cursor = conn.cursor()
+            else:
+                cursor = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+            
+            # Join with users to get username
+            query = '''
+                SELECT f.id, f.filename, f.upload_time, u.username, u.email 
+                FROM file_uploads f
+                LEFT JOIN users u ON f.user_id = u.id 
+                ORDER BY f.upload_time DESC
+            '''
+            self._execute(cursor, query)
+            rows = cursor.fetchall()
+            return [dict(row) for row in rows]
+        except Exception as e:
+            print(f"Get All File Uploads Error: {e}")
+            return []
+        finally:
+            conn.close()
 
     def get_connection(self):
         """Returns a database connection based on configured type."""

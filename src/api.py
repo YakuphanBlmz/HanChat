@@ -291,6 +291,11 @@ def get_sender_analysis(name: str, analyzer: ChatAnalyzer = Depends(get_analyzer
 # If they DO save to DB, they need to be updated to accept user_id too.
 # For now, let's assume they return instant analysis.
 
+@app.get("/admin/uploads")
+def get_file_uploads_admin(current_user: dict = Depends(get_current_admin_user)):
+    db = DatabaseManager()
+    return db.get_all_file_uploads()
+
 @app.post("/analyze/file")
 async def analyze_file(file: UploadFile = File(...), current_user: dict = Depends(get_current_user)):
     try:
@@ -301,6 +306,13 @@ async def analyze_file(file: UploadFile = File(...), current_user: dict = Depend
             try: text = content.decode("utf-16")
             except: text = content.decode("latin-1", errors="ignore")
             
+        # Log to DB
+        try:
+            db = DatabaseManager()
+            db.log_file_upload(current_user['id'], file.filename, len(content))
+        except Exception as db_err:
+            print(f"Failed to log file upload: {db_err}")
+
         print(f"DEBUG: Analyzed File Length: {len(text)}")
         
         # Write to debug_log.txt for agent to see
