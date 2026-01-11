@@ -89,6 +89,30 @@ class DatabaseManager:
         finally:
             conn.close()
 
+    def get_user_uploads(self, user_id):
+        conn = self.get_connection()
+        try:
+            if self.db_type == 'sqlite':
+                conn.row_factory = sqlite3.Row
+                cursor = conn.cursor()
+            else:
+                cursor = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+            
+            query = '''
+                SELECT id, filename, file_size, upload_time 
+                FROM file_uploads 
+                WHERE user_id = ? 
+                ORDER BY upload_time DESC
+            '''
+            self._execute(cursor, query, (user_id,))
+            rows = cursor.fetchall()
+            return [dict(row) for row in rows]
+        except Exception as e:
+            print(f"Get User Uploads Error: {e}")
+            return []
+        finally:
+            conn.close()
+
     def get_all_file_uploads(self):
         conn = self.get_connection()
         try:

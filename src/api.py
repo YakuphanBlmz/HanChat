@@ -291,6 +291,11 @@ def get_sender_analysis(name: str, analyzer: ChatAnalyzer = Depends(get_analyzer
 # If they DO save to DB, they need to be updated to accept user_id too.
 # For now, let's assume they return instant analysis.
 
+@app.get("/admin/users/{user_id}/uploads")
+def get_user_uploads_admin(user_id: int, current_user: dict = Depends(get_current_admin_user)):
+    db = DatabaseManager()
+    return db.get_user_uploads(user_id)
+
 @app.get("/admin/uploads")
 def get_file_uploads_admin(current_user: dict = Depends(get_current_admin_user)):
     db = DatabaseManager()
