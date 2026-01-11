@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Trash2, Shield, ShieldAlert, User, CheckCircle } from 'lucide-react';
+import { Trash2, Shield, ShieldAlert, User } from 'lucide-react';
 import { API_URL } from '../services/api';
 
 interface UserData {
