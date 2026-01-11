@@ -30,14 +30,15 @@ export function Contact() {
         message: ''
     });
     const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+    const [showConfirm, setShowConfirm] = useState(false);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setShowConfirm(true);
+    };
 
-        if (!window.confirm("Mesajınızı göndermek istediğinize emin misiniz?")) {
-            return;
-        }
-
+    const confirmSend = async () => {
+        setShowConfirm(false);
         setStatus('loading');
 
         try {
@@ -51,6 +52,7 @@ export function Contact() {
                 setStatus('success');
                 setFormData({ name: '', surname: '', email: '', subject: 'Genel Soru', message: '' });
             } else {
+                console.error("Contact form failed:", await response.text());
                 setStatus('error');
             }
         } catch (error) {
@@ -64,7 +66,7 @@ export function Contact() {
     };
 
     return (
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-4xl mx-auto relative">
             <div className="text-center mb-12">
                 <h2 className="text-3xl font-bold text-white">İletişim</h2>
                 <p className="text-slate-300 mt-2">Sorularınız, önerileriniz veya iş birliği için bize ulaşın.</p>
@@ -126,7 +128,7 @@ export function Contact() {
                 </div>
 
                 {/* Contact Form */}
-                <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
+                <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 relative">
                     <h3 className="text-xl font-bold text-gray-900 mb-6">Mesaj Gönder</h3>
 
                     {status === 'success' ? (
@@ -203,7 +205,7 @@ export function Contact() {
                             {status === 'error' && (
                                 <div className="p-3 bg-red-50 text-red-600 rounded-xl text-sm flex items-center gap-2">
                                     <AlertCircle size={16} />
-                                    Bir hata oluştu, lütfen tekrar deneyin.
+                                    Bir hata oluştu. Lütfen tekrar deneyin.
                                 </div>
                             )}
 
@@ -225,6 +227,37 @@ export function Contact() {
                     )}
                 </div>
             </div>
+
+            {/* Custom Confirmation Modal */}
+            {showConfirm && (
+                <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                    <div className="bg-white rounded-2xl shadow-2xl p-6 w-full max-w-sm animate-in zoom-in-95 duration-200">
+                        <div className="flex flex-col items-center text-center">
+                            <div className="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mb-4 text-indigo-600">
+                                <Send size={24} />
+                            </div>
+                            <h3 className="text-lg font-bold text-gray-900 mb-2">Mesajı Gönder?</h3>
+                            <p className="text-gray-500 text-sm mb-6">
+                                Mesajınızı şimdi göndermek istediğinize emin misiniz?
+                            </p>
+                            <div className="flex gap-3 w-full">
+                                <button
+                                    onClick={() => setShowConfirm(false)}
+                                    className="flex-1 py-2.5 px-4 bg-gray-100 text-gray-700 font-medium rounded-xl hover:bg-gray-200 transition-colors"
+                                >
+                                    İptal
+                                </button>
+                                <button
+                                    onClick={confirmSend}
+                                    className="flex-1 py-2.5 px-4 bg-indigo-600 text-white font-bold rounded-xl hover:bg-indigo-700 transition-colors shadow-lg shadow-indigo-200"
+                                >
+                                    Evet, Gönder
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
