@@ -93,7 +93,7 @@ export function AdminPanel() {
     if (error) return <div className="text-red-400 text-center p-10 flex flex-col items-center gap-2"><ShieldAlert size={48} />{error}</div>;
 
     return (
-        <div className="max-w-6xl mx-auto p-6 space-y-8">
+        <div className="max-w-6xl mx-auto p-6 pt-0 space-y-8">
             {/* Header & Stats */}
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
                 <div className="flex items-center gap-3">
@@ -102,7 +102,7 @@ export function AdminPanel() {
                     </div>
                     <div>
                         <h2 className="text-3xl font-bold text-white">Yönetim Paneli</h2>
-                        <p className="text-slate-400 text-sm">Sistem durumu ve kullanıcı yönetimi</p>
+                        <p className="text-slate-300 text-sm">Sistem durumu ve kullanıcı yönetimi</p>
                     </div>
                 </div>
 
@@ -112,14 +112,14 @@ export function AdminPanel() {
                         <div className="p-3 bg-blue-500/20 rounded-lg text-blue-400"><Users size={24} /></div>
                         <div>
                             <div className="text-2xl font-bold text-white">{users.length}</div>
-                            <div className="text-xs text-slate-400">Toplam Kullanıcı</div>
+                            <div className="text-xs text-slate-300">Toplam Kullanıcı</div>
                         </div>
                     </div>
                     <div className="bg-slate-800 p-4 rounded-xl border border-slate-700 flex items-center gap-4 min-w-[180px]">
                         <div className="p-3 bg-purple-500/20 rounded-lg text-purple-400"><Shield size={24} /></div>
                         <div>
                             <div className="text-2xl font-bold text-white">{users.filter(u => u.is_admin).length}</div>
-                            <div className="text-xs text-slate-400">Yönetici</div>
+                            <div className="text-xs text-slate-300">Yönetici</div>
                         </div>
                     </div>
                 </div>
@@ -153,7 +153,7 @@ export function AdminPanel() {
                                             </div>
                                             <div>
                                                 <div className="font-bold text-white">{user.username}</div>
-                                                <div className="text-xs text-gray-400">{user.email}</div>
+                                                <div className="text-sm text-gray-300">{user.email}</div>
                                             </div>
                                         </div>
                                     </td>
@@ -168,7 +168,7 @@ export function AdminPanel() {
                                             </span>
                                         )}
                                     </td>
-                                    <td className="p-4 text-sm text-gray-400">
+                                    <td className="p-4 text-sm text-gray-300">
                                         {new Date(user.created_at).toLocaleDateString('tr-TR', { year: 'numeric', month: 'long', day: 'numeric' })}
                                     </td>
                                     <td className="p-4 text-right">
@@ -229,8 +229,8 @@ export function AdminPanel() {
                                 messages.map((msg, i) => (
                                     <div key={i} className={`flex flex-col ${msg.sender === selectedUser.username ? 'items-end' : 'items-start'}`}>
                                         <div className={`max-w-[80%] p-3 rounded-2xl text-sm ${msg.sender === selectedUser.username
-                                                ? 'bg-emerald-600 text-white rounded-tr-none'
-                                                : 'bg-slate-700 text-gray-200 rounded-tl-none'
+                                            ? 'bg-emerald-600 text-white rounded-tr-none'
+                                            : 'bg-slate-700 text-gray-200 rounded-tl-none'
                                             }`}>
                                             <div className="text-xs opacity-50 mb-1 font-bold">{msg.sender}</div>
                                             {msg.content}
