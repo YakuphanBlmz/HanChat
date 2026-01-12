@@ -612,14 +612,14 @@ def debug_email_test():
 
     # 2. Try Connection
     SMTP_SERVER = "smtp.gmail.com"
-    SMTP_PORT = 587
+    SMTP_PORT = 465 # SSL Port
     
     try:
         logs.append(f"Connecting to {SMTP_SERVER}:{SMTP_PORT}...")
-        server = smtplib.SMTP(SMTP_SERVER, SMTP_PORT, timeout=10)
+        server = smtplib.SMTP_SSL(SMTP_SERVER, SMTP_PORT, timeout=10)
         server.set_debuglevel(1) # This prints to stdout, but we want to capture exceptions
-        server.starttls()
-        logs.append("Connection and STARTTLS successful.")
+        # server.starttls() # Not needed for SSL connection
+        logs.append("Connection (SSL) successful.")
         
         # 3. Try Login
         logs.append(f"Attempting login as {username}...")

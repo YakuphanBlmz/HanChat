@@ -6,7 +6,7 @@ import logging
 
 # Configuration
 SMTP_SERVER = "smtp.gmail.com"
-SMTP_PORT = 587
+SMTP_PORT = 465 # SSL Port
 MAIL_USERNAME = os.getenv("MAIL_USERNAME", "kullanici@gmail.com")
 MAIL_PASSWORD = os.getenv("MAIL_PASSWORD", "")
 
@@ -20,8 +20,7 @@ def send_reset_email(to_email: str, reset_token: str):
         return False
 
     try:
-        server = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
-        server.starttls()
+        server = smtplib.SMTP_SSL(SMTP_SERVER, SMTP_PORT)
         server.login(MAIL_USERNAME, MAIL_PASSWORD)
 
         msg = MIMEMultipart()
@@ -84,8 +83,7 @@ def send_contact_notification(name: str, surname: str, email: str, subject: str,
 
     try:
         print(f"EMAIL DEBUG: Connecting to {SMTP_SERVER}:{SMTP_PORT}...")
-        server = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
-        server.starttls()
+        server = smtplib.SMTP_SSL(SMTP_SERVER, SMTP_PORT)
         
         print(f"EMAIL DEBUG: Logging in as {MAIL_USERNAME}...")
         server.login(MAIL_USERNAME, MAIL_PASSWORD)
