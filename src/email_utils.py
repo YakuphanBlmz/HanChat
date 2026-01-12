@@ -13,11 +13,12 @@ MAIL_USERNAME = os.getenv("MAIL_USERNAME", "hanwhatschat@gmail.com")
 def send_brevo_email(to_email: str, subject: str, html_content: str, sender_name: str = "HanChat"):
     """
     Sends an email using the Brevo (Sendinblue) REST API.
-    This bypasses SMTP port blocking issues on cloud hosting (Render).
     """
+    print(f"DEBUG: Entering send_brevo_email. To: {to_email}, Subject: {subject}")
+    
     if not BREVO_API_KEY:
+        print("DEBUG ERROR: BREVO_API_KEY is missing/empty!")
         logging.warning("BREVO_API_KEY is not set. Email will not be sent.")
-        # If we are in local dev without a key, maybe fail gracefully or log
         return False
 
     headers = {
@@ -32,9 +33,13 @@ def send_brevo_email(to_email: str, subject: str, html_content: str, sender_name
         "subject": subject,
         "htmlContent": html_content
     }
+    
+    print(f"DEBUG: Sending POST to {BREVO_API_URL}...")
 
     try:
         response = requests.post(BREVO_API_URL, headers=headers, json=payload, timeout=10)
+        print(f"DEBUG: Brevo Response Code: {response.status_code}")
+        print(f"DEBUG: Brevo Response Body: {response.text}")
         
         if response.status_code in [201, 200]:
             logging.info(f"Email sent successfully to {to_email} via Brevo.")
@@ -44,6 +49,7 @@ def send_brevo_email(to_email: str, subject: str, html_content: str, sender_name
             return False
             
     except Exception as e:
+        print(f"DEBUG EXCEPTION: {e}")
         logging.error(f"Failed to connect to Brevo API: {e}")
         return False
 
