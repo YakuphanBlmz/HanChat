@@ -30,6 +30,7 @@ export function Contact() {
         message: ''
     });
     const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+    const [errorMessage, setErrorMessage] = useState('');
     const [showConfirm, setShowConfirm] = useState(false);
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -40,6 +41,7 @@ export function Contact() {
     const confirmSend = async () => {
         setShowConfirm(false);
         setStatus('loading');
+        setErrorMessage('');
 
         try {
             const response = await fetch(`${API_URL}/contact`, {
@@ -52,11 +54,23 @@ export function Contact() {
                 setStatus('success');
                 setFormData({ name: '', surname: '', email: '', subject: 'Genel Soru', message: '' });
             } else {
-                console.error("Contact form failed:", await response.text());
+                const errorText = await response.text();
+                let displayError = "Bir hata oluştu. Lütfen tekrar deneyin.";
+                try {
+                    const errorJson = JSON.parse(errorText);
+                    if (errorJson.detail) displayError = `Hata: ${errorJson.detail}`;
+                } catch {
+                    // If not JSON, use default or raw text if short
+                    if (errorText.length < 50) displayError = `Hata: ${errorText}`;
+                }
+
+                console.error("Contact form failed:", errorText);
+                setErrorMessage(displayError);
                 setStatus('error');
             }
         } catch (error) {
             console.error(error);
+            setErrorMessage("Sunucuya bağlanılamadı.");
             setStatus('error');
         }
     };
@@ -67,9 +81,9 @@ export function Contact() {
 
     return (
         <div className="max-w-4xl mx-auto relative">
-            <div className="text-center mb-12">
-                <h2 className="text-3xl font-bold text-white">İletişim</h2>
-                <p className="text-slate-300 mt-2">Sorularınız, önerileriniz veya iş birliği için bize ulaşın.</p>
+            <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 text-center mb-8">
+                <h2 className="text-3xl font-bold text-gray-900">İletişim</h2>
+                <p className="text-gray-500 mt-2">Sorularınız, önerileriniz veya iş birliği için bize ulaşın.</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -205,7 +219,7 @@ export function Contact() {
                             {status === 'error' && (
                                 <div className="p-3 bg-red-50 text-red-600 rounded-xl text-sm flex items-center gap-2">
                                     <AlertCircle size={16} />
-                                    Bir hata oluştu. Lütfen tekrar deneyin.
+                                    {errorMessage || "Bir hata oluştu. Lütfen tekrar deneyin."}
                                 </div>
                             )}
 

@@ -128,9 +128,15 @@ async def forgot_password(request: ForgotPasswordRequest):
         expires_delta=timedelta(hours=24)
     )
     
-    from src.email_utils import send_reset_email, send_contact_notification
+    from src.email_utils import send_reset_email
+    
+    sent = send_reset_email(request.email, reset_token)
+    
+    if sent:
+        return {"message": "Email adresinize bir sıfırlama linki gönderildi."}
+    else:
+        raise HTTPException(status_code=500, detail="Email gönderilemedi.")
 
-# ... (Existing models) ...
 class ContactMessage(BaseModel):
     name: str
     surname: str
@@ -138,25 +144,25 @@ class ContactMessage(BaseModel):
     subject: str
     message: str
 
-# ... (Existing endpoints) ...
-
 @app.post("/contact")
 async def contact_form(msg: ContactMessage):
-    # 1. Save to Database
-    db = DatabaseManager()
-    db.save_contact_message(msg.name, msg.surname, msg.email, msg.subject, msg.message)
-    
-    # 2. Send Notification Email
-    email_sent = send_contact_notification(msg.name, msg.surname, msg.email, msg.subject, msg.message)
-    
-    return {"status": "success", "email_sent": email_sent}
+    try:
+        # 1. Save to Database
+        db = DatabaseManager()
+        db_success = db.save_contact_message(msg.name, msg.surname, msg.email, msg.subject, msg.message)
+        
+        # 2. Send Notification Email
+        from src.email_utils import send_contact_notification
+        email_sent = send_contact_notification(msg.name, msg.surname, msg.email, msg.subject, msg.message)
+        
+        if not db_success:
+             print("Warning: Failed to save contact message to DB")
 
-    sent = send_reset_email(request.email, reset_token)
+        return {"status": "success", "email_sent": email_sent, "db_saved": db_success}
     
-    if sent:
-        return {"message": "Email adresinize bir sıfırlama linki gönderildi."}
-    else:
-        raise HTTPException(status_code=500, detail="Email gönderilemedi.")
+    except Exception as e:
+        print(f"Contact endpoint error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 @app.post("/auth/reset-password")
 async def reset_password(request: ResetPasswordRequest):

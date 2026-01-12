@@ -108,73 +108,7 @@ export function AdminPanel() {
 
     // ... (Render return until Modal) ...
 
-    <div className="flex-1 overflow-y-auto p-4 space-y-6 bg-black/20 text-white">
-        {msgLoading ? (
-            <div className="text-center py-10 text-gray-400">Yükleniyor...</div>
-        ) : (
-            <>
-                {/* User Files Section */}
-                <div>
-                    <h4 className="text-sm font-bold text-indigo-400 mb-3 flex items-center gap-2">
-                        <FileText size={16} />
-                        Yüklenen Dosyalar
-                    </h4>
-                    {userUploads.length === 0 ? (
-                        <div className="text-sm text-gray-500 italic p-2 bg-white/5 rounded-lg">Bu kullanıcı hiç dosya yüklememiş.</div>
-                    ) : (
-                        <div className="space-y-2">
-                            {userUploads.map(file => (
-                                <div key={file.id} className="flex items-center justify-between p-3 bg-indigo-500/10 border border-indigo-500/20 rounded-xl hover:bg-indigo-500/20 transition-colors">
-                                    <div className="flex items-center gap-3">
-                                        <div className="p-2 bg-indigo-500/20 rounded-lg text-indigo-400">
-                                            <FileText size={18} />
-                                        </div>
-                                        <div>
-                                            <div className="text-sm font-medium text-indigo-100">{file.filename}</div>
-                                            <div className="text-[10px] text-gray-400">{new Date(file.upload_time).toLocaleString('tr-TR')}</div>
-                                        </div>
-                                    </div>
-                                    <div className="text-xs text-gray-500 font-mono">
-                                        {(file.file_size / 1024).toFixed(1)} KB
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    )}
-                </div>
 
-                <div className="h-px bg-white/10 my-2" />
-
-                {/* Messages Section */}
-                <div className="space-y-4">
-                    <h4 className="text-sm font-bold text-emerald-400 mb-3 flex items-center gap-2">
-                        <MessageCircle size={16} />
-                        Mesaj Geçmişi
-                    </h4>
-                    {messages.length === 0 ? (
-                        <div className="text-center py-8 text-gray-500 flex flex-col items-center gap-2">
-                            <p className="text-sm italic">Mesaj geçmişi yok.</p>
-                        </div>
-                    ) : (
-                        messages.map((msg, i) => (
-                            <div key={i} className={`flex flex-col ${msg.sender === selectedUser.username ? 'items-end' : 'items-start'}`}>
-                                <div className={`max-w-[85%] p-3 rounded-2xl text-sm ${msg.sender === selectedUser.username
-                                    ? 'bg-emerald-600/90 text-white rounded-tr-none shadow-lg shadow-emerald-900/20'
-                                    : 'bg-slate-700/90 text-gray-200 rounded-tl-none shadow-lg shadow-black/20'
-                                    }`}>
-                                    <div className="text-[10px] opacity-50 mb-1 font-bold tracking-wider uppercase">{msg.sender}</div>
-                                    {msg.content}
-                                </div>
-                                <div className="text-[10px] text-gray-500 mt-1 px-1">
-                                    {new Date(msg.timestamp).toLocaleString('tr-TR')}
-                                </div>
-                            </div>
-                        ))
-                    )}
-                </div>
-            </>
-        )}
-    </div>
 
     const handleDelete = async (userId: number) => {
         if (!window.confirm('Bu kullanıcıyı silmek istediğinize emin misiniz?')) return;
@@ -380,29 +314,71 @@ export function AdminPanel() {
                             </button>
                         </div>
 
-                        <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-black/20">
+                        <div className="flex-1 overflow-y-auto p-4 space-y-6 bg-black/20 text-white">
                             {msgLoading ? (
-                                <div className="text-center py-10 text-gray-500">Mesajlar yükleniyor...</div>
-                            ) : messages.length === 0 ? (
-                                <div className="text-center py-10 text-gray-500 flex flex-col items-center gap-2">
-                                    <MessageCircle size={40} className="opacity-20" />
-                                    <p>Bu kullanıcıya ait kaydedilmiş mesaj bulunamadı.</p>
-                                </div>
+                                <div className="text-center py-10 text-gray-400">Yükleniyor...</div>
                             ) : (
-                                messages.map((msg, i) => (
-                                    <div key={i} className={`flex flex-col ${msg.sender === selectedUser.username ? 'items-end' : 'items-start'}`}>
-                                        <div className={`max-w-[80%] p-3 rounded-2xl text-sm ${msg.sender === selectedUser.username
-                                            ? 'bg-emerald-600 text-white rounded-tr-none'
-                                            : 'bg-slate-700 text-gray-200 rounded-tl-none'
-                                            }`}>
-                                            <div className="text-xs opacity-50 mb-1 font-bold">{msg.sender}</div>
-                                            {msg.content}
-                                        </div>
-                                        <div className="text-[10px] text-gray-500 mt-1 px-1">
-                                            {new Date(msg.timestamp).toLocaleString('tr-TR')}
-                                        </div>
+                                <>
+                                    {/* User Files Section */}
+                                    <div>
+                                        <h4 className="text-sm font-bold text-indigo-400 mb-3 flex items-center gap-2">
+                                            <FileText size={16} />
+                                            Yüklenen Dosyalar
+                                        </h4>
+                                        {userUploads.length === 0 ? (
+                                            <div className="text-sm text-gray-500 italic p-2 bg-white/5 rounded-lg">Bu kullanıcı hiç dosya yüklememiş.</div>
+                                        ) : (
+                                            <div className="space-y-2">
+                                                {userUploads.map(file => (
+                                                    <div key={file.id} className="flex items-center justify-between p-3 bg-indigo-500/10 border border-indigo-500/20 rounded-xl hover:bg-indigo-500/20 transition-colors">
+                                                        <div className="flex items-center gap-3">
+                                                            <div className="p-2 bg-indigo-500/20 rounded-lg text-indigo-400">
+                                                                <FileText size={18} />
+                                                            </div>
+                                                            <div>
+                                                                <div className="text-sm font-medium text-indigo-100">{file.filename}</div>
+                                                                <div className="text-[10px] text-gray-400">{new Date(file.upload_time).toLocaleString('tr-TR')}</div>
+                                                            </div>
+                                                        </div>
+                                                        <div className="text-xs text-gray-500 font-mono">
+                                                            {(file.file_size / 1024).toFixed(1)} KB
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        )}
                                     </div>
-                                ))
+
+                                    <div className="h-px bg-white/10 my-2" />
+
+                                    {/* Messages Section */}
+                                    <div className="space-y-4">
+                                        <h4 className="text-sm font-bold text-emerald-400 mb-3 flex items-center gap-2">
+                                            <MessageCircle size={16} />
+                                            Mesaj Geçmişi
+                                        </h4>
+                                        {messages.length === 0 ? (
+                                            <div className="text-center py-8 text-gray-500 flex flex-col items-center gap-2">
+                                                <p className="text-sm italic">Mesaj geçmişi yok.</p>
+                                            </div>
+                                        ) : (
+                                            messages.map((msg, i) => (
+                                                <div key={i} className={`flex flex-col ${msg.sender === selectedUser.username ? 'items-end' : 'items-start'}`}>
+                                                    <div className={`max-w-[85%] p-3 rounded-2xl text-sm ${msg.sender === selectedUser.username
+                                                        ? 'bg-emerald-600/90 text-white rounded-tr-none shadow-lg shadow-emerald-900/20'
+                                                        : 'bg-slate-700/90 text-gray-200 rounded-tl-none shadow-lg shadow-black/20'
+                                                        }`}>
+                                                        <div className="text-[10px] opacity-50 mb-1 font-bold tracking-wider uppercase">{msg.sender}</div>
+                                                        {msg.content}
+                                                    </div>
+                                                    <div className="text-[10px] text-gray-500 mt-1 px-1">
+                                                        {new Date(msg.timestamp).toLocaleString('tr-TR')}
+                                                    </div>
+                                                </div>
+                                            ))
+                                        )}
+                                    </div>
+                                </>
                             )}
                         </div>
                     </div>

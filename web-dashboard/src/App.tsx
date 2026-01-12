@@ -229,6 +229,9 @@ function App() {
           </div>
         </div>
       )}
+
+      {/* Version Indicator */}
+      <div className="absolute bottom-2 right-4 text-xs text-slate-400/50">v1.2</div>
     </div>
   );
 }
