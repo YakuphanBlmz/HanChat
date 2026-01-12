@@ -83,9 +83,13 @@ def send_contact_notification(name: str, surname: str, email: str, subject: str,
         return False
 
     try:
+        print(f"EMAIL DEBUG: Connecting to {SMTP_SERVER}:{SMTP_PORT}...")
         server = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
         server.starttls()
+        
+        print(f"EMAIL DEBUG: Logging in as {MAIL_USERNAME}...")
         server.login(MAIL_USERNAME, MAIL_PASSWORD)
+        print("EMAIL DEBUG: Login successful.")
 
         msg = MIMEMultipart()
         msg['From'] = MAIL_USERNAME
@@ -112,10 +116,13 @@ def send_contact_notification(name: str, surname: str, email: str, subject: str,
         """
         
         msg.attach(MIMEText(body, 'html'))
+        print("EMAIL DEBUG: Sending message...")
         server.send_message(msg)
         server.quit()
+        print(f"EMAIL DEBUG: Contact notification SENT from {email}")
         logging.info(f"Contact notification sent from {email}")
         return True
     except Exception as e:
+        print(f"EMAIL DEBUG ERROR: {str(e)}")
         logging.error(f"Failed to send contact notification: {e}")
         return False
