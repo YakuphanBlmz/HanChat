@@ -33,3 +33,4 @@ debug_logs/
 chrome_data/
 postgres_data/
 .gemini/
+archive/
