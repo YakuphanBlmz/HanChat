@@ -93,8 +93,11 @@ export function Contact() {
                 <div className="grid grid-cols-1 lg:grid-cols-3">
 
                     {/* Left Side: Contact Info - Clean & Simple */}
-                    <div className="lg:col-span-1 p-4 lg:p-6 lg:pb-12 lg:pl-12 flex flex-col items-stretch">
-                        <div className="bg-slate-50 h-full rounded-3xl p-8 flex flex-col justify-between border border-slate-100 relative overflow-hidden">
+                    {/* REDUCED PADDING: lg:pl-8 instead of lg:pl-12 */}
+                    <div className="lg:col-span-1 p-4 lg:p-6 lg:pb-12 lg:pl-8 flex flex-col items-stretch">
+
+                        {/* REDUCED PADDING: p-6 instead of p-8 */}
+                        <div className="bg-slate-50 h-full rounded-3xl p-6 flex flex-col justify-between border border-slate-100 relative overflow-hidden">
 
                             <div className="relative z-10">
                                 <h3 className="text-xl font-bold text-slate-900 mb-8 flex items-center gap-2">
@@ -102,20 +105,22 @@ export function Contact() {
                                     İletişim Bilgileri
                                 </h3>
 
-                                <div className="space-y-6">
-                                    <div className="p-4 bg-white rounded-2xl border border-slate-100 hover:shadow-md transition-all group">
+                                <div className="space-y-4">
+                                    {/* REDUCED PADDING: p-3 instead of p-4 and space-y-4 instead of space-y-6 */}
+                                    <div className="p-3 bg-white rounded-2xl border border-slate-100 hover:shadow-md transition-all group">
                                         <div className="flex items-start gap-4">
                                             <div className="p-2 bg-blue-50 rounded-lg text-blue-600 shrink-0">
                                                 <Mail size={20} />
                                             </div>
                                             <div>
                                                 <div className="text-xs text-slate-400 uppercase tracking-wider font-semibold mb-1">E-Posta</div>
-                                                <a href="mailto:hanwhatschat@gmail.com" className="text-slate-700 hover:text-blue-600 transition-colors break-all font-medium text-sm">hanwhatschat@gmail.com</a>
+                                                {/* REMOVED break-all, added style to ensure fit */}
+                                                <a href="mailto:hanwhatschat@gmail.com" className="text-slate-700 hover:text-blue-600 transition-colors font-medium text-sm block">hanwhatschat@gmail.com</a>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div className="p-4 bg-white rounded-2xl border border-slate-100 hover:shadow-md transition-all group">
+                                    <div className="p-3 bg-white rounded-2xl border border-slate-100 hover:shadow-md transition-all group">
                                         <div className="flex items-start gap-4">
                                             <div className="p-2 bg-green-50 rounded-lg text-green-600 shrink-0">
                                                 <WhatsAppIcon size={20} />
@@ -127,7 +132,7 @@ export function Contact() {
                                         </div>
                                     </div>
 
-                                    <div className="p-4 bg-white rounded-2xl border border-slate-100 hover:shadow-md transition-all group">
+                                    <div className="p-3 bg-white rounded-2xl border border-slate-100 hover:shadow-md transition-all group">
                                         <div className="flex items-start gap-4">
                                             <div className="p-2 bg-purple-50 rounded-lg text-purple-600 shrink-0">
                                                 <MapPin size={20} />
