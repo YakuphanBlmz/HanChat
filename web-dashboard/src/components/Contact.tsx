@@ -100,8 +100,7 @@ export function Contact() {
                         <div className="bg-slate-50 h-full rounded-3xl p-6 flex flex-col justify-between border border-slate-100 relative overflow-hidden">
 
                             <div className="relative z-10">
-                                <h3 className="text-xl font-bold text-slate-900 mb-8 flex items-center gap-2">
-                                    <span className="w-8 h-1 bg-indigo-500 rounded-full inline-block"></span>
+                                <h3 className="text-xl font-bold text-slate-900 mb-8">
                                     İletişim Bilgileri
                                 </h3>
 
