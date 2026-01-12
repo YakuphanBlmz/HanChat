@@ -1,134 +1,100 @@
-import smtplib
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
 import os
 import logging
+import requests
+import json
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
 # Configuration
-SMTP_SERVER = "smtp.gmail.com"
-SMTP_PORT = 465 # SSL Port
-MAIL_USERNAME = os.getenv("MAIL_USERNAME", "kullanici@gmail.com")
-MAIL_PASSWORD = os.getenv("MAIL_PASSWORD", "")
+BREVO_API_KEY = os.getenv("BREVO_API_KEY")
+BREVO_API_URL = "https://api.brevo.com/v3/smtp/email"
+MAIL_USERNAME = os.getenv("MAIL_USERNAME", "hanwhatschat@gmail.com")
+
+def send_brevo_email(to_email: str, subject: str, html_content: str, sender_name: str = "HanChat"):
+    """
+    Sends an email using the Brevo (Sendinblue) REST API.
+    This bypasses SMTP port blocking issues on cloud hosting (Render).
+    """
+    if not BREVO_API_KEY:
+        logging.warning("BREVO_API_KEY is not set. Email will not be sent.")
+        # If we are in local dev without a key, maybe fail gracefully or log
+        return False
+
+    headers = {
+        "accept": "application/json",
+        "api-key": BREVO_API_KEY,
+        "content-type": "application/json"
+    }
+
+    payload = {
+        "sender": {"name": sender_name, "email": MAIL_USERNAME},
+        "to": [{"email": to_email}],
+        "subject": subject,
+        "htmlContent": html_content
+    }
+
+    try:
+        response = requests.post(BREVO_API_URL, headers=headers, json=payload, timeout=10)
+        
+        if response.status_code in [201, 200]:
+            logging.info(f"Email sent successfully to {to_email} via Brevo.")
+            return True
+        else:
+            logging.error(f"Brevo API Error: {response.status_code} - {response.text}")
+            return False
+            
+    except Exception as e:
+        logging.error(f"Failed to connect to Brevo API: {e}")
+        return False
 
 def send_reset_email(to_email: str, reset_token: str):
     """
-    Sends a password reset email containing a reset link.
-    In a real app, the link would point to the frontend URL.
+    Sends a password reset email via Brevo.
     """
-    if not MAIL_PASSWORD:
-        logging.warning("MAIL_PASSWORD is not set. Email will not be sent.")
-        return False
-
-    try:
-        # Force IPv4 to avoid "Network is unreachable" on systems with broken IPv6/Routing
-        import socket
-        gmail_ip = socket.gethostbyname(SMTP_SERVER)
-        print(f"EMAIL DEBUG: Connecting to {gmail_ip}:{SMTP_PORT} (Resolved from {SMTP_SERVER})...")
-        server = smtplib.SMTP_SSL(gmail_ip, SMTP_PORT)
-        
-        print(f"EMAIL DEBUG: Logging in as {MAIL_USERNAME}...")
-
-        msg = MIMEMultipart()
-        msg['From'] = MAIL_USERNAME
-        msg['To'] = to_email
-        msg['Subject'] = "HanChat - Şifre Sıfırlama İsteği"
-
-        # Link construction (assuming frontend is at localhost for now, or use an env var for frontend url)
-        # We'll use a simple approach: if running in docker-compose, localhost is fine for browser access.
-        # The frontend path for reset will handle the query param.
-        reset_link = f"http://localhost/reset-password?token={reset_token}"
-
-        body = f"""
-        <html>
-            <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
-                <div style="max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 10px;">
-                    <h2 style="color: #2c3e50; text-align: center;">Merhaba,</h2>
-                    
-                    <p>Görünüşe göre <strong>HanChat</strong> hesabına giriş yapmakta biraz zorlandın. Merak etme, bu herkesin başına gelebilir! 😅</p>
-                    
-                    <p>Hesabına tekrar erişebilmen için sana özel bir bağlantı oluşturduk. Aşağıdaki butona tıklayarak yeni şifreni hemen belirleyebilirsin:</p>
-                    
-                    <div style="text-align: center; margin: 30px 0;">
-                        <a href="{reset_link}" style="background-color: #3498db; color: white; padding: 14px 28px; text-decoration: none; border-radius: 50px; font-weight: bold; font-size: 16px; box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);">
-                            🔐 Şifremi Yenile
-                        </a>
-                    </div>
-                    
-                    <p style="font-size: 14px; color: #7f8c8d;">
-                        Güvenliğin için bu bağlantının geçerlilik süresi <strong>24 saattir</strong>. Bu talebi sen oluşturmadıysan, bu e-postayı görmezden gelebilirsin. Hesabın güvende kalmaya devam edecek.
-                    </p>
-                    
-                    <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;" />
-                    
-                    <p style="text-align: center; font-size: 12px; color: #95a5a6;">
-                        Sevgiler,<br/>
-                        <strong>HanChat Ekibi</strong> 🚀
-                    </p>
-                </div>
-            </body>
-        </html>
-        """
-        
-        msg.attach(MIMEText(body, 'html'))
-        server.send_message(msg)
-        server.quit()
-        logging.info(f"Password reset email sent to {to_email}")
-        return True
-    except Exception as e:
-        logging.error(f"Failed to send email: {e}")
-        return False
+    reset_link = f"https://han-chat.vercel.app/reset-password?token={reset_token}"
+    
+    subject = "HanChat Şifre Sıfırlama"
+    body = f"""
+    <html>
+        <body style="font-family: Arial, sans-serif;">
+            <h2>Şifre Sıfırlama Talebi</h2>
+            <p>Hesabınız için şifre sıfırlama talebinde bulundunuz.</p>
+            <p>Şifrenizi sıfırlamak için aşağıdaki linke tıklayın:</p>
+            <a href="{reset_link}" style="background: #2563eb; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Şifremi Sıfırla</a>
+            <p>Bu link 24 saat geçerlidir.</p>
+        </body>
+    </html>
+    """
+    
+    return send_brevo_email(to_email, subject, body)
 
 def send_contact_notification(name: str, surname: str, email: str, subject: str, message: str):
     """
-    Sends a notification to the admin when a new contact message is received.
+    Sends a contact notification to the admin via Brevo.
     """
-    if not MAIL_PASSWORD:
-        logging.warning("MAIL_PASSWORD is not set. Contact email will not be sent.")
-        return False
-
-    try:
-        # Force IPv4 to avoid "Network is unreachable" on systems with broken IPv6/Routing
-        import socket
-        gmail_ip = socket.gethostbyname(SMTP_SERVER)
-        print(f"EMAIL DEBUG: Connecting to {gmail_ip}:{SMTP_PORT} (Resolved from {SMTP_SERVER})...")
-        server = smtplib.SMTP_SSL(gmail_ip, SMTP_PORT)
-        
-        print(f"EMAIL DEBUG: Logging in as {MAIL_USERNAME}...")
-        server.login(MAIL_USERNAME, MAIL_PASSWORD)
-        print("EMAIL DEBUG: Login successful.")
-
-        msg = MIMEMultipart()
-        msg['From'] = MAIL_USERNAME
-        msg['To'] = MAIL_USERNAME # Send to admin (self)
-        msg['Subject'] = f"HanChat İletişim: {subject} - {name} {surname}"
-        msg['Reply-To'] = email
-
-        body = f"""
-        <html>
-            <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
-                <div style="max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 10px;">
-                    <h2 style="color: #2c3e50; text-align: center;">Yeni İletişim Mesajı</h2>
-                    
-                    <p><strong>Gönderen:</strong> {name} {surname}</p>
-                    <p><strong>E-Posta:</strong> {email}</p>
-                    <p><strong>Konu:</strong> {subject}</p>
-                    
-                    <div style="background-color: #f9f9f9; padding: 15px; border-radius: 5px; margin: 20px 0;">
-                        <p style="margin: 0; font-style: italic;">"{message}"</p>
-                    </div>
+    
+    # We send this email TO OURSELVES (Admin)
+    to_email = MAIL_USERNAME 
+    email_subject = f"HanChat İletişim: {subject} - {name} {surname}"
+    
+    body = f"""
+    <html>
+        <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+            <div style="max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 10px;">
+                <h2 style="color: #2c3e50; text-align: center;">Yeni İletişim Mesajı</h2>
+                
+                <p><strong>Gönderen:</strong> {name} {surname}</p>
+                <p><strong>E-Posta:</strong> {email}</p>
+                <p><strong>Konu:</strong> {subject}</p>
+                
+                <div style="background-color: #f9f9f9; padding: 15px; border-radius: 5px; margin: 20px 0;">
+                    <p style="margin: 0; font-style: italic;">"{message}"</p>
                 </div>
-            </body>
-        </html>
-        """
-        
-        msg.attach(MIMEText(body, 'html'))
-        print("EMAIL DEBUG: Sending message...")
-        server.send_message(msg)
-        server.quit()
-        print(f"EMAIL DEBUG: Contact notification SENT from {email}")
-        logging.info(f"Contact notification sent from {email}")
-        return True
-    except Exception as e:
-        print(f"EMAIL DEBUG ERROR: {str(e)}")
-        logging.error(f"Failed to send contact notification: {e}")
-        return False
+                
+                <p style="font-size: 12px; color: #888;">Bu mesaj Brevo API kullanılarak gönderilmiştir.</p>
+            </div>
+        </body>
+    </html>
+    """
+    
+    return send_brevo_email(to_email, email_subject, body, sender_name="HanChat Contact Form")
