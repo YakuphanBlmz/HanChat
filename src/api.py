@@ -584,7 +584,59 @@ def delete_tracking_history(record_id: int, current_user: dict = Depends(get_cur
 @app.post("/track/dismiss")
 def dismiss_tracking_notification(current_user: dict = Depends(get_current_user)):
     user_id = current_user['id']
-    if user_id in active_trackers:
-        active_trackers[user_id].update_status("idle", "", 0)
-        return {"status": "dismissed"}
-    return {"status": "ignored"}
+@app.get("/debug-email-test")
+def debug_email_test():
+    """
+    Temporary endpoint to debug email sending connectivity and credentials.
+    Returns detailed logs of the attempt.
+    """
+    import smtplib
+    from email.mime.text import MIMEText
+    from email.mime.multipart import MIMEMultipart
+    
+    logs = []
+    
+    # 1. Check Env Vars
+    username = os.getenv("MAIL_USERNAME")
+    password = os.getenv("MAIL_PASSWORD")
+    
+    logs.append(f"Env Check: USERNAME={'Set' if username else 'MISSING'}, PASSWORD={'Set' if password else 'MISSING'}")
+    
+    if not username or not password:
+        return {"status": "failed", "logs": logs, "error": "Environment variables missing"}
+
+    # 2. Try Connection
+    SMTP_SERVER = "smtp.gmail.com"
+    SMTP_PORT = 587
+    
+    try:
+        logs.append(f"Connecting to {SMTP_SERVER}:{SMTP_PORT}...")
+        server = smtplib.SMTP(SMTP_SERVER, SMTP_PORT, timeout=10)
+        server.set_debuglevel(1) # This prints to stdout, but we want to capture exceptions
+        server.starttls()
+        logs.append("Connection and STARTTLS successful.")
+        
+        # 3. Try Login
+        logs.append(f"Attempting login as {username}...")
+        server.login(username, password)
+        logs.append("Login successful.")
+        
+        # 4. Try Send
+        msg = MIMEMultipart()
+        msg['From'] = username
+        msg['To'] = username
+        msg['Subject'] = "HanChat Debug Test Email"
+        msg.attach(MIMEText("This is a test email to verify credentials.", 'plain'))
+        
+        server.send_message(msg)
+        logs.append(f"Test email sent to {username}")
+        
+        server.quit()
+        return {"status": "success", "logs": logs, "message": "Email sent successfully! Check your inbox."}
+        
+    except smtplib.SMTPAuthenticationError as e:
+        logs.append(f"AUTH ERROR: {str(e)}")
+        return {"status": "failed", "logs": logs, "error": "Authentication Failed. Ensure Use App Password.", "details": str(e)}
+    except Exception as e:
+        logs.append(f"GENERAL ERROR: {str(e)}")
+        return {"status": "failed", "logs": logs, "error": str(e)}
