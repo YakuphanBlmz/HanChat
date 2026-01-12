@@ -20,8 +20,13 @@ def send_reset_email(to_email: str, reset_token: str):
         return False
 
     try:
-        server = smtplib.SMTP_SSL(SMTP_SERVER, SMTP_PORT)
-        server.login(MAIL_USERNAME, MAIL_PASSWORD)
+        # Force IPv4 to avoid "Network is unreachable" on systems with broken IPv6/Routing
+        import socket
+        gmail_ip = socket.gethostbyname(SMTP_SERVER)
+        print(f"EMAIL DEBUG: Connecting to {gmail_ip}:{SMTP_PORT} (Resolved from {SMTP_SERVER})...")
+        server = smtplib.SMTP_SSL(gmail_ip, SMTP_PORT)
+        
+        print(f"EMAIL DEBUG: Logging in as {MAIL_USERNAME}...")
 
         msg = MIMEMultipart()
         msg['From'] = MAIL_USERNAME
@@ -82,8 +87,11 @@ def send_contact_notification(name: str, surname: str, email: str, subject: str,
         return False
 
     try:
-        print(f"EMAIL DEBUG: Connecting to {SMTP_SERVER}:{SMTP_PORT}...")
-        server = smtplib.SMTP_SSL(SMTP_SERVER, SMTP_PORT)
+        # Force IPv4 to avoid "Network is unreachable" on systems with broken IPv6/Routing
+        import socket
+        gmail_ip = socket.gethostbyname(SMTP_SERVER)
+        print(f"EMAIL DEBUG: Connecting to {gmail_ip}:{SMTP_PORT} (Resolved from {SMTP_SERVER})...")
+        server = smtplib.SMTP_SSL(gmail_ip, SMTP_PORT)
         
         print(f"EMAIL DEBUG: Logging in as {MAIL_USERNAME}...")
         server.login(MAIL_USERNAME, MAIL_PASSWORD)

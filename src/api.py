@@ -615,11 +615,21 @@ def debug_email_test():
     SMTP_PORT = 465 # SSL Port
     
     try:
-        logs.append(f"Connecting to {SMTP_SERVER}:{SMTP_PORT}...")
-        server = smtplib.SMTP_SSL(SMTP_SERVER, SMTP_PORT, timeout=10)
-        server.set_debuglevel(1) # This prints to stdout, but we want to capture exceptions
-        # server.starttls() # Not needed for SSL connection
-        logs.append("Connection (SSL) successful.")
+        import socket
+        logs.append(f"Resolving {SMTP_SERVER} to IPv4...")
+        gmail_ip = socket.gethostbyname(SMTP_SERVER)
+        logs.append(f"Resolved IP: {gmail_ip}")
+        
+        logs.append(f"Connecting to {gmail_ip}:{SMTP_PORT} (forcing IPv4)...")
+        
+        # Connect to IP, but might need to handle SSL hostname verification
+        # For debug, we just want to see if we can reach it. 
+        # using the IP directly in SMTP_SSL might cause CertificateError (hostname mismatch), 
+        # but that proves connectivity.
+        server = smtplib.SMTP_SSL(gmail_ip, SMTP_PORT, timeout=10)
+        
+        server.set_debuglevel(1)
+        logs.append("Connection (SSL) successful (via IPv4).")
         
         # 3. Try Login
         logs.append(f"Attempting login as {username}...")
@@ -630,14 +640,14 @@ def debug_email_test():
         msg = MIMEMultipart()
         msg['From'] = username
         msg['To'] = username
-        msg['Subject'] = "HanChat Debug Test Email"
-        msg.attach(MIMEText("This is a test email to verify credentials.", 'plain'))
+        msg['Subject'] = "HanChat Debug Test Email (IPv4 Forced)"
+        msg.attach(MIMEText("This is a test email to verify credentials (IPv4 Forced).", 'plain'))
         
         server.send_message(msg)
         logs.append(f"Test email sent to {username}")
         
         server.quit()
-        return {"status": "success", "logs": logs, "message": "Email sent successfully! Check your inbox."}
+        return {"status": "success", "logs": logs, "message": "Email sent successfully! check inbox."}
         
     except smtplib.SMTPAuthenticationError as e:
         logs.append(f"AUTH ERROR: {str(e)}")
