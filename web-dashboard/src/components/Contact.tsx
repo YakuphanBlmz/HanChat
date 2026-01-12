@@ -80,181 +80,197 @@ export function Contact() {
 
     return (
         <div className="max-w-6xl mx-auto relative px-4">
-            {/* Header Section */}
-            <div className="text-center mb-10">
-                <h2 className="text-4xl font-bold text-slate-900 mb-4">İletişim</h2>
-                <p className="text-lg text-slate-500 max-w-lg mx-auto">Sorularınız, önerileriniz veya iş birliği için bize ulaşın.</p>
-            </div>
 
             {/* Unified Main Card Wrapper */}
             <div className="bg-white rounded-3xl shadow-xl shadow-slate-200/50 border border-slate-100 overflow-hidden">
+
+                {/* Header Section (INSIDE the card now) */}
+                <div className="text-center pt-12 pb-6 px-8 bg-white/50 backdrop-blur-sm">
+                    <h2 className="text-4xl font-bold text-slate-900 mb-4">İletişim</h2>
+                    <p className="text-lg text-slate-500 max-w-lg mx-auto">Sorularınız, önerileriniz veya iş birliği için bize ulaşın.</p>
+                </div>
+
                 <div className="grid grid-cols-1 lg:grid-cols-3">
 
                     {/* Left Side: Contact Info - "Card within a Card" Design */}
-                    <div className="lg:col-span-1 p-3 lg:p-4">
-                        <div className="bg-slate-900 text-white h-full rounded-2xl p-8 flex flex-col justify-between shadow-inner relative overflow-hidden">
+                    <div className="lg:col-span-1 p-4 lg:p-6 lg:pb-12 lg:pl-12 flex flex-col items-stretch">
+                        <div className="bg-slate-900 text-white h-full rounded-3xl p-8 flex flex-col justify-between shadow-2xl shadow-indigo-500/20 relative overflow-hidden transform transition-transform hover:scale-[1.02] duration-300">
                             {/* Decorative Background Blob */}
-                            <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-slate-800 rounded-full blur-3xl opacity-50 pointer-events-none"></div>
+                            <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-indigo-600 rounded-full blur-3xl opacity-40 pointer-events-none"></div>
+                            <div className="absolute bottom-0 left-0 -ml-16 -mb-16 w-48 h-48 bg-purple-600 rounded-full blur-3xl opacity-30 pointer-events-none"></div>
 
                             <div className="relative z-10">
-                                <h3 className="text-xl font-bold mb-8">İletişim Bilgileri</h3>
+                                <h3 className="text-xl font-bold mb-8 flex items-center gap-2">
+                                    <span className="w-8 h-1 bg-indigo-500 rounded-full inline-block"></span>
+                                    İletişim Bilgileri
+                                </h3>
 
-                                <div className="space-y-8">
-                                    <div className="flex items-start gap-5">
-                                        <div className="p-3 bg-white/10 rounded-xl text-blue-400 shrink-0 backdrop-blur-sm">
-                                            <Mail size={22} />
-                                        </div>
-                                        <div>
-                                            <div className="font-semibold text-slate-300 text-sm mb-1">E-Posta</div>
-                                            <a href="mailto:hanwhatschat@gmail.com" className="text-white hover:text-blue-300 transition-colors break-all font-medium">hanwhatschat@gmail.com</a>
+                                <div className="space-y-6">
+                                    <div className="p-4 bg-white/5 rounded-2xl border border-white/10 hover:bg-white/10 transition-colors group">
+                                        <div className="flex items-start gap-4">
+                                            <div className="p-2 bg-blue-500/20 rounded-lg text-blue-300 shrink-0">
+                                                <Mail size={20} />
+                                            </div>
+                                            <div>
+                                                <div className="text-xs text-slate-400 uppercase tracking-wider font-semibold mb-1">E-Posta</div>
+                                                <a href="mailto:hanwhatschat@gmail.com" className="text-white hover:text-blue-300 transition-colors break-all font-medium text-sm">hanwhatschat@gmail.com</a>
+                                            </div>
                                         </div>
                                     </div>
 
-                                    <div className="flex items-start gap-5">
-                                        <div className="p-3 bg-white/10 rounded-xl text-green-400 shrink-0 backdrop-blur-sm">
-                                            <WhatsAppIcon size={22} />
-                                        </div>
-                                        <div>
-                                            <div className="font-semibold text-slate-300 text-sm mb-1">WhatsApp</div>
-                                            <a href="https://wa.me/905468143710" target="_blank" rel="noreferrer" className="text-white hover:text-green-300 transition-colors font-medium">+90 546 814 37 10</a>
+                                    <div className="p-4 bg-white/5 rounded-2xl border border-white/10 hover:bg-white/10 transition-colors group">
+                                        <div className="flex items-start gap-4">
+                                            <div className="p-2 bg-green-500/20 rounded-lg text-green-300 shrink-0">
+                                                <WhatsAppIcon size={20} />
+                                            </div>
+                                            <div>
+                                                <div className="text-xs text-slate-400 uppercase tracking-wider font-semibold mb-1">WhatsApp</div>
+                                                <a href="https://wa.me/905468143710" target="_blank" rel="noreferrer" className="text-white hover:text-green-300 transition-colors font-medium text-sm">+90 546 814 37 10</a>
+                                            </div>
                                         </div>
                                     </div>
 
-                                    <div className="flex items-start gap-5">
-                                        <div className="p-3 bg-white/10 rounded-xl text-purple-400 shrink-0 backdrop-blur-sm">
-                                            <MapPin size={22} />
-                                        </div>
-                                        <div>
-                                            <div className="font-semibold text-slate-300 text-sm mb-1">Konum</div>
-                                            <p className="text-white font-medium">İstanbul, Türkiye</p>
+                                    <div className="p-4 bg-white/5 rounded-2xl border border-white/10 hover:bg-white/10 transition-colors group">
+                                        <div className="flex items-start gap-4">
+                                            <div className="p-2 bg-purple-500/20 rounded-lg text-purple-300 shrink-0">
+                                                <MapPin size={20} />
+                                            </div>
+                                            <div>
+                                                <div className="text-xs text-slate-400 uppercase tracking-wider font-semibold mb-1">Konum</div>
+                                                <p className="text-white font-medium text-sm">İstanbul, Türkiye</p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
                             <div className="mt-12 relative z-10">
-                                <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">SOSYAL MEDYA</h4>
-                                <div className="flex gap-3">
-                                    <a href="https://github.com/YakuphanBlmz" target="_blank" rel="noreferrer" className="p-3 bg-white/5 rounded-xl hover:bg-white/20 text-white transition-all flex items-center justify-center">
-                                        <Github size={20} />
-                                    </a>
-                                    <a href="https://www.linkedin.com/in/yakuphan-bilmez/" target="_blank" rel="noreferrer" className="p-3 bg-white/5 rounded-xl hover:bg-blue-600/80 text-white transition-all flex items-center justify-center">
-                                        <Linkedin size={20} />
-                                    </a>
-                                    <a href="https://wa.me/905468143710" target="_blank" rel="noreferrer" className="p-3 bg-white/5 rounded-xl hover:bg-green-600/80 text-white transition-all flex items-center justify-center">
-                                        <WhatsAppIcon size={20} />
-                                    </a>
+                                <div className="flex justify-between items-center pt-6 border-t border-white/10">
+                                    <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">SOSYAL MEDYA</span>
+                                    <div className="flex gap-2">
+                                        <a href="https://github.com/YakuphanBlmz" target="_blank" rel="noreferrer" className="p-2 bg-black/30 rounded-lg hover:bg-white hover:text-slate-900 text-white transition-all">
+                                            <Github size={18} />
+                                        </a>
+                                        <a href="https://www.linkedin.com/in/yakuphan-bilmez/" target="_blank" rel="noreferrer" className="p-2 bg-blue-600/30 rounded-lg hover:bg-blue-600 text-white transition-all">
+                                            <Linkedin size={18} />
+                                        </a>
+                                        <a href="https://wa.me/905468143710" target="_blank" rel="noreferrer" className="p-2 bg-green-600/30 rounded-lg hover:bg-green-600 text-white transition-all">
+                                            <WhatsAppIcon size={18} />
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     {/* Right Side: Contact Form */}
-                    <div className="lg:col-span-2 p-8 md:p-12 bg-white">
-                        <h3 className="text-2xl font-bold text-slate-900 mb-2">Mesaj Gönder</h3>
-                        <p className="text-slate-500 mb-8">Aşağıdaki formu doldurarak bize ulaşabilirsiniz.</p>
+                    <div className="lg:col-span-2 p-8 lg:p-12 lg:pr-12 bg-white">
+                        <div className="max-w-2xl mx-auto">
+                            <h3 className="text-2xl font-bold text-slate-900 mb-2">Mesaj Gönder</h3>
+                            <p className="text-slate-500 mb-8">Aşağıdaki formu doldurarak bize ulaşabilirsiniz.</p>
 
-                        {status === 'success' ? (
-                            <div className="h-full flex flex-col items-center justify-center text-center py-12 animate-in fade-in zoom-in">
-                                <div className="w-20 h-20 bg-green-50 rounded-full flex items-center justify-center mb-6">
-                                    <CheckCircle className="text-green-600" size={40} />
-                                </div>
-                                <h4 className="text-2xl font-bold text-slate-900 mb-3">Mesajınız İletildi!</h4>
-                                <p className="text-slate-500 mb-8 max-w-xs mx-auto">Bizimle iletişime geçtiğiniz için teşekkürler. En kısa sürede size dönüş yapacağız.</p>
-                                <button
-                                    onClick={() => setStatus('idle')}
-                                    className="px-8 py-3 bg-indigo-600 text-white rounded-xl font-medium hover:bg-indigo-700 transition-colors shadow-lg shadow-indigo-200"
-                                >
-                                    Yeni Mesaj Gönder
-                                </button>
-                            </div>
-                        ) : (
-                            <form className="space-y-6" onSubmit={handleSubmit}>
-                                <div className="grid grid-cols-2 gap-6">
-                                    <div>
-                                        <label className="block text-sm font-semibold text-slate-700 mb-2">Adınız</label>
-                                        <input
-                                            type="text" name="name" required
-                                            value={formData.name} onChange={handleChange}
-                                            className="w-full p-3.5 bg-slate-50 rounded-xl border border-slate-200 focus:ring-2 focus:ring-slate-900 focus:border-slate-900 outline-none transition-all placeholder:text-slate-400"
-                                            placeholder="Adınız"
-                                        />
+                            {status === 'success' ? (
+                                <div className="h-full flex flex-col items-center justify-center text-center py-12 animate-in fade-in zoom-in">
+                                    <div className="w-20 h-20 bg-green-50 rounded-full flex items-center justify-center mb-6">
+                                        <CheckCircle className="text-green-600" size={40} />
                                     </div>
-                                    <div>
-                                        <label className="block text-sm font-semibold text-slate-700 mb-2">Soyadınız</label>
-                                        <input
-                                            type="text" name="surname" required
-                                            value={formData.surname} onChange={handleChange}
-                                            className="w-full p-3.5 bg-slate-50 rounded-xl border border-slate-200 focus:ring-2 focus:ring-slate-900 focus:border-slate-900 outline-none transition-all placeholder:text-slate-400"
-                                            placeholder="Soyadınız"
-                                        />
-                                    </div>
+                                    <h4 className="text-2xl font-bold text-slate-900 mb-3">Mesajınız İletildi!</h4>
+                                    <p className="text-slate-500 mb-8 max-w-xs mx-auto">Bizimle iletişime geçtiğiniz için teşekkürler. En kısa sürede size dönüş yapacağız.</p>
+                                    <button
+                                        onClick={() => setStatus('idle')}
+                                        className="px-8 py-3 bg-indigo-600 text-white rounded-xl font-medium hover:bg-indigo-700 transition-colors shadow-lg shadow-indigo-200"
+                                    >
+                                        Yeni Mesaj Gönder
+                                    </button>
                                 </div>
-
-                                <div>
-                                    <label className="block text-sm font-semibold text-slate-700 mb-2">E-Posta Adresi</label>
-                                    <input
-                                        type="email" name="email" required
-                                        value={formData.email} onChange={handleChange}
-                                        className="w-full p-3.5 bg-slate-50 rounded-xl border border-slate-200 focus:ring-2 focus:ring-slate-900 focus:border-slate-900 outline-none transition-all placeholder:text-slate-400"
-                                        placeholder="ornek@email.com"
-                                    />
-                                </div>
-
-                                <div>
-                                    <label className="block text-sm font-semibold text-slate-700 mb-2">Konu</label>
-                                    <div className="relative">
-                                        <select
-                                            name="subject" required
-                                            value={formData.subject} onChange={handleChange}
-                                            className="w-full p-3.5 bg-slate-50 rounded-xl border border-slate-200 focus:ring-2 focus:ring-slate-900 focus:border-slate-900 outline-none transition-all appearance-none cursor-pointer"
-                                        >
-                                            <option>Genel Soru</option>
-                                            <option>Teknik Destek</option>
-                                            <option>Öneri / Geri Bildirim</option>
-                                            <option>İş Birliği</option>
-                                        </select>
-                                        <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500">
-                                            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M2.5 4.5L6 8L9.5 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                                            </svg>
+                            ) : (
+                                <form className="space-y-6" onSubmit={handleSubmit}>
+                                    <div className="grid grid-cols-2 gap-6">
+                                        <div>
+                                            <label className="block text-sm font-semibold text-slate-700 mb-2">Adınız</label>
+                                            <input
+                                                type="text" name="name" required
+                                                value={formData.name} onChange={handleChange}
+                                                className="w-full p-3.5 bg-slate-50 rounded-xl border border-slate-200 focus:ring-2 focus:ring-slate-900 focus:border-slate-900 outline-none transition-all placeholder:text-slate-400"
+                                                placeholder="Adınız"
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="block text-sm font-semibold text-slate-700 mb-2">Soyadınız</label>
+                                            <input
+                                                type="text" name="surname" required
+                                                value={formData.surname} onChange={handleChange}
+                                                className="w-full p-3.5 bg-slate-50 rounded-xl border border-slate-200 focus:ring-2 focus:ring-slate-900 focus:border-slate-900 outline-none transition-all placeholder:text-slate-400"
+                                                placeholder="Soyadınız"
+                                            />
                                         </div>
                                     </div>
-                                </div>
 
-                                <div>
-                                    <label className="block text-sm font-semibold text-slate-700 mb-2">Mesajınız</label>
-                                    <textarea
-                                        name="message" required
-                                        value={formData.message} onChange={handleChange}
-                                        className="w-full p-3.5 bg-slate-50 rounded-xl border border-slate-200 focus:ring-2 focus:ring-slate-900 focus:border-slate-900 outline-none transition-all min-h-[140px] placeholder:text-slate-400 resize-none"
-                                        placeholder="Size nasıl yardımcı olabiliriz?"
-                                    ></textarea>
-                                </div>
-
-                                {status === 'error' && (
-                                    <div className="p-4 bg-red-50 text-red-600 rounded-xl text-sm flex items-start gap-3 animate-in fade-in slide-in-from-top-2">
-                                        <AlertCircle size={20} className="shrink-0 mt-0.5" />
-                                        <span>{errorMessage || "Sunucuya bağlanılamadı. Lütfen internet bağlantınızı kontrol edip tekrar deneyin."}</span>
+                                    <div>
+                                        <label className="block text-sm font-semibold text-slate-700 mb-2">E-Posta Adresi</label>
+                                        <input
+                                            type="email" name="email" required
+                                            value={formData.email} onChange={handleChange}
+                                            className="w-full p-3.5 bg-slate-50 rounded-xl border border-slate-200 focus:ring-2 focus:ring-slate-900 focus:border-slate-900 outline-none transition-all placeholder:text-slate-400"
+                                            placeholder="ornek@email.com"
+                                        />
                                     </div>
-                                )}
 
-                                <button
-                                    type="submit"
-                                    disabled={status === 'loading'}
-                                    className={`w-full py-4 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-xl shadow-lg shadow-slate-200 transition-all flex items-center justify-center gap-2 transform active:scale-[0.98] ${status === 'loading' ? 'opacity-70 cursor-not-allowed' : 'hover:-translate-y-0.5'}`}
-                                >
-                                    {status === 'loading' ? (
-                                        <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                                    ) : (
-                                        <>
-                                            <Send size={18} />
-                                            Gönder
-                                        </>
+                                    <div>
+                                        <label className="block text-sm font-semibold text-slate-700 mb-2">Konu</label>
+                                        <div className="relative">
+                                            <select
+                                                name="subject" required
+                                                value={formData.subject} onChange={handleChange}
+                                                className="w-full p-3.5 bg-slate-50 rounded-xl border border-slate-200 focus:ring-2 focus:ring-slate-900 focus:border-slate-900 outline-none transition-all appearance-none cursor-pointer"
+                                            >
+                                                <option>Genel Soru</option>
+                                                <option>Teknik Destek</option>
+                                                <option>Öneri / Geri Bildirim</option>
+                                                <option>İş Birliği</option>
+                                            </select>
+                                            <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500">
+                                                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M2.5 4.5L6 8L9.5 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                                </svg>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-sm font-semibold text-slate-700 mb-2">Mesajınız</label>
+                                        <textarea
+                                            name="message" required
+                                            value={formData.message} onChange={handleChange}
+                                            className="w-full p-3.5 bg-slate-50 rounded-xl border border-slate-200 focus:ring-2 focus:ring-slate-900 focus:border-slate-900 outline-none transition-all min-h-[140px] placeholder:text-slate-400 resize-none"
+                                            placeholder="Size nasıl yardımcı olabiliriz?"
+                                        ></textarea>
+                                    </div>
+
+                                    {status === 'error' && (
+                                        <div className="p-4 bg-red-50 text-red-600 rounded-xl text-sm flex items-start gap-3 animate-in fade-in slide-in-from-top-2">
+                                            <AlertCircle size={20} className="shrink-0 mt-0.5" />
+                                            <span>{errorMessage || "Sunucuya bağlanılamadı. Lütfen internet bağlantınızı kontrol edip tekrar deneyin."}</span>
+                                        </div>
                                     )}
-                                </button>
-                            </form>
-                        )}
+
+                                    <button
+                                        type="submit"
+                                        disabled={status === 'loading'}
+                                        className={`w-full py-4 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-xl shadow-lg shadow-slate-200 transition-all flex items-center justify-center gap-2 transform active:scale-[0.98] ${status === 'loading' ? 'opacity-70 cursor-not-allowed' : 'hover:-translate-y-0.5'}`}
+                                    >
+                                        {status === 'loading' ? (
+                                            <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                                        ) : (
+                                            <>
+                                                <Send size={18} />
+                                                Gönder
+                                            </>
+                                        )}
+                                    </button>
+                                </form>
+                            )}
+                        </div>
                     </div>
                 </div>
             </div>
