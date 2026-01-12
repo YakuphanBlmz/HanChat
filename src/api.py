@@ -599,7 +599,7 @@ def debug_email_test():
     from email.mime.text import MIMEText
     from email.mime.multipart import MIMEMultipart
     
-    version = "v4 (IPv4 Fix)"
+    version = "v5 (IPv4 + Port 587)"
     logs = []
     logs.append(f"Debug Endpoint Version: {version}")
     
@@ -614,7 +614,7 @@ def debug_email_test():
 
     # 2. Try Connection
     SMTP_SERVER = "smtp.gmail.com"
-    SMTP_PORT = 465 # SSL Port
+    SMTP_PORT = 587
     
     try:
         import socket
@@ -624,14 +624,13 @@ def debug_email_test():
         
         logs.append(f"Connecting to {gmail_ip}:{SMTP_PORT} (forcing IPv4)...")
         
-        # Connect to IP, but might need to handle SSL hostname verification
-        # For debug, we just want to see if we can reach it. 
-        # using the IP directly in SMTP_SSL might cause CertificateError (hostname mismatch), 
-        # but that proves connectivity.
-        server = smtplib.SMTP_SSL(gmail_ip, SMTP_PORT, timeout=10)
-        
+        # Connect to IP using standard SMTP (not SSL initially)
+        server = smtplib.SMTP(gmail_ip, SMTP_PORT, timeout=20)
         server.set_debuglevel(1)
-        logs.append("Connection (SSL) successful (via IPv4).")
+        
+        logs.append("Connected. Sending STARTTLS...")
+        server.starttls()
+        logs.append("STARTTLS successful.")
         
         # 3. Try Login
         logs.append(f"Attempting login as {username}...")
