@@ -593,87 +593,52 @@ def dismiss_tracking_notification(current_user: dict = Depends(get_current_user)
 def debug_email_test():
     """
     Temporary endpoint to debug email sending connectivity.
-    Scans multiple ports to find an open path.
+    Tests Brevo API.
     """
-    import smtplib
-    import socket
-    from email.mime.text import MIMEText
-    from email.mime.multipart import MIMEMultipart
+    import requests
+    import json
     
-    version = "v6 (Port Scan)"
+    version = "v7 (Brevo API)"
     logs = []
     logs.append(f"Debug Endpoint Version: {version}")
     
     # 1. Check Env Vars
     username = os.getenv("MAIL_USERNAME")
-    password = os.getenv("MAIL_PASSWORD")
+    brevo_key = os.getenv("BREVO_API_KEY")
     
-    logs.append(f"Env Check: USERNAME={'Set' if username else 'MISSING'}, PASSWORD={'Set' if password else 'MISSING'}")
+    logs.append(f"Env Check: USERNAME={'Set' if username else 'MISSING'}, BREVO_KEY={'Set' if brevo_key else 'MISSING'}")
     
-    if not username or not password:
-        return {"status": "failed", "logs": logs, "error": "Environment variables missing"}
+    if not username or not brevo_key:
+        return {"status": "failed", "version": version, "logs": logs, "error": "Environment variables missing (Need BREVO_API_KEY)"}
 
-    SMTP_SERVER = "smtp.gmail.com"
-    ports_to_try = [587, 465, 2525, 25]
-    active_port = None
-    gmail_ip = None
+    # 2. Test Brevo API
+    BREVO_API_URL = "https://api.brevo.com/v3/smtp/email"
+    
+    payload = {
+        "sender": {"name": "HanChat Debug", "email": username},
+        "to": [{"email": username}],
+        "subject": "HanChat Brevo Connection Test",
+        "htmlContent": "<html><body><h1>Success!</h1><p>Brevo API connection is working perfectly.</p></body></html>"
+    }
+    
+    headers = {
+        "accept": "application/json",
+        "api-key": brevo_key,
+        "content-type": "application/json"
+    }
 
-    # 2. Port Scan
     try:
-        logs.append(f"Resolving {SMTP_SERVER} to IPv4...")
-        gmail_ip = socket.gethostbyname(SMTP_SERVER)
-        logs.append(f"Resolved IP: {gmail_ip}")
-    except Exception as e:
-        return {"status": "failed", "version": version, "logs": logs, "error": f"DNS Resolution Failed: {e}"}
-
-    for port in ports_to_try:
-        try:
-            logs.append(f"Testing connectivity to {gmail_ip}:{port}...")
-            # Create a raw socket connection first to test reachability
-            sock = socket.create_connection((gmail_ip, port), timeout=5)
-            sock.close()
-            logs.append(f"SUCCESS: Port {port} is OPEN!")
-            active_port = port
-            break
-        except Exception as e:
-            logs.append(f"FAILED: Port {port} timed out or refused ({e}).")
-
-    if not active_port:
-        return {"status": "failed", "version": version, "logs": logs, "error": "ALL SMTP PORTS BLOCKED. Firewall issue."}
-
-    # 3. Try Sending Email on valid port
-    try:
-        logs.append(f"Attempting SMTP protocol on port {active_port}...")
+        logs.append(f"Sending POST request to {BREVO_API_URL}...")
+        response = requests.post(BREVO_API_URL, headers=headers, json=payload, timeout=10)
         
-        if active_port == 465:
-            server = smtplib.SMTP_SSL(gmail_ip, active_port, timeout=20)
+        logs.append(f"Response Status: {response.status_code}")
+        logs.append(f"Response Body: {response.text}")
+        
+        if response.status_code in [200, 201]:
+             return {"status": "success", "version": version, "logs": logs, "message": "Email sent successfully via Brevo!"}
         else:
-            server = smtplib.SMTP(gmail_ip, active_port, timeout=20)
-        
-        server.set_debuglevel(1)
-        logs.append("SMTP Connection established.")
-        
-        if active_port != 465:
-            logs.append("Sending STARTTLS...")
-            server.starttls()
-            logs.append("STARTTLS successful.")
-        
-        # 4. Login and Send
-        logs.append(f"Attempting login as {username}...")
-        server.login(username, password)
-        logs.append("Login successful.")
-        
-        msg = MIMEMultipart()
-        msg['From'] = username
-        msg['To'] = username
-        msg['Subject'] = f"HanChat Debug Test (Port {active_port})"
-        msg.attach(MIMEText(f"Success! Sent via port {active_port}.", 'plain'))
-        
-        server.send_message(msg)
-        server.quit()
-        
-        return {"status": "success", "version": version, "logs": logs, "message": f"Email sent successfully using port {active_port}!"}
-        
+             return {"status": "failed", "version": version, "logs": logs, "error": f"Brevo API Error: {response.status_code}"}
+             
     except Exception as e:
-        logs.append(f"SMTP ERROR: {str(e)}")
+        logs.append(f"API ERROR: {str(e)}")
         return {"status": "failed", "version": version, "logs": logs, "error": str(e)}
