@@ -145,20 +145,23 @@ class ContactMessage(BaseModel):
     message: str
 
 @app.post("/contact")
-async def contact_form(msg: ContactMessage):
+async def contact_form(msg: ContactMessage, background_tasks: BackgroundTasks):
     try:
         # 1. Save to Database
         db = DatabaseManager()
         db_success = db.save_contact_message(msg.name, msg.surname, msg.email, msg.subject, msg.message)
         
-        # 2. Send Notification Email
+        # 2. Send Notification Email (Background Task)
+        # Import inside function to avoid circular imports if any, or just keep as is
         from src.email_utils import send_contact_notification
-        email_sent = send_contact_notification(msg.name, msg.surname, msg.email, msg.subject, msg.message)
+        
+        # Run email sending in background so UI doesn't hang
+        background_tasks.add_task(send_contact_notification, msg.name, msg.surname, msg.email, msg.subject, msg.message)
         
         if not db_success:
              print("Warning: Failed to save contact message to DB")
 
-        return {"status": "success", "email_sent": email_sent, "db_saved": db_success}
+        return {"status": "success", "email_queued": True, "db_saved": db_success}
     
     except Exception as e:
         print(f"Contact endpoint error: {e}")
