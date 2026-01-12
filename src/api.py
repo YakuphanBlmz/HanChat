@@ -117,12 +117,8 @@ async def forgot_password(request: ForgotPasswordRequest):
     user = db.get_user_by_email(request.email)
     
     if not user:
-        # Security: Don't reveal if user exists.
-        # But for UX in early dev, maybe we do? 
-        # Let's stick to generic success message.
         return {"message": "Email adresinize bir sıfırlama linki gönderildi."}
     
-    # Generate a short-lived token (24 hours) specifically for reset
     reset_token = create_access_token(
         data={"sub": user['username'], "type": "reset"}, 
         expires_delta=timedelta(hours=24)
@@ -130,12 +126,15 @@ async def forgot_password(request: ForgotPasswordRequest):
     
     from src.email_utils import send_reset_email
     
-    sent = send_reset_email(request.email, reset_token)
-    
-    if sent:
-        return {"message": "Email adresinize bir sıfırlama linki gönderildi."}
-    else:
-        raise HTTPException(status_code=500, detail="Email gönderilemedi.")
+    try:
+        sent = send_reset_email(request.email, reset_token)
+        if sent:
+            return {"message": "Email adresinize bir sıfırlama linki gönderildi."}
+        else:
+             raise HTTPException(status_code=500, detail="Email gönderilemedi.")
+    except Exception as e:
+         print(f"Forgot PW Error: {e}")
+         raise HTTPException(status_code=500, detail="Sunucu hatası")
 
 class ContactMessage(BaseModel):
     name: str
@@ -151,20 +150,26 @@ async def contact_form(msg: ContactMessage, background_tasks: BackgroundTasks):
         db = DatabaseManager()
         db_success = db.save_contact_message(msg.name, msg.surname, msg.email, msg.subject, msg.message)
         
-        # 2. Send Notification Email (Background Task)
-        # Import inside function to avoid circular imports if any, or just keep as is
+        # 2. Send Notification Email (Sync for Debugging)
         from src.email_utils import send_contact_notification
         
-        # Run email sending in background so UI doesn't hang
-        background_tasks.add_task(send_contact_notification, msg.name, msg.surname, msg.email, msg.subject, msg.message)
+        print("DEBUG: Calling send_contact_notification synchronously...")
+        email_success = send_contact_notification(msg.name, msg.surname, msg.email, msg.subject, msg.message)
+        
+        if not email_success:
+            print("ERROR: send_contact_notification returned False (Check logs for details)")
+            # Return warning but keep db_saved=True
+            return {"status": "warning", "message": "Mesaj kaydedildi ancak yöneticiye email iletilemedi.", "db_saved": db_success}
         
         if not db_success:
              print("Warning: Failed to save contact message to DB")
-
-        return {"status": "success", "email_queued": True, "db_saved": db_success}
+             
+        return {"status": "success", "email_sent": True, "db_saved": db_success}
     
     except Exception as e:
         print(f"Contact endpoint error: {e}")
+        import traceback
+        traceback.print_exc()
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.post("/auth/reset-password")
@@ -203,7 +208,6 @@ def delete_user_admin(user_id: int, current_user: dict = Depends(get_current_adm
     if user_id == current_user['id']:
         raise HTTPException(status_code=400, detail="Kendinizi silemezsiniz.")
         
-    db = DatabaseManager()
     db = DatabaseManager()
     if db.delete_user(user_id):
         return {"status": "success", "message": "Kullanıcı silindi"}
@@ -295,11 +299,6 @@ def get_sender_analysis(name: str, analyzer: ChatAnalyzer = Depends(get_analyzer
     return result
 
 # --- File Analysis (Uploads) ---
-# NOTE: These specialized analyzers (Fun, Agent, Flirt) process the file content directly 
-# and return results. They don't necessarily save to DB for long-term storage in this flow yet.
-# If they DO save to DB, they need to be updated to accept user_id too.
-# For now, let's assume they return instant analysis.
-
 @app.get("/admin/users/{user_id}/uploads")
 def get_user_uploads_admin(user_id: int, current_user: dict = Depends(get_current_admin_user)):
     db = DatabaseManager()
@@ -588,5 +587,3 @@ def dismiss_tracking_notification(current_user: dict = Depends(get_current_user)
         active_trackers[user_id].update_status("idle", "", 0)
         return {"status": "dismissed"}
     return {"status": "ignored"}
-
-
