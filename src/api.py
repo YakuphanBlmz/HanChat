@@ -599,7 +599,9 @@ def debug_email_test():
     from email.mime.text import MIMEText
     from email.mime.multipart import MIMEMultipart
     
+    version = "v4 (IPv4 Fix)"
     logs = []
+    logs.append(f"Debug Endpoint Version: {version}")
     
     # 1. Check Env Vars
     username = os.getenv("MAIL_USERNAME")
@@ -647,11 +649,11 @@ def debug_email_test():
         logs.append(f"Test email sent to {username}")
         
         server.quit()
-        return {"status": "success", "logs": logs, "message": "Email sent successfully! check inbox."}
+        return {"status": "success", "version": version, "logs": logs, "message": "Email sent successfully! check inbox."}
         
     except smtplib.SMTPAuthenticationError as e:
         logs.append(f"AUTH ERROR: {str(e)}")
-        return {"status": "failed", "logs": logs, "error": "Authentication Failed. Ensure Use App Password.", "details": str(e)}
+        return {"status": "failed", "version": version, "logs": logs, "error": "Authentication Failed. Ensure Use App Password.", "details": str(e)}
     except Exception as e:
         logs.append(f"GENERAL ERROR: {str(e)}")
-        return {"status": "failed", "logs": logs, "error": str(e)}
+        return {"status": "failed", "version": version, "logs": logs, "error": str(e)}
