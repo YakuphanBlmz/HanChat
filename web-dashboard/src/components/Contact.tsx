@@ -84,60 +84,57 @@ export function Contact() {
             {/* Unified Main Card Wrapper */}
             <div className="bg-white rounded-3xl shadow-xl shadow-slate-200/50 border border-slate-100 overflow-hidden">
 
-                {/* Header Section (INSIDE the card now) */}
-                <div className="text-center pt-12 pb-6 px-8 bg-white/50 backdrop-blur-sm">
+                {/* Header Section */}
+                <div className="text-center pt-12 pb-6 px-8 bg-white">
                     <h2 className="text-4xl font-bold text-slate-900 mb-4">İletişim</h2>
                     <p className="text-lg text-slate-500 max-w-lg mx-auto">Sorularınız, önerileriniz veya iş birliği için bize ulaşın.</p>
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-3">
 
-                    {/* Left Side: Contact Info - "Card within a Card" Design */}
+                    {/* Left Side: Contact Info - Clean & Simple */}
                     <div className="lg:col-span-1 p-4 lg:p-6 lg:pb-12 lg:pl-12 flex flex-col items-stretch">
-                        <div className="bg-slate-900 text-white h-full rounded-3xl p-8 flex flex-col justify-between shadow-2xl shadow-indigo-500/20 relative overflow-hidden transform transition-transform hover:scale-[1.02] duration-300">
-                            {/* Decorative Background Blob */}
-                            <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-indigo-600 rounded-full blur-3xl opacity-40 pointer-events-none"></div>
-                            <div className="absolute bottom-0 left-0 -ml-16 -mb-16 w-48 h-48 bg-purple-600 rounded-full blur-3xl opacity-30 pointer-events-none"></div>
+                        <div className="bg-slate-50 h-full rounded-3xl p-8 flex flex-col justify-between border border-slate-100 relative overflow-hidden">
 
                             <div className="relative z-10">
-                                <h3 className="text-xl font-bold mb-8 flex items-center gap-2">
+                                <h3 className="text-xl font-bold text-slate-900 mb-8 flex items-center gap-2">
                                     <span className="w-8 h-1 bg-indigo-500 rounded-full inline-block"></span>
                                     İletişim Bilgileri
                                 </h3>
 
                                 <div className="space-y-6">
-                                    <div className="p-4 bg-white/5 rounded-2xl border border-white/10 hover:bg-white/10 transition-colors group">
+                                    <div className="p-4 bg-white rounded-2xl border border-slate-100 hover:shadow-md transition-all group">
                                         <div className="flex items-start gap-4">
-                                            <div className="p-2 bg-blue-500/20 rounded-lg text-blue-300 shrink-0">
+                                            <div className="p-2 bg-blue-50 rounded-lg text-blue-600 shrink-0">
                                                 <Mail size={20} />
                                             </div>
                                             <div>
                                                 <div className="text-xs text-slate-400 uppercase tracking-wider font-semibold mb-1">E-Posta</div>
-                                                <a href="mailto:hanwhatschat@gmail.com" className="text-white hover:text-blue-300 transition-colors break-all font-medium text-sm">hanwhatschat@gmail.com</a>
+                                                <a href="mailto:hanwhatschat@gmail.com" className="text-slate-700 hover:text-blue-600 transition-colors break-all font-medium text-sm">hanwhatschat@gmail.com</a>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div className="p-4 bg-white/5 rounded-2xl border border-white/10 hover:bg-white/10 transition-colors group">
+                                    <div className="p-4 bg-white rounded-2xl border border-slate-100 hover:shadow-md transition-all group">
                                         <div className="flex items-start gap-4">
-                                            <div className="p-2 bg-green-500/20 rounded-lg text-green-300 shrink-0">
+                                            <div className="p-2 bg-green-50 rounded-lg text-green-600 shrink-0">
                                                 <WhatsAppIcon size={20} />
                                             </div>
                                             <div>
                                                 <div className="text-xs text-slate-400 uppercase tracking-wider font-semibold mb-1">WhatsApp</div>
-                                                <a href="https://wa.me/905468143710" target="_blank" rel="noreferrer" className="text-white hover:text-green-300 transition-colors font-medium text-sm">+90 546 814 37 10</a>
+                                                <a href="https://wa.me/905468143710" target="_blank" rel="noreferrer" className="text-slate-700 hover:text-green-600 transition-colors font-medium text-sm">+90 546 814 37 10</a>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div className="p-4 bg-white/5 rounded-2xl border border-white/10 hover:bg-white/10 transition-colors group">
+                                    <div className="p-4 bg-white rounded-2xl border border-slate-100 hover:shadow-md transition-all group">
                                         <div className="flex items-start gap-4">
-                                            <div className="p-2 bg-purple-500/20 rounded-lg text-purple-300 shrink-0">
+                                            <div className="p-2 bg-purple-50 rounded-lg text-purple-600 shrink-0">
                                                 <MapPin size={20} />
                                             </div>
                                             <div>
                                                 <div className="text-xs text-slate-400 uppercase tracking-wider font-semibold mb-1">Konum</div>
-                                                <p className="text-white font-medium text-sm">İstanbul, Türkiye</p>
+                                                <p className="text-slate-700 font-medium text-sm">İstanbul, Türkiye</p>
                                             </div>
                                         </div>
                                     </div>
@@ -145,16 +142,16 @@ export function Contact() {
                             </div>
 
                             <div className="mt-12 relative z-10">
-                                <div className="flex justify-between items-center pt-6 border-t border-white/10">
+                                <div className="flex justify-between items-center pt-6 border-t border-slate-200">
                                     <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">SOSYAL MEDYA</span>
                                     <div className="flex gap-2">
-                                        <a href="https://github.com/YakuphanBlmz" target="_blank" rel="noreferrer" className="p-2 bg-black/30 rounded-lg hover:bg-white hover:text-slate-900 text-white transition-all">
+                                        <a href="https://github.com/YakuphanBlmz" target="_blank" rel="noreferrer" className="p-2 bg-white rounded-lg border border-slate-200 hover:bg-slate-800 hover:text-white text-slate-600 transition-all">
                                             <Github size={18} />
                                         </a>
-                                        <a href="https://www.linkedin.com/in/yakuphan-bilmez/" target="_blank" rel="noreferrer" className="p-2 bg-blue-600/30 rounded-lg hover:bg-blue-600 text-white transition-all">
+                                        <a href="https://www.linkedin.com/in/yakuphan-bilmez/" target="_blank" rel="noreferrer" className="p-2 bg-white rounded-lg border border-slate-200 hover:bg-blue-600 hover:text-white text-slate-600 transition-all">
                                             <Linkedin size={18} />
                                         </a>
-                                        <a href="https://wa.me/905468143710" target="_blank" rel="noreferrer" className="p-2 bg-green-600/30 rounded-lg hover:bg-green-600 text-white transition-all">
+                                        <a href="https://wa.me/905468143710" target="_blank" rel="noreferrer" className="p-2 bg-white rounded-lg border border-slate-200 hover:bg-green-600 hover:text-white text-slate-600 transition-all">
                                             <WhatsAppIcon size={18} />
                                         </a>
                                     </div>
@@ -257,7 +254,7 @@ export function Contact() {
                                     <button
                                         type="submit"
                                         disabled={status === 'loading'}
-                                        className={`w-full py-4 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-xl shadow-lg shadow-slate-200 transition-all flex items-center justify-center gap-2 transform active:scale-[0.98] ${status === 'loading' ? 'opacity-70 cursor-not-allowed' : 'hover:-translate-y-0.5'}`}
+                                        className={`w-full py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-lg shadow-blue-200 transition-all flex items-center justify-center gap-2 transform active:scale-[0.98] ${status === 'loading' ? 'opacity-70 cursor-not-allowed' : 'hover:-translate-y-0.5'}`}
                                     >
                                         {status === 'loading' ? (
                                             <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -280,7 +277,7 @@ export function Contact() {
                 <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
                     <div className="bg-white rounded-2xl shadow-2xl p-6 w-full max-w-sm animate-in zoom-in-95 duration-200">
                         <div className="flex flex-col items-center text-center">
-                            <div className="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mb-4 text-indigo-600">
+                            <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-4 text-blue-600">
                                 <Send size={24} />
                             </div>
                             <h3 className="text-lg font-bold text-gray-900 mb-2">Mesajı Gönder?</h3>
@@ -296,7 +293,7 @@ export function Contact() {
                                 </button>
                                 <button
                                     onClick={confirmSend}
-                                    className="flex-1 py-2.5 px-4 bg-indigo-600 text-white font-bold rounded-xl hover:bg-indigo-700 transition-colors shadow-lg shadow-indigo-200"
+                                    className="flex-1 py-2.5 px-4 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 transition-colors shadow-lg shadow-blue-200"
                                 >
                                     Evet, Gönder
                                 </button>
