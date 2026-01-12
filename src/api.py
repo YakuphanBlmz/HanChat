@@ -584,6 +584,11 @@ def delete_tracking_history(record_id: int, current_user: dict = Depends(get_cur
 @app.post("/track/dismiss")
 def dismiss_tracking_notification(current_user: dict = Depends(get_current_user)):
     user_id = current_user['id']
+    if user_id in active_trackers:
+        active_trackers[user_id].update_status("idle", "", 0)
+        return {"status": "dismissed"}
+    return {"status": "ignored"}
+
 @app.get("/debug-email-test")
 def debug_email_test():
     """
