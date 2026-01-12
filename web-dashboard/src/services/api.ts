@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-// Use environment variable for API URL in production, fallback to localhost for dev
-export const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+// Use environment variable for API URL in production, fallback to /api (relative path for Nginx proxy)
+export const API_URL = import.meta.env.VITE_API_URL || '/api';
 
 export const api = {
     getStats: async () => {
