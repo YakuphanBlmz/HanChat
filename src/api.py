@@ -592,14 +592,15 @@ def dismiss_tracking_notification(current_user: dict = Depends(get_current_user)
 @app.get("/debug-email-test")
 def debug_email_test():
     """
-    Temporary endpoint to debug email sending connectivity and credentials.
-    Returns detailed logs of the attempt.
+    Temporary endpoint to debug email sending connectivity.
+    Scans multiple ports to find an open path.
     """
     import smtplib
+    import socket
     from email.mime.text import MIMEText
     from email.mime.multipart import MIMEMultipart
     
-    version = "v5 (IPv4 + Port 587)"
+    version = "v6 (Port Scan)"
     logs = []
     logs.append(f"Debug Endpoint Version: {version}")
     
@@ -612,47 +613,67 @@ def debug_email_test():
     if not username or not password:
         return {"status": "failed", "logs": logs, "error": "Environment variables missing"}
 
-    # 2. Try Connection
     SMTP_SERVER = "smtp.gmail.com"
-    SMTP_PORT = 587
-    
+    ports_to_try = [587, 465, 2525, 25]
+    active_port = None
+    gmail_ip = None
+
+    # 2. Port Scan
     try:
-        import socket
         logs.append(f"Resolving {SMTP_SERVER} to IPv4...")
         gmail_ip = socket.gethostbyname(SMTP_SERVER)
         logs.append(f"Resolved IP: {gmail_ip}")
+    except Exception as e:
+        return {"status": "failed", "version": version, "logs": logs, "error": f"DNS Resolution Failed: {e}"}
+
+    for port in ports_to_try:
+        try:
+            logs.append(f"Testing connectivity to {gmail_ip}:{port}...")
+            # Create a raw socket connection first to test reachability
+            sock = socket.create_connection((gmail_ip, port), timeout=5)
+            sock.close()
+            logs.append(f"SUCCESS: Port {port} is OPEN!")
+            active_port = port
+            break
+        except Exception as e:
+            logs.append(f"FAILED: Port {port} timed out or refused ({e}).")
+
+    if not active_port:
+        return {"status": "failed", "version": version, "logs": logs, "error": "ALL SMTP PORTS BLOCKED. Firewall issue."}
+
+    # 3. Try Sending Email on valid port
+    try:
+        logs.append(f"Attempting SMTP protocol on port {active_port}...")
         
-        logs.append(f"Connecting to {gmail_ip}:{SMTP_PORT} (forcing IPv4)...")
+        if active_port == 465:
+            server = smtplib.SMTP_SSL(gmail_ip, active_port, timeout=20)
+        else:
+            server = smtplib.SMTP(gmail_ip, active_port, timeout=20)
         
-        # Connect to IP using standard SMTP (not SSL initially)
-        server = smtplib.SMTP(gmail_ip, SMTP_PORT, timeout=20)
         server.set_debuglevel(1)
+        logs.append("SMTP Connection established.")
         
-        logs.append("Connected. Sending STARTTLS...")
-        server.starttls()
-        logs.append("STARTTLS successful.")
+        if active_port != 465:
+            logs.append("Sending STARTTLS...")
+            server.starttls()
+            logs.append("STARTTLS successful.")
         
-        # 3. Try Login
+        # 4. Login and Send
         logs.append(f"Attempting login as {username}...")
         server.login(username, password)
         logs.append("Login successful.")
         
-        # 4. Try Send
         msg = MIMEMultipart()
         msg['From'] = username
         msg['To'] = username
-        msg['Subject'] = "HanChat Debug Test Email (IPv4 Forced)"
-        msg.attach(MIMEText("This is a test email to verify credentials (IPv4 Forced).", 'plain'))
+        msg['Subject'] = f"HanChat Debug Test (Port {active_port})"
+        msg.attach(MIMEText(f"Success! Sent via port {active_port}.", 'plain'))
         
         server.send_message(msg)
-        logs.append(f"Test email sent to {username}")
-        
         server.quit()
-        return {"status": "success", "version": version, "logs": logs, "message": "Email sent successfully! check inbox."}
         
-    except smtplib.SMTPAuthenticationError as e:
-        logs.append(f"AUTH ERROR: {str(e)}")
-        return {"status": "failed", "version": version, "logs": logs, "error": "Authentication Failed. Ensure Use App Password.", "details": str(e)}
+        return {"status": "success", "version": version, "logs": logs, "message": f"Email sent successfully using port {active_port}!"}
+        
     except Exception as e:
-        logs.append(f"GENERAL ERROR: {str(e)}")
+        logs.append(f"SMTP ERROR: {str(e)}")
         return {"status": "failed", "version": version, "logs": logs, "error": str(e)}
