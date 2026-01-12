@@ -269,22 +269,7 @@ export function Contact() {
                                             </>
                                         )}
                                     </button>
-                                    <button
-                                        type="button"
-                                        onClick={async () => {
-                                            try {
-                                                alert("Test başlatılıyor... Lütfen bekleyin.");
-                                                const res = await fetch(`${API_URL}/debug-email-test`);
-                                                const data = await res.json();
-                                                alert(JSON.stringify(data, null, 2));
-                                            } catch (e) {
-                                                alert("Hata: " + e);
-                                            }
-                                        }}
-                                        className="mt-4 w-full py-2 bg-slate-200 text-slate-700 font-bold rounded-xl hover:bg-slate-300 transition-all text-xs"
-                                    >
-                                        🕵️‍♂️ Bağlantıyı Test Et (Debug)
-                                    </button>
+
                                 </form>
                             )}
                         </div>
