@@ -10,6 +10,7 @@ import { AdminPanel } from './components/AdminPanel';
 import { Footer } from './components/Footer';
 import { PrivacyPolicy } from './components/PrivacyPolicy';
 import { TermsOfUse } from './components/TermsOfUse';
+import { Features } from './components/Features';
 
 type View = 'fun' | 'agent' | 'flirt' | 'contact' | 'admin';
 type AuthState = 'login' | 'register' | 'authenticated' | 'forgot-password' | 'reset-password';
@@ -21,6 +22,7 @@ function App() {
   const [isAdmin, setIsAdmin] = useState(false);
   const [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false);
   const [showTermsOfUse, setShowTermsOfUse] = useState(false);
+  const [showFeatures, setShowFeatures] = useState(false);
 
   // Check for token on load
   useEffect(() => {
