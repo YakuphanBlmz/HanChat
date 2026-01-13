@@ -34,6 +34,12 @@ function App() {
       return;
     }
 
+    // Check for legacy /privacy route
+    if (path === '/privacy') {
+      setShowPrivacyPolicy(true);
+      window.history.replaceState(null, '', '/');
+    }
+
     const token = localStorage.getItem('access_token');
     const user = localStorage.getItem('username');
     if (token && user) {
