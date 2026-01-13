@@ -73,8 +73,12 @@ export function FunAnalysis({ onAnalysisComplete }: { onAnalysisComplete?: (stat
 
             const data = await response.json();
             setResult(data);
+            setResult(data);
             if (onAnalysisComplete) {
+                // window.alert("Calling onAnalysisComplete from FunAnalysis!");
                 onAnalysisComplete(data);
+            } else {
+                window.alert("onAnalysisComplete prop is MISSING in FunAnalysis!");
             }
 
             // Set default selected person if group is large
