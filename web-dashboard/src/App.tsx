@@ -10,9 +10,29 @@ import { AdminPanel } from './components/AdminPanel';
 import { Footer } from './components/Footer';
 import { PrivacyPolicy } from './components/PrivacyPolicy';
 import { TermsOfUse } from './components/TermsOfUse';
-import { Features } from './components/Features';
+import { StoryViewer } from './components/StoryViewer';
 
-type View = 'fun' | 'agent' | 'flirt' | 'contact' | 'admin';
+// ... (previous imports)
+
+// ... inside App component ...
+const [showStory, setShowStory] = useState(false);
+const [analysisStats, setAnalysisStats] = useState<any>(null);
+
+const handleAnalysisComplete = (stats: any) => {
+  setAnalysisStats(stats);
+  setShowStory(true);
+};
+
+// ... inside jsx ...
+{ currentView === 'fun' && <FunAnalysis onAnalysisComplete={handleAnalysisComplete} /> }
+// ... later ...
+{/* Story Viewer Modal */ }
+{
+  showStory && analysisStats && (
+    <StoryViewer stats={analysisStats} onClose={() => setShowStory(false)} />
+  )
+}
+
 type AuthState = 'login' | 'register' | 'authenticated' | 'forgot-password' | 'reset-password';
 
 function App() {
@@ -23,6 +43,13 @@ function App() {
   const [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false);
   const [showTermsOfUse, setShowTermsOfUse] = useState(false);
   const [showFeatures, setShowFeatures] = useState(false);
+  const [showStory, setShowStory] = useState(false);
+  const [analysisStats, setAnalysisStats] = useState<any>(null);
+
+  const handleAnalysisComplete = (stats: any) => {
+    setAnalysisStats(stats);
+    setShowStory(true);
+  };
 
   // Check for token on load
   useEffect(() => {
@@ -194,7 +221,7 @@ function App() {
       </div>
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-24 space-y-8 flex-grow w-full z-10 mb-8">
-        {currentView === 'fun' && <FunAnalysis />}
+        {currentView === 'fun' && <FunAnalysis onAnalysisComplete={handleAnalysisComplete} />}
         {currentView === 'contact' && <Contact />}
         {currentView === 'admin' && <AdminPanel />}
       </main>
@@ -218,6 +245,11 @@ function App() {
       {/* Features Modal */}
       {showFeatures && (
         <Features onClose={() => setShowFeatures(false)} />
+      )}
+
+      {/* Story Viewer Modal */}
+      {showStory && analysisStats && (
+        <StoryViewer stats={analysisStats} onClose={() => setShowStory(false)} />
       )}
 
       {/* Logout Confirmation Modal */}
