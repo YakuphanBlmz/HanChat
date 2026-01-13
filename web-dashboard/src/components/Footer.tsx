@@ -20,18 +20,18 @@ export function Footer() {
                     {/* Quick Links */}
                     <div className="space-y-4">
                         <h3 className="text-sm font-bold text-white uppercase tracking-wider">Hızlı Bağlantılar</h3>
-                        <ul className="space-y-2 text-sm">
+                        <ul className="grid grid-cols-2 gap-2 text-sm">
                             <li><a href="/" className="hover:text-blue-400 transition-colors">Ana Sayfa</a></li>
-                            <li><a href="#" className="hover:text-blue-400 transition-colors">Özellikler</a></li>
                             <li><a href="#" className="hover:text-blue-400 transition-colors">Gizlilik Politikası</a></li>
+                            <li><a href="#" className="hover:text-blue-400 transition-colors">Özellikler</a></li>
                             <li><a href="#" className="hover:text-blue-400 transition-colors">Kullanım Şartları</a></li>
                         </ul>
                     </div>
 
                     {/* Contact & Social */}
-                    <div className="space-y-4">
+                    <div className="space-y-4 md:text-right">
                         <h3 className="text-sm font-bold text-white uppercase tracking-wider">İletişim & Sosyal</h3>
-                        <div className="flex gap-4">
+                        <div className="flex gap-4 md:justify-end">
                             <a href="https://github.com/YakuphanBlmz" target="_blank" rel="noreferrer" className="bg-slate-800 p-2 rounded-lg hover:bg-blue-600 hover:text-white transition-all">
                                 <Github size={20} />
                             </a>
