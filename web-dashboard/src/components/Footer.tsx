@@ -53,7 +53,10 @@ export function Footer() {
 
                 {/* Bottom Bar */}
                 <div className="pt-8 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center gap-4 text-xs font-medium text-slate-500">
-                    <p>© 2026 HanChat. Tüm hakları saklıdır.</p>
+                    <div className="flex items-center gap-4">
+                        <p>© 2026 HanChat. Tüm hakları saklıdır.</p>
+                        <span className="text-slate-600">v1.2</span>
+                    </div>
                     <div className="flex items-center gap-1">
                         Made with <Heart size={12} className="text-red-500 fill-current" /> by <span className="text-slate-300">Yakuphan Bilmez</span>
                     </div>
