@@ -3,9 +3,10 @@ import { Github, Linkedin, Twitter, Mail, Heart } from 'lucide-react';
 
 interface FooterProps {
     onOpenPrivacy: () => void;
+    onOpenTerms: () => void;
 }
 
-export function Footer({ onOpenPrivacy }: FooterProps) {
+export function Footer({ onOpenPrivacy, onOpenTerms }: FooterProps) {
     return (
         <footer className="bg-slate-900 text-slate-300 py-12 border-t border-slate-800 mt-auto">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -36,7 +37,14 @@ export function Footer({ onOpenPrivacy }: FooterProps) {
                                 </button>
                             </li>
                             <li><a href="#" className="hover:text-blue-400 transition-colors">Özellikler</a></li>
-                            <li><a href="#" className="hover:text-blue-400 transition-colors">Kullanım Şartları</a></li>
+                            <li>
+                                <button
+                                    onClick={(e) => { e.preventDefault(); onOpenTerms(); }}
+                                    className="hover:text-blue-400 transition-colors text-left"
+                                >
+                                    Kullanım Şartları
+                                </button>
+                            </li>
                         </ul>
                     </div>
 
