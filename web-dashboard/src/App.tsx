@@ -7,6 +7,7 @@ import { Register } from './components/Register';
 import { ForgotPassword } from './components/ForgotPassword';
 import { ResetPassword } from './components/ResetPassword';
 import { AdminPanel } from './components/AdminPanel';
+import { Footer } from './components/Footer';
 
 type View = 'fun' | 'agent' | 'flirt' | 'contact' | 'admin';
 type AuthState = 'login' | 'register' | 'authenticated' | 'forgot-password' | 'reset-password';
@@ -88,7 +89,7 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 font-sans text-gray-900 pb-12 relative">
+    <div className="min-h-screen bg-gray-50 font-sans text-gray-900 pb-12 relative flex flex-col">
       {/* Hero Header */}
       <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white pb-32">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-12">
@@ -162,13 +163,7 @@ function App() {
         </div>
       </div>
 
-      import {Footer} from './components/Footer';
-
-      // ... existing imports ...
-
-      // ... inside App return ...
-
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-24 space-y-8 flex-grow w-full z-10">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-24 space-y-8 flex-grow w-full z-10 mb-8">
         {currentView === 'fun' && <FunAnalysis />}
         {currentView === 'contact' && <Contact />}
         {currentView === 'admin' && <AdminPanel />}
