@@ -19,7 +19,14 @@ export function Features({ onClose }: FeaturesProps) {
         {
             icon: <Shield className="w-8 h-8 text-green-500" />,
             title: "Ajan Modu",
-            description: "Şüpheli davranışları ve gizli kalıpları tespit edin. Dedektif modu ile satır aralarını okuyun."
+            description: "Şüpheli davranışları ve gizli kalıpları tespit edin. Dedektif modu ile satır aralarını okuyun.",
+            badge: "Yakında"
+        },
+        {
+            icon: <Heart className="w-8 h-8 text-pink-500" />,
+            title: "İlişki Uyumu",
+            description: "Flört ve Aşk modu ile partnerinizle olan uyumunuzu test edin, iletişim dilinizi analiz edin.",
+            badge: "Yakında"
         },
         {
             icon: <Lock className="w-8 h-8 text-red-500" />,
@@ -30,11 +37,6 @@ export function Features({ onClose }: FeaturesProps) {
             icon: <Zap className="w-8 h-8 text-yellow-500" />,
             title: "Hızlı Sonuçlar",
             description: "Saniyeler içinde binlerce mesajı işleyin ve görselleştirilmiş raporlara anında ulaşın."
-        },
-        {
-            icon: <Heart className="w-8 h-8 text-pink-500" />,
-            title: "İlişki Uyumu",
-            description: "Flört ve Aşk modu ile partnerinizle olan uyumunuzu test edin, iletişim dilinizi analiz edin."
         }
     ];
 
@@ -59,12 +61,19 @@ export function Features({ onClose }: FeaturesProps) {
                 <div className="overflow-y-auto p-6 md:p-8 bg-white">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
                         {features.map((feature, index) => (
-                            <div key={index} className="flex gap-4 p-4 rounded-xl hover:bg-gray-50 transition-colors border border-transparent hover:border-gray-100">
-                                <div className="flex-shrink-0 bg-gray-50 p-3 rounded-lg h-fit">
+                            <div key={index} className="flex gap-4 p-4 rounded-xl hover:bg-gray-50 transition-colors border border-transparent hover:border-gray-100 relative group">
+                                <div className="flex-shrink-0 bg-gray-50 p-3 rounded-lg h-fit group-hover:bg-blue-50 transition-colors">
                                     {feature.icon}
                                 </div>
                                 <div>
-                                    <h3 className="font-bold text-gray-900 mb-1">{feature.title}</h3>
+                                    <div className="flex items-center gap-2 mb-1">
+                                        <h3 className="font-bold text-gray-900">{feature.title}</h3>
+                                        {feature.badge && (
+                                            <span className="px-2 py-0.5 rounded-full bg-purple-100 text-purple-700 text-[10px] font-bold uppercase tracking-wide">
+                                                {feature.badge}
+                                            </span>
+                                        )}
+                                    </div>
                                     <p className="text-sm text-gray-600 leading-relaxed">{feature.description}</p>
                                 </div>
                             </div>
