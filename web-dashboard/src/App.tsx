@@ -116,7 +116,7 @@ function App() {
             <div className="flex items-center gap-4">
               <div className="bg-white/5 p-0 rounded-2xl border border-white/10 shadow-xl backdrop-blur-sm overflow-hidden w-16 h-16 flex items-center justify-center">
                 <img src="/logo.png" alt="HanChat Logo" className="w-full h-full object-cover" />
-              </div> (
+              </div>
               <div>
                 <h1 className="text-3xl font-extrabold tracking-tight">
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400">
