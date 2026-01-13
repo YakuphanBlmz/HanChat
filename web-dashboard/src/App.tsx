@@ -156,7 +156,7 @@ function App() {
           <div className="flex space-x-2 overflow-x-auto pb-2 sm:pb-0 scrollbar-hide">
             <button
               onClick={() => setCurrentView('fun')}
-              className={`flex items-center justify-center w-48 gap-2.5 px-5 py-2.5 rounded-xl font-medium transition-all duration-300 whitespace-nowrap border ${currentView === 'fun'
+              className={`flex items-center justify-center w-40 gap-2.5 px-5 py-2.5 rounded-xl font-medium transition-all duration-300 whitespace-nowrap border ${currentView === 'fun'
                 ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/25 border-blue-500'
                 : 'bg-white/5 text-slate-400 hover:text-white hover:bg-white/10 border-white/5 hover:border-white/10'
                 }`}
@@ -167,7 +167,7 @@ function App() {
 
             <button
               onClick={() => setCurrentView('contact')}
-              className={`flex items-center justify-center w-48 gap-2.5 px-5 py-2.5 rounded-xl font-medium transition-all duration-300 whitespace-nowrap border ${currentView === 'contact'
+              className={`flex items-center justify-center w-40 gap-2.5 px-5 py-2.5 rounded-xl font-medium transition-all duration-300 whitespace-nowrap border ${currentView === 'contact'
                 ? 'bg-purple-600 text-white shadow-lg shadow-purple-500/25 border-purple-500'
                 : 'bg-white/5 text-slate-400 hover:text-white hover:bg-white/10 border-white/5 hover:border-white/10'
                 }`}
@@ -179,7 +179,7 @@ function App() {
             {isAdmin && (
               <button
                 onClick={() => setCurrentView('admin')}
-                className={`flex items-center justify-center w-48 gap-2.5 px-5 py-2.5 rounded-xl font-medium transition-all duration-300 whitespace-nowrap border ${currentView === 'admin'
+                className={`flex items-center justify-center w-40 gap-2.5 px-5 py-2.5 rounded-xl font-medium transition-all duration-300 whitespace-nowrap border ${currentView === 'admin'
                   ? 'bg-red-600 text-white shadow-lg shadow-red-500/25 border-red-500'
                   : 'bg-white/5 text-slate-400 hover:text-white hover:bg-white/10 border-white/5 hover:border-white/10'
                   }`}
