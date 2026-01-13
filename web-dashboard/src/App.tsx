@@ -8,8 +8,9 @@ import { ForgotPassword } from './components/ForgotPassword';
 import { ResetPassword } from './components/ResetPassword';
 import { AdminPanel } from './components/AdminPanel';
 import { Footer } from './components/Footer';
+import { PrivacyPolicy } from './components/PrivacyPolicy';
 
-type View = 'fun' | 'agent' | 'flirt' | 'contact' | 'admin';
+type View = 'fun' | 'agent' | 'flirt' | 'contact' | 'admin' | 'privacy';
 type AuthState = 'login' | 'register' | 'authenticated' | 'forgot-password' | 'reset-password';
 
 function App() {
@@ -28,6 +29,21 @@ function App() {
     if (path === '/reset-password' || params.get('token')) {
       setAuthState('reset-password');
       return;
+    }
+
+    // Privacy Policy check
+    if (path === '/privacy') {
+      setCurrentView('privacy');
+      // Allow public access to privacy policy? 
+      // For now, let's keep it under the main layout, but maybe it should be accessible without login?
+      // The user didn't specify, but typically privacy policies are public.
+      // However, the current App structure wraps everything in AuthState check.
+      // If authState is 'login', it returns <Login>.
+      // To make it public, we need to bypass auth check if view is privacy.
+      // Let's modify the auth check logic slightly later if needed, but for now let's assume valid user or maybe just let it be accessible.
+      // Actually, looking at the code, if authState is 'login', it returns <Login> immediately.
+      // So public access requires modifying that early return.
+      // Let's modify the early return to allow privacy view.
     }
 
     const token = localStorage.getItem('access_token');
@@ -68,7 +84,7 @@ function App() {
     setShowLogoutConfirm(false);
   };
 
-  if (authState === 'login') {
+  if (authState === 'login' && currentView !== 'privacy') {
     return <Login
       onLoginSuccess={handleLoginSuccess}
       onSwitchToRegister={() => setAuthState('register')}
@@ -76,15 +92,15 @@ function App() {
     />;
   }
 
-  if (authState === 'register') {
+  if (authState === 'register' && currentView !== 'privacy') {
     return <Register onRegisterSuccess={() => setAuthState('login')} onSwitchToLogin={() => setAuthState('login')} />;
   }
 
-  if (authState === 'forgot-password') {
+  if (authState === 'forgot-password' && currentView !== 'privacy') {
     return <ForgotPassword onSwitchToLogin={() => setAuthState('login')} />;
   }
 
-  if (authState === 'reset-password') {
+  if (authState === 'reset-password' && currentView !== 'privacy') {
     return <ResetPassword onResetSuccess={() => setAuthState('login')} />;
   }
 
@@ -167,6 +183,7 @@ function App() {
         {currentView === 'fun' && <FunAnalysis />}
         {currentView === 'contact' && <Contact />}
         {currentView === 'admin' && <AdminPanel />}
+        {currentView === 'privacy' && <PrivacyPolicy />}
       </main>
 
       <Footer />
