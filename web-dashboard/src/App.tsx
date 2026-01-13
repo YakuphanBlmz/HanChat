@@ -29,14 +29,17 @@ function App() {
     // If URL is /reset-password or has token passed, show reset screen
     if (path === '/reset-password' || params.get('token')) {
       setAuthState('reset-password');
-      const token = localStorage.getItem('access_token');
-      const user = localStorage.getItem('username');
-      if (token && user) {
-        setUsername(user);
-        setIsAdmin(localStorage.getItem('is_admin') === 'true');
-        setAuthState('authenticated');
-      }
-    }, []);
+      return;
+    }
+
+    const token = localStorage.getItem('access_token');
+    const user = localStorage.getItem('username');
+    if (token && user) {
+      setUsername(user);
+      setIsAdmin(localStorage.getItem('is_admin') === 'true');
+      setAuthState('authenticated');
+    }
+  }, []);
 
   const handleLoginSuccess = (token: string, user: string, admin: boolean) => {
     localStorage.setItem('access_token', token);
