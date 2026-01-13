@@ -7,7 +7,6 @@ import { Register } from './components/Register';
 import { ForgotPassword } from './components/ForgotPassword';
 import { ResetPassword } from './components/ResetPassword';
 import { AdminPanel } from './components/AdminPanel';
-import { Footer } from './components/Footer';
 
 type View = 'fun' | 'agent' | 'flirt' | 'contact' | 'admin';
 type AuthState = 'login' | 'register' | 'authenticated' | 'forgot-password' | 'reset-password';
@@ -168,8 +167,6 @@ function App() {
         {currentView === 'contact' && <Contact />}
         {currentView === 'admin' && <AdminPanel />}
       </main>
-
-      <Footer />
 
       {/* Logout Confirmation Modal */}
       {showLogoutConfirm && (
