@@ -192,7 +192,7 @@ function App() {
         </div>
       </div>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-24 space-y-8 flex-grow w-full z-10 mb-12">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-24 space-y-8 flex-grow w-full z-10">
         {currentView === 'fun' && <FunAnalysis />}
         {currentView === 'contact' && <Contact />}
         {currentView === 'admin' && <AdminPanel />}
