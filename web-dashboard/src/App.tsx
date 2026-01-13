@@ -184,6 +184,7 @@ function App() {
       <Footer
         onOpenPrivacy={() => setShowPrivacyPolicy(true)}
         onOpenTerms={() => setShowTermsOfUse(true)}
+        onOpenFeatures={() => setShowFeatures(true)}
       />
 
       {/* Privacy Policy Modal */}
@@ -194,6 +195,11 @@ function App() {
       {/* Terms of Use Modal */}
       {showTermsOfUse && (
         <TermsOfUse onClose={() => setShowTermsOfUse(false)} />
+      )}
+
+      {/* Features Modal */}
+      {showFeatures && (
+        <Features onClose={() => setShowFeatures(false)} />
       )}
 
       {/* Logout Confirmation Modal */}
