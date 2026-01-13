@@ -17,6 +17,16 @@ export function Features({ onClose }: FeaturesProps) {
             description: "Yapay zeka destekli duygu analizi ile sohbetin genel modunu, pozitiflik ve negatiflik oranlarını keşfedin."
         },
         {
+            icon: <Lock className="w-8 h-8 text-red-500" />,
+            title: "Tam Gizlilik",
+            description: "Verileriniz bizimle güvende. Sohbet dosyalarınız analiz edildikten hemen sonra sunucularımızdan otomatik olarak silinir."
+        },
+        {
+            icon: <Zap className="w-8 h-8 text-yellow-500" />,
+            title: "Hızlı Sonuçlar",
+            description: "Saniyeler içinde binlerce mesajı işleyin ve görselleştirilmiş raporlara anında ulaşın."
+        },
+        {
             icon: <Shield className="w-8 h-8 text-green-500" />,
             title: "Ajan Modu",
             description: "Şüpheli davranışları ve gizli kalıpları tespit edin. Dedektif modu ile satır aralarını okuyun.",
@@ -27,16 +37,6 @@ export function Features({ onClose }: FeaturesProps) {
             title: "İlişki Uyumu",
             description: "Flört ve Aşk modu ile partnerinizle olan uyumunuzu test edin, iletişim dilinizi analiz edin.",
             badge: "Yakında"
-        },
-        {
-            icon: <Lock className="w-8 h-8 text-red-500" />,
-            title: "Tam Gizlilik",
-            description: "Verileriniz bizimle güvende. Sohbet dosyalarınız analiz edildikten hemen sonra sunucularımızdan otomatik olarak silinir."
-        },
-        {
-            icon: <Zap className="w-8 h-8 text-yellow-500" />,
-            title: "Hızlı Sonuçlar",
-            description: "Saniyeler içinde binlerce mesajı işleyin ve görselleştirilmiş raporlara anında ulaşın."
         }
     ];
 
