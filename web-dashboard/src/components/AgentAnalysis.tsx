@@ -371,6 +371,11 @@ export function AgentAnalysis() {
                                 '🔍 GİZLİ DOSYAYI OLUŞTUR'
                             )}
                         </button>
+                        {loading && (
+                            <p className="text-xs text-yellow-600/80 text-center mt-2 animate-pulse font-mono">
+                                Not: Sunucu uyku modundaysa ilk işlem 50-60 saniye sürebilir. Lütfen bekleyiniz...
+                            </p>
+                        )}
                     </div>
 
                     {error && (

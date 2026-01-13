@@ -171,6 +171,11 @@ export function Register({ onRegisterSuccess, onSwitchToLogin }: RegisterProps) 
                         {loading ? 'Kayıt yapılıyor...' : 'Kayıt Ol'}
                         {!loading && <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />}
                     </button>
+                    {loading && (
+                        <p className="text-xs text-yellow-500/80 text-center mt-2 animate-pulse">
+                            Not: Sunucu uyku modundaysa ilk işlem 50-60 saniye sürebilir. Lütfen bekleyiniz...
+                        </p>
+                    )}
                 </form>
 
                 <div className="text-center">
