@@ -114,9 +114,9 @@ function App() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-12 relative z-10">
           <div className="flex items-center justify-between mb-8">
             <div className="flex items-center gap-4">
-              <div className="bg-white/5 p-2 rounded-2xl border border-white/10 shadow-xl backdrop-blur-sm">
-                <img src="/logo.png" alt="HanChat Logo" className="w-12 h-12 object-contain" />
-              </div>
+              <div className="bg-white/5 p-0 rounded-2xl border border-white/10 shadow-xl backdrop-blur-sm overflow-hidden w-16 h-16 flex items-center justify-center">
+                <img src="/logo.png" alt="HanChat Logo" className="w-full h-full object-cover" />
+              </div> (
               <div>
                 <h1 className="text-3xl font-extrabold tracking-tight">
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400">
