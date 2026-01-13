@@ -192,6 +192,12 @@ function App() {
         </div>
       </div>
 
+      import {Footer} from './components/Footer';
+
+      // ... existing imports ...
+
+      // ... inside the App function return ...
+
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-24 space-y-8 flex-grow w-full z-10">
         {currentView === 'fun' && <FunAnalysis />}
         {currentView === 'contact' && <Contact />}
@@ -199,6 +205,8 @@ function App() {
         {/* {currentView === 'agent' && <AgentAnalysis />} */}
         {/* {currentView === 'flirt' && <FlirtAnalysis />} */}
       </main>
+
+      <Footer />
 
       {/* Logout Confirmation Modal */}
       {showLogoutConfirm && (
