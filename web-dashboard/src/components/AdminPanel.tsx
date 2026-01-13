@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { FileText, Trash2, Shield, ShieldAlert, User, MessageCircle, X, Users, Activity } from 'lucide-react';
+import { FileText, Trash2, Shield, ShieldAlert, User, MessageCircle, X, Users, Activity, Download, Eye } from 'lucide-react';
 import { API_URL } from '../services/api';
 
 interface UserData {
@@ -37,6 +37,8 @@ export function AdminPanel() {
     const [messages, setMessages] = useState<MessageData[]>([]);
     const [userUploads, setUserUploads] = useState<UploadData[]>([]);
     const [msgLoading, setMsgLoading] = useState(false);
+    const [previewContent, setPreviewContent] = useState<string | null>(null);
+    const [previewTitle, setPreviewTitle] = useState<string>('');
 
     useEffect(() => {
         const fetchData = async () => {
@@ -125,6 +127,61 @@ export function AdminPanel() {
             }
         } catch (e) {
             alert('Hata oluştu');
+        }
+    };
+
+    const handleDownload = async (fileId: number, filename: string) => {
+        try {
+            const token = localStorage.getItem('access_token');
+            const response = await fetch(`${API_URL}/admin/uploads/${fileId}/content`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                if (data.content) {
+                    const blob = new Blob([data.content], { type: 'text/plain' });
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = filename;
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                    document.body.removeChild(a);
+                } else {
+                    alert('Dosya içeriği boş veya kaydedilmemiş (Eski dosya olabilir).');
+                }
+            } else {
+                alert('Dosya içeriği indirilemedi.');
+            }
+        } catch (e) {
+            console.error(e);
+            alert('İndirme hatası.');
+        }
+    };
+
+    const handlePreview = async (fileId: number, filename: string) => {
+        try {
+            const token = localStorage.getItem('access_token');
+            const response = await fetch(`${API_URL}/admin/uploads/${fileId}/content`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                if (data.content) {
+                    setPreviewTitle(filename);
+                    setPreviewContent(data.content);
+                } else {
+                    alert('Önizleme mevcut değil (İçerik kaydedilmemiş).');
+                }
+            } else {
+                alert('Önizleme yüklenemedi.');
+            }
+        } catch (e) {
+            console.error(e);
+            alert('Hata oluştu.');
         }
     };
 
@@ -330,7 +387,7 @@ export function AdminPanel() {
                                         ) : (
                                             <div className="space-y-2">
                                                 {userUploads.map(file => (
-                                                    <div key={file.id} className="flex items-center justify-between p-3 bg-indigo-500/10 border border-indigo-500/20 rounded-xl hover:bg-indigo-500/20 transition-colors">
+                                                    <div key={file.id} className="flex items-center justify-between p-3 bg-indigo-500/10 border border-indigo-500/20 rounded-xl hover:bg-indigo-500/20 transition-colors group">
                                                         <div className="flex items-center gap-3">
                                                             <div className="p-2 bg-indigo-500/20 rounded-lg text-indigo-400">
                                                                 <FileText size={18} />
@@ -340,8 +397,24 @@ export function AdminPanel() {
                                                                 <div className="text-[10px] text-gray-400">{new Date(file.upload_time).toLocaleString('tr-TR')}</div>
                                                             </div>
                                                         </div>
-                                                        <div className="text-xs text-gray-500 font-mono">
-                                                            {(file.file_size / 1024).toFixed(1)} KB
+                                                        <div className="flex items-center gap-2">
+                                                            <div className="text-xs text-gray-500 font-mono mr-2">
+                                                                {(file.file_size / 1024).toFixed(1)} KB
+                                                            </div>
+                                                            <button
+                                                                onClick={() => handlePreview(file.id, file.filename)}
+                                                                className="p-1.5 hover:bg-indigo-500/30 text-indigo-300 rounded-lg transition-colors"
+                                                                title="Önizle"
+                                                            >
+                                                                <Eye size={16} />
+                                                            </button>
+                                                            <button
+                                                                onClick={() => handleDownload(file.id, file.filename)}
+                                                                className="p-1.5 hover:bg-emerald-500/30 text-emerald-300 rounded-lg transition-colors"
+                                                                title="İndir"
+                                                            >
+                                                                <Download size={16} />
+                                                            </button>
                                                         </div>
                                                     </div>
                                                 ))}
@@ -380,6 +453,33 @@ export function AdminPanel() {
                                     </div>
                                 </>
                             )}
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* File Preview Modal */}
+            {previewContent !== null && (
+                <div className="fixed inset-0 bg-black/90 backdrop-blur-sm z-[60] flex items-center justify-center p-4">
+                    <div className="bg-slate-900 rounded-2xl w-full max-w-4xl max-h-[85vh] flex flex-col border border-white/10 shadow-2xl animate-in zoom-in-95 duration-200">
+                        <div className="p-4 border-b border-white/10 flex items-center justify-between bg-white/5">
+                            <div className="flex items-center gap-3">
+                                <div className="w-10 h-10 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center">
+                                    <FileText size={20} />
+                                </div>
+                                <div>
+                                    <h3 className="font-bold text-white">{previewTitle}</h3>
+                                    <p className="text-xs text-slate-400">Dosya Önizleme</p>
+                                </div>
+                            </div>
+                            <button onClick={() => setPreviewContent(null)} className="p-2 hover:bg-white/10 rounded-full transition-colors text-gray-400 hover:text-white">
+                                <X size={20} />
+                            </button>
+                        </div>
+                        <div className="flex-1 overflow-auto p-6 bg-black/40">
+                            <pre className="text-sm text-gray-300 font-mono whitespace-pre-wrap leading-relaxed">
+                                {previewContent}
+                            </pre>
                         </div>
                     </div>
                 </div>
