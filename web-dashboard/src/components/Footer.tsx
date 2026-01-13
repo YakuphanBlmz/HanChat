@@ -22,7 +22,7 @@ export function Footer() {
                         <h3 className="text-sm font-bold text-white uppercase tracking-wider text-center">Hızlı Bağlantılar</h3>
                         <ul className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm">
                             <li><a href="/" className="hover:text-blue-400 transition-colors">Ana Sayfa</a></li>
-                            <li><a href="#" className="hover:text-blue-400 transition-colors">Gizlilik Politikası</a></li>
+                            <li><a href="/privacy" className="hover:text-blue-400 transition-colors">Gizlilik Politikası</a></li>
                             <li><a href="#" className="hover:text-blue-400 transition-colors">Özellikler</a></li>
                             <li><a href="#" className="hover:text-blue-400 transition-colors">Kullanım Şartları</a></li>
                         </ul>
