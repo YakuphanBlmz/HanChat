@@ -10,6 +10,7 @@ import { AdminPanel } from './components/AdminPanel';
 import { Footer } from './components/Footer';
 import { PrivacyPolicy } from './components/PrivacyPolicy';
 import { TermsOfUse } from './components/TermsOfUse';
+import { Features } from './components/Features';
 import { StoryViewer } from './components/StoryViewer';
 
 type View = 'fun' | 'agent' | 'flirt' | 'contact' | 'admin';
