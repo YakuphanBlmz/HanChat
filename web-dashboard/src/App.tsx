@@ -103,45 +103,65 @@ function App() {
   return (
     <div className="min-h-screen bg-gray-50 font-sans text-gray-900 relative flex flex-col">
       {/* Hero Header */}
-      <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white pb-32">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-12">
-          <div className="flex items-center justify-between mb-1">
-            <div className="flex items-center gap-3">
-              <img src="/logo.png" alt="HanChat Logo" className="w-40 h-40 object-contain scale-120" />
+      {/* Hero Header */}
+      <div className="bg-[#0B1120] text-white pb-32 border-b border-white/5 relative overflow-hidden">
+        {/* Background decorative elements */}
+        <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+          <div className="absolute top-[-10%] right-[-5%] w-96 h-96 bg-blue-500/10 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-[-10%] left-[-10%] w-96 h-96 bg-purple-500/10 rounded-full blur-3xl"></div>
+        </div>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-12 relative z-10">
+          <div className="flex items-center justify-between mb-8">
+            <div className="flex items-center gap-4">
+              <div className="bg-white/5 p-2 rounded-2xl border border-white/10 shadow-xl backdrop-blur-sm">
+                <img src="/logo.png" alt="HanChat Logo" className="w-12 h-12 object-contain" />
+              </div>
               <div>
-                <h1 className="text-4xl font-bold tracking-tight text-[#ADE0E1]">HanChat</h1>
-                <p className="text-slate-400 text-sm">
-                  {currentView === 'fun' ? 'WhatsApp Analiz Modu' :
-                    currentView === 'contact' ? 'İletişim & Destek' :
-                      currentView === 'agent' ? 'WhatsApp Ajan & Dedektif Modu' :
-                        'WhatsApp Flört & Aşk Modu'}
-                </p>
+                <h1 className="text-3xl font-extrabold tracking-tight">
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400">
+                    HanChat
+                  </span>
+                </h1>
+                <div className="flex items-center gap-2 text-sm font-medium">
+                  <span className="px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-300 border border-blue-500/20 text-xs">
+                    v1.2
+                  </span>
+                  <p className="text-slate-400">
+                    {currentView === 'fun' ? 'WhatsApp Analiz Modu' :
+                      currentView === 'contact' ? 'İletişim & Destek' :
+                        currentView === 'agent' ? 'Ajan & Dedektif Modu' :
+                          'Flört & Aşk Modu'}
+                  </p>
+                </div>
               </div>
             </div>
 
             <div className="flex items-center gap-6">
               <div className="hidden sm:block text-right">
-                <div className="text-sm text-slate-400">Hoş geldin,</div>
-                <div className="font-medium text-[#ADE0E1]">{username}</div>
+                <div className="text-xs text-slate-500 font-medium uppercase tracking-wider mb-0.5">Hoş geldin</div>
+                <div className="font-bold text-white text-lg leading-none">{username}</div>
               </div>
+
+              <div className="h-8 w-[1px] bg-white/10 hidden sm:block"></div>
 
               <button
                 onClick={() => setShowLogoutConfirm(true)}
-                className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-slate-300 hover:text-white transition-all"
+                className="group relative p-2 rounded-xl bg-white/5 hover:bg-red-500/10 text-slate-400 hover:text-red-400 transition-all duration-300 border border-white/5 hover:border-red-500/20"
                 title="Çıkış Yap"
               >
-                <LogOut size={20} />
+                <LogOut size={20} className="transition-transform group-hover:-translate-x-0.5" />
               </button>
             </div>
           </div>
 
           {/* Navigation Tabs */}
-          <div className="flex space-x-4 overflow-x-auto pb-2 sm:pb-0">
+          <div className="flex space-x-2 overflow-x-auto pb-2 sm:pb-0 scrollbar-hide">
             <button
               onClick={() => setCurrentView('fun')}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all whitespace-nowrap ${currentView === 'fun'
-                ? 'bg-white/20 text-white shadow-lg backdrop-blur-sm border border-white/10'
-                : 'text-slate-400 hover:text-white hover:bg-white/10'
+              className={`flex items-center gap-2.5 px-5 py-2.5 rounded-xl font-medium transition-all duration-300 whitespace-nowrap border ${currentView === 'fun'
+                ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/25 border-blue-500'
+                : 'bg-white/5 text-slate-400 hover:text-white hover:bg-white/10 border-white/5 hover:border-white/10'
                 }`}
             >
               <BarChart2 size={18} />
@@ -150,9 +170,9 @@ function App() {
 
             <button
               onClick={() => setCurrentView('contact')}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all whitespace-nowrap ${currentView === 'contact'
-                ? 'bg-white/20 text-white shadow-lg backdrop-blur-sm border border-white/10'
-                : 'text-slate-400 hover:text-white hover:bg-white/10'
+              className={`flex items-center gap-2.5 px-5 py-2.5 rounded-xl font-medium transition-all duration-300 whitespace-nowrap border ${currentView === 'contact'
+                ? 'bg-purple-600 text-white shadow-lg shadow-purple-500/25 border-purple-500'
+                : 'bg-white/5 text-slate-400 hover:text-white hover:bg-white/10 border-white/5 hover:border-white/10'
                 }`}
             >
               <Mail size={18} />
@@ -162,9 +182,9 @@ function App() {
             {isAdmin && (
               <button
                 onClick={() => setCurrentView('admin')}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all whitespace-nowrap ${currentView === 'admin'
-                  ? 'bg-red-500/20 text-red-300 shadow-lg backdrop-blur-sm border border-red-500/30'
-                  : 'text-slate-400 hover:text-red-300 hover:bg-red-500/10'
+                className={`flex items-center gap-2.5 px-5 py-2.5 rounded-xl font-medium transition-all duration-300 whitespace-nowrap border ${currentView === 'admin'
+                  ? 'bg-red-600 text-white shadow-lg shadow-red-500/25 border-red-500'
+                  : 'bg-white/5 text-slate-400 hover:text-white hover:bg-white/10 border-white/5 hover:border-white/10'
                   }`}
               >
                 <Shield size={18} />
