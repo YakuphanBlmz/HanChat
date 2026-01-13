@@ -35,6 +35,13 @@ export function ResetPassword({ onResetSuccess }: ResetPasswordProps) {
             return;
         }
 
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z]).{6,}$/;
+        if (!passwordRegex.test(newPassword)) {
+            setStatus('error');
+            setMessage('Şifre en az 6 karakter olmalı, BÜYÜK ve küçük harf içermelidir!');
+            return;
+        }
+
         setStatus('loading');
         setMessage('');
 

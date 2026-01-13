@@ -30,8 +30,10 @@ export function Register({ onRegisterSuccess, onSwitchToLogin }: RegisterProps) 
             return;
         }
 
-        if (password.length < 6) {
-            setError('Şifre en az 6 karakter olmalı!');
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z]).{6,}$/;
+
+        if (!passwordRegex.test(password)) {
+            setError('Şifre en az 6 karakter olmalı, BÜYÜK ve küçük harf içermelidir!');
             setLoading(false);
             return;
         }
