@@ -1,4 +1,4 @@
-```typescript
+
 import { Github, Linkedin, Twitter, Mail, Heart } from 'lucide-react';
 
 interface FooterProps {
@@ -28,8 +28,8 @@ export function Footer({ onOpenPrivacy }: FooterProps) {
                         <ul className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm">
                             <li><a href="/" className="hover:text-blue-400 transition-colors">Ana Sayfa</a></li>
                             <li>
-                                <button 
-                                    onClick={(e) => { e.preventDefault(); onOpenPrivacy(); }} 
+                                <button
+                                    onClick={(e) => { e.preventDefault(); onOpenPrivacy(); }}
                                     className="hover:text-blue-400 transition-colors text-left"
                                 >
                                     Gizlilik Politikası

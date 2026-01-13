@@ -10,7 +10,7 @@ import { AdminPanel } from './components/AdminPanel';
 import { Footer } from './components/Footer';
 import { PrivacyPolicy } from './components/PrivacyPolicy';
 
-type View = 'fun' | 'agent' | 'flirt' | 'contact' | 'admin' | 'privacy';
+type View = 'fun' | 'agent' | 'flirt' | 'contact' | 'admin';
 type AuthState = 'login' | 'register' | 'authenticated' | 'forgot-password' | 'reset-password';
 
 function App() {
@@ -18,6 +18,7 @@ function App() {
   const [authState, setAuthState] = useState<AuthState>('login');
   const [username, setUsername] = useState<string | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false);
 
   // Check for token on load
   useEffect(() => {
@@ -31,20 +32,7 @@ function App() {
       return;
     }
 
-    // Privacy Policy check
-    if (path === '/privacy') {
-      setCurrentView('privacy');
-      // Allow public access to privacy policy? 
-      // For now, let's keep it under the main layout, but maybe it should be accessible without login?
-      // The user didn't specify, but typically privacy policies are public.
-      // However, the current App structure wraps everything in AuthState check.
-      // If authState is 'login', it returns <Login>.
-      // To make it public, we need to bypass auth check if view is privacy.
-      // Let's modify the auth check logic slightly later if needed, but for now let's assume valid user or maybe just let it be accessible.
-      // Actually, looking at the code, if authState is 'login', it returns <Login> immediately.
-      // So public access requires modifying that early return.
-      // Let's modify the early return to allow privacy view.
-    }
+    const token = localStorage.getItem('access_token');
 
     const token = localStorage.getItem('access_token');
     const user = localStorage.getItem('username');
@@ -183,10 +171,14 @@ function App() {
         {currentView === 'fun' && <FunAnalysis />}
         {currentView === 'contact' && <Contact />}
         {currentView === 'admin' && <AdminPanel />}
-        {currentView === 'privacy' && <PrivacyPolicy />}
       </main>
 
-      <Footer />
+      <Footer onOpenPrivacy={() => setShowPrivacyPolicy(true)} />
+
+      {/* Privacy Policy Modal */}
+      {showPrivacyPolicy && (
+        <PrivacyPolicy onClose={() => setShowPrivacyPolicy(false)} />
+      )}
 
       {/* Logout Confirmation Modal */}
       {showLogoutConfirm && (
