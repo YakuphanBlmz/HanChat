@@ -52,7 +52,8 @@ class DatabaseManager:
                         user_id INTEGER,
                         filename TEXT,
                         file_size INTEGER,
-                        upload_time TEXT
+                        upload_time TEXT,
+                        content TEXT
                     )
                 ''')
             else:
@@ -63,24 +64,48 @@ class DatabaseManager:
                         filename TEXT,
                         file_size INTEGER,
                         upload_time TEXT,
+                        content TEXT,
                         FOREIGN KEY (user_id) REFERENCES users (id)
                     )
                 ''')
+            
+            # Migration: Add content column if not exists
+            try:
+                if self.db_type == 'postgres':
+                    cursor.execute("SELECT column_name FROM information_schema.columns WHERE table_name='file_uploads'")
+                    columns = [row[0] for row in cursor.fetchall()]
+                    if "content" not in columns:
+                        cursor.execute("ALTER TABLE file_uploads ADD COLUMN content TEXT")
+                else:
+                    cursor.execute("PRAGMA table_info(file_uploads)")
+                    columns = [info[1] for info in cursor.fetchall()]
+                    if "content" not in columns:
+                        cursor.execute("ALTER TABLE file_uploads ADD COLUMN content TEXT")
+            except Exception as e:
+                print(f"Migration warning (file_uploads): {e}")
+
             conn.commit()
         except Exception as e:
             print(f"Init Files DB Error: {e}")
         finally:
             conn.close()
 
-    def log_file_upload(self, user_id, filename, file_size):
+    def log_file_upload(self, user_id, filename, file_size, content=None):
         conn = self.get_connection()
         try:
             cursor = conn.cursor()
-            query = '''
-                INSERT INTO file_uploads (user_id, filename, file_size, upload_time)
-                VALUES (?, ?, ?, ?)
-            '''
-            self._execute(cursor, query, (user_id, filename, file_size, datetime.now().isoformat()))
+            if self.db_type == 'postgres':
+                query = '''
+                    INSERT INTO file_uploads (user_id, filename, file_size, upload_time, content)
+                    VALUES (%s, %s, %s, %s, %s)
+                '''
+                self._execute(cursor, query, (user_id, filename, file_size, datetime.now().isoformat(), content))
+            else:
+                query = '''
+                    INSERT INTO file_uploads (user_id, filename, file_size, upload_time, content)
+                    VALUES (?, ?, ?, ?, ?)
+                '''
+                self._execute(cursor, query, (user_id, filename, file_size, datetime.now().isoformat(), content))
             conn.commit()
             return True
         except Exception as e:
@@ -98,6 +123,7 @@ class DatabaseManager:
             else:
                 cursor = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
             
+            # We don't fetch content here to keep list lightweight
             query = '''
                 SELECT id, filename, file_size, upload_time 
                 FROM file_uploads 
@@ -110,6 +136,26 @@ class DatabaseManager:
         except Exception as e:
             print(f"Get User Uploads Error: {e}")
             return []
+        finally:
+            conn.close()
+
+    def get_upload_content(self, upload_id):
+        conn = self.get_connection()
+        try:
+            if self.db_type == 'sqlite':
+                conn.row_factory = sqlite3.Row
+                cursor = conn.cursor()
+            else:
+                cursor = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+                
+            self._execute(cursor, "SELECT filename, content FROM file_uploads WHERE id = ?", (upload_id,))
+            row = cursor.fetchone()
+            if row:
+                return dict(row)
+            return None
+        except Exception as e:
+            print(f"Get Upload Content Error: {e}")
+            return None
         finally:
             conn.close()
 
