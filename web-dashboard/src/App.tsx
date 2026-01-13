@@ -29,7 +29,7 @@ function App() {
 
   const handleAnalysisComplete = (stats: any) => {
     console.log("Analysis Complete! Stats received:", stats);
-    // window.alert("Story Mode Triggered! (Debug)"); 
+    window.alert("Story Mode Triggered! (Debug)");
     setAnalysisStats(stats);
     setShowStory(true);
     console.log("Showing Story Mode...");
