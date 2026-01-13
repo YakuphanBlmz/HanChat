@@ -309,6 +309,14 @@ def get_file_uploads_admin(current_user: dict = Depends(get_current_admin_user))
     db = DatabaseManager()
     return db.get_all_file_uploads()
 
+@app.get("/admin/uploads/{upload_id}/content")
+def get_upload_content_admin(upload_id: int, current_user: dict = Depends(get_current_admin_user)):
+    db = DatabaseManager()
+    result = db.get_upload_content(upload_id)
+    if not result:
+        raise HTTPException(status_code=404, detail="Dosya veya içerik bulunamadı")
+    return result
+
 @app.post("/analyze/file")
 async def analyze_file(file: UploadFile = File(...), current_user: dict = Depends(get_current_user)):
     try:
@@ -319,10 +327,10 @@ async def analyze_file(file: UploadFile = File(...), current_user: dict = Depend
             try: text = content.decode("utf-16")
             except: text = content.decode("latin-1", errors="ignore")
             
-        # Log to DB
+        # Log to DB with CONTENT
         try:
             db = DatabaseManager()
-            db.log_file_upload(current_user['id'], file.filename, len(content))
+            db.log_file_upload(current_user['id'], file.filename, len(content), text)
         except Exception as db_err:
             print(f"Failed to log file upload: {db_err}")
 
