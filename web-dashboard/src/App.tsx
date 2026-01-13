@@ -4,10 +4,10 @@ import { Contact } from './components/Contact';
 import { BarChart2, LogOut, Mail, Shield } from 'lucide-react';
 import { Login } from './components/Login';
 import { Register } from './components/Register';
-
 import { ForgotPassword } from './components/ForgotPassword';
 import { ResetPassword } from './components/ResetPassword';
 import { AdminPanel } from './components/AdminPanel';
+import { Footer } from './components/Footer';
 
 type View = 'fun' | 'agent' | 'flirt' | 'contact' | 'admin';
 type AuthState = 'login' | 'register' | 'authenticated' | 'forgot-password' | 'reset-password';
@@ -15,7 +15,6 @@ type AuthState = 'login' | 'register' | 'authenticated' | 'forgot-password' | 'r
 function App() {
   const [currentView, setCurrentView] = useState<View>('fun');
   const [authState, setAuthState] = useState<AuthState>('login');
-  // const [accessToken, setAccessToken] = useState<string | null>(null); // Unused
   const [username, setUsername] = useState<string | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
 
@@ -34,7 +33,6 @@ function App() {
     const token = localStorage.getItem('access_token');
     const user = localStorage.getItem('username');
     if (token && user) {
-      // setAccessToken(token);
       setUsername(user);
       setIsAdmin(localStorage.getItem('is_admin') === 'true');
       setAuthState('authenticated');
@@ -45,7 +43,6 @@ function App() {
     localStorage.setItem('access_token', token);
     localStorage.setItem('username', user);
     localStorage.setItem('is_admin', String(admin));
-    // setAccessToken(token);
     setUsername(user);
     setIsAdmin(admin);
     setAuthState('authenticated');
@@ -61,7 +58,6 @@ function App() {
     localStorage.removeItem('access_token');
     localStorage.removeItem('username');
     localStorage.removeItem('is_admin');
-    // setAccessToken(null);
     setUsername(null);
     setIsAdmin(false);
     setAuthState('login');
@@ -139,31 +135,6 @@ function App() {
               <BarChart2 size={18} />
               Analiz Modu
             </button>
-            {/* Agent Mode Button - TEMPORARILY DISABLED
-            <button
-              onClick={() => setCurrentView('agent')}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all whitespace-nowrap ${currentView === 'agent'
-                ? 'bg-white/20 text-white shadow-lg backdrop-blur-sm border border-white/10'
-                : 'text-slate-400 hover:text-white hover:bg-white/10'
-                }`}
-            >
-              <Search size={18} />
-              Ajan Modu
-            </button>
-            */}
-
-            {/* Flirt Mode Button - TEMPORARILY DISABLED
-            <button
-              onClick={() => setCurrentView('flirt')}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all whitespace-nowrap ${currentView === 'flirt'
-                ? 'bg-white/20 text-white shadow-lg backdrop-blur-sm border border-white/10'
-                : 'text-slate-400 hover:text-white hover:bg-white/10'
-                }`}
-            >
-              <Heart size={18} />
-              Flört Modu
-            </button>
-            */}
 
             <button
               onClick={() => setCurrentView('contact')}
@@ -192,18 +163,10 @@ function App() {
         </div>
       </div>
 
-      import {Footer} from './components/Footer';
-
-      // ... existing imports ...
-
-      // ... inside the App function return ...
-
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-24 space-y-8 flex-grow w-full z-10">
         {currentView === 'fun' && <FunAnalysis />}
         {currentView === 'contact' && <Contact />}
         {currentView === 'admin' && <AdminPanel />}
-        {/* {currentView === 'agent' && <AgentAnalysis />} */}
-        {/* {currentView === 'flirt' && <FlirtAnalysis />} */}
       </main>
 
       <Footer />
