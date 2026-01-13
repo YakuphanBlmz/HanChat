@@ -12,27 +12,7 @@ import { PrivacyPolicy } from './components/PrivacyPolicy';
 import { TermsOfUse } from './components/TermsOfUse';
 import { StoryViewer } from './components/StoryViewer';
 
-// ... (previous imports)
-
-// ... inside App component ...
-const [showStory, setShowStory] = useState(false);
-const [analysisStats, setAnalysisStats] = useState<any>(null);
-
-const handleAnalysisComplete = (stats: any) => {
-  setAnalysisStats(stats);
-  setShowStory(true);
-};
-
-// ... inside jsx ...
-{ currentView === 'fun' && <FunAnalysis onAnalysisComplete={handleAnalysisComplete} /> }
-// ... later ...
-{/* Story Viewer Modal */ }
-{
-  showStory && analysisStats && (
-    <StoryViewer stats={analysisStats} onClose={() => setShowStory(false)} />
-  )
-}
-
+type View = 'fun' | 'agent' | 'flirt' | 'contact' | 'admin';
 type AuthState = 'login' | 'register' | 'authenticated' | 'forgot-password' | 'reset-password';
 
 function App() {
