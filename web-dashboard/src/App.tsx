@@ -29,19 +29,14 @@ function App() {
     // If URL is /reset-password or has token passed, show reset screen
     if (path === '/reset-password' || params.get('token')) {
       setAuthState('reset-password');
-      return;
-    }
-
-    const token = localStorage.getItem('access_token');
-
-    const token = localStorage.getItem('access_token');
-    const user = localStorage.getItem('username');
-    if (token && user) {
-      setUsername(user);
-      setIsAdmin(localStorage.getItem('is_admin') === 'true');
-      setAuthState('authenticated');
-    }
-  }, []);
+      const token = localStorage.getItem('access_token');
+      const user = localStorage.getItem('username');
+      if (token && user) {
+        setUsername(user);
+        setIsAdmin(localStorage.getItem('is_admin') === 'true');
+        setAuthState('authenticated');
+      }
+    }, []);
 
   const handleLoginSuccess = (token: string, user: string, admin: boolean) => {
     localStorage.setItem('access_token', token);
@@ -72,7 +67,7 @@ function App() {
     setShowLogoutConfirm(false);
   };
 
-  if (authState === 'login' && currentView !== 'privacy') {
+  if (authState === 'login') {
     return <Login
       onLoginSuccess={handleLoginSuccess}
       onSwitchToRegister={() => setAuthState('register')}
@@ -80,15 +75,15 @@ function App() {
     />;
   }
 
-  if (authState === 'register' && currentView !== 'privacy') {
+  if (authState === 'register') {
     return <Register onRegisterSuccess={() => setAuthState('login')} onSwitchToLogin={() => setAuthState('login')} />;
   }
 
-  if (authState === 'forgot-password' && currentView !== 'privacy') {
+  if (authState === 'forgot-password') {
     return <ForgotPassword onSwitchToLogin={() => setAuthState('login')} />;
   }
 
-  if (authState === 'reset-password' && currentView !== 'privacy') {
+  if (authState === 'reset-password') {
     return <ResetPassword onResetSuccess={() => setAuthState('login')} />;
   }
 
