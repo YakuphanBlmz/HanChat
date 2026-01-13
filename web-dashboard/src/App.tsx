@@ -173,11 +173,19 @@ function App() {
         {currentView === 'admin' && <AdminPanel />}
       </main>
 
-      <Footer onOpenPrivacy={() => setShowPrivacyPolicy(true)} />
+      <Footer
+        onOpenPrivacy={() => setShowPrivacyPolicy(true)}
+        onOpenTerms={() => setShowTermsOfUse(true)}
+      />
 
       {/* Privacy Policy Modal */}
       {showPrivacyPolicy && (
         <PrivacyPolicy onClose={() => setShowPrivacyPolicy(false)} />
+      )}
+
+      {/* Terms of Use Modal */}
+      {showTermsOfUse && (
+        <TermsOfUse onClose={() => setShowTermsOfUse(false)} />
       )}
 
       {/* Logout Confirmation Modal */}
