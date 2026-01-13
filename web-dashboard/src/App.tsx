@@ -127,8 +127,9 @@ function App() {
                   <p className="text-slate-400">
                     {currentView === 'fun' ? 'WhatsApp Analiz Modu' :
                       currentView === 'contact' ? 'İletişim & Destek' :
-                        currentView === 'agent' ? 'Ajan & Dedektif Modu' :
-                          'Flört & Aşk Modu'}
+                        currentView === 'admin' ? 'Yönetim Paneli' :
+                          currentView === 'agent' ? 'Ajan & Dedektif Modu' :
+                            'Flört & Aşk Modu'}
                   </p>
                 </div>
               </div>
