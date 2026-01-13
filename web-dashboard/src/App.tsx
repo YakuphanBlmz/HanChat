@@ -28,8 +28,10 @@ function App() {
   const [analysisStats, setAnalysisStats] = useState<any>(null);
 
   const handleAnalysisComplete = (stats: any) => {
+    console.log("Analysis Complete! Stats received:", stats);
     setAnalysisStats(stats);
     setShowStory(true);
+    console.log("Showing Story Mode...");
   };
 
   // Check for token on load

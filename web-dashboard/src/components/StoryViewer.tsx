@@ -8,6 +8,7 @@ interface StoryViewerProps {
 }
 
 export function StoryViewer({ stats, onClose }: StoryViewerProps) {
+    console.log("StoryViewer Mounted with stats:", stats);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [progress, setProgress] = useState(0);
 
@@ -107,7 +108,7 @@ export function StoryViewer({ stats, onClose }: StoryViewerProps) {
                         <div key={idx} className="h-1 flex-1 bg-white/30 rounded-full overflow-hidden">
                             <div
                                 className={`h-full bg-white transition-all duration-100 ease-linear ${idx < currentIndex ? 'w-full' :
-                                        idx === currentIndex ? `w-[${progress}%]` : 'w-0'
+                                    idx === currentIndex ? `w-[${progress}%]` : 'w-0'
                                     }`}
                                 style={{ width: idx < currentIndex ? '100%' : idx === currentIndex ? `${progress}%` : '0%' }}
                             />
