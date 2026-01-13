@@ -18,9 +18,9 @@ export function Footer() {
                     </div>
 
                     {/* Quick Links */}
-                    <div className="space-y-4">
-                        <h3 className="text-sm font-bold text-white uppercase tracking-wider">Hızlı Bağlantılar</h3>
-                        <ul className="grid grid-cols-2 gap-2 text-sm">
+                    <div className="space-y-4 flex flex-col items-center">
+                        <h3 className="text-sm font-bold text-white uppercase tracking-wider text-center">Hızlı Bağlantılar</h3>
+                        <ul className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm">
                             <li><a href="/" className="hover:text-blue-400 transition-colors">Ana Sayfa</a></li>
                             <li><a href="#" className="hover:text-blue-400 transition-colors">Gizlilik Politikası</a></li>
                             <li><a href="#" className="hover:text-blue-400 transition-colors">Özellikler</a></li>
