@@ -3,7 +3,7 @@ import { Upload, Smile, FileText, X, Info, Award, MessageCircle, Clock, Heart, Z
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar } from 'recharts';
 import { API_URL } from '../services/api';
 
-export function FunAnalysis() {
+export function FunAnalysis({ onAnalysisComplete }: { onAnalysisComplete?: (stats: any) => void }) {
     const [file, setFile] = useState<File | null>(null);
     const [result, setResult] = useState<any | null>(null);
     const [loading, setLoading] = useState(false);
@@ -73,6 +73,9 @@ export function FunAnalysis() {
 
             const data = await response.json();
             setResult(data);
+            if (onAnalysisComplete) {
+                onAnalysisComplete(data);
+            }
 
             // Set default selected person if group is large
             if (data.participants.length > 0) {
