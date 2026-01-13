@@ -4,70 +4,106 @@ export function PrivacyPolicy() {
             <div className="bg-white p-8 md:p-16 shadow-sm border border-gray-200">
                 {/* Header */}
                 <div className="border-b border-gray-200 pb-8 mb-8">
-                    <h1 className="text-3xl font-bold text-gray-900 mb-2">GİZLİLİK POLİTİKASI</h1>
-                    <p className="text-gray-500 text-sm uppercase tracking-wide">Son Güncelleme: 13 Ocak 2026</p>
+                    <h1 className="text-3xl font-bold text-gray-900 mb-2">GİZLİLİK VE VERİ KORUMA POLİTİKASI</h1>
+                    <p className="text-gray-500 text-sm uppercase tracking-wide">Yürürlük Tarihi: 13 Ocak 2026</p>
                 </div>
 
                 {/* Content */}
-                <div className="space-y-8 text-gray-800 leading-relaxed font-serif text-lg">
-                    {/* Introduction */}
-                    <section>
-                        <h2 className="text-lg font-bold text-gray-900 uppercase tracking-wider mb-3">1. Genel Bakış</h2>
-                        <p>
-                            HanChat ("Platform", "Biz"), kullanıcılarımızın ("Siz") gizliliğine ve veri güvenliğine büyük önem vermektedir.
-                            Bu Gizlilik Politikası, WhatsApp sohbet analiz hizmetlerimizi kullanırken verilerinizin nasıl toplandığını,
-                            kullanıldığını ve korunduğunu açıklamaktadır. Hizmetlerimizi kullanarak bu politikayı kabul etmiş sayılırsınız.
-                        </p>
-                    </section>
+                <div className="space-y-10 text-gray-800 leading-relaxed font-serif text-lg">
 
-                    {/* Data Collection */}
+                    {/* 1. Giriş */}
                     <section>
-                        <h2 className="text-lg font-bold text-gray-900 uppercase tracking-wider mb-3">2. Toplanan Veriler</h2>
-                        <ul className="list-disc pl-5 space-y-2">
-                            <li><span className="font-semibold">WhatsApp Sohbet Dosyaları:</span> Analiz için yüklediğiniz .txt formatındaki sohbet geçmişleri.</li>
-                            <li><span className="font-semibold">İletişim Bilgileri:</span> Kayıt olurken veya iletişim formunu kullanırken sağladığınız e-posta adresi ve isim.</li>
-                            <li><span className="font-semibold">Kullanım Verileri:</span> Tarayıcı tipi, işlem süreleri ve hata raporları gibi teknik veriler.</li>
+                        <h2 className="text-lg font-bold text-gray-900 uppercase tracking-wider mb-4 border-b border-gray-100 pb-2">1. Giriş ve Kapsam</h2>
+                        <ul className="list-disc pl-5 space-y-3">
+                            <li>HanChat ("Şirket", "Biz" veya "Platform"), kullanıcılarının ("Kullanıcı" veya "Siz") gizliliğini korumayı en temel ilke olarak kabul etmiştir.</li>
+                            <li>Bu politika, www.hanchat.com web sitesi ve ilgili hizmetler üzerinden toplanan verilerin işlenme esaslarını düzenler.</li>
+                            <li>Hizmetlerimizi kullanarak, verilerinizin bu politikada belirtilen şekillerde işlenmesine rıza göstermiş olursunuz.</li>
                         </ul>
                     </section>
 
-                    {/* Data Usage */}
+                    {/* 2. Toplanan Veriler */}
                     <section>
-                        <h2 className="text-lg font-bold text-gray-900 uppercase tracking-wider mb-3">3. Verilerin Kullanımı</h2>
-                        <p className="mb-3">Toplanan veriler yalnızca aşağıdaki amaçlarla kullanılır:</p>
-                        <ul className="list-disc pl-5 space-y-2">
-                            <li>Sohbet analizlerini (duygu durumu, kelime sıklığı, vb.) gerçekleştirmek.</li>
-                            <li>Hizmet kalitesini artırmak ve teknik sorunları gidermek.</li>
-                            <li>Size özel raporlar ve istatistikler oluşturmak.</li>
-                            <li>Yasal yükümlülükleri yerine getirmek.</li>
+                        <h2 className="text-lg font-bold text-gray-900 uppercase tracking-wider mb-4 border-b border-gray-100 pb-2">2. Toplanan Veri Kategorileri</h2>
+                        <p className="mb-3">Platform kullanımı sırasında aşağıdaki veriler işlenebilmektedir:</p>
+                        <ul className="list-disc pl-5 space-y-3">
+                            <li><span className="font-semibold">Kimlik ve İletişim Verileri:</span> Ad, soyad, e-posta adresi.</li>
+                            <li><span className="font-semibold">Kullanıcı İçeriği:</span> Analiz edilmek üzere sisteme yüklenen WhatsApp sohbet dökümleri (.txt dosyaları).</li>
+                            <li><span className="font-semibold">Teknik İşlem Verileri:</span> IP adresi, tarayıcı bilgileri, işletim sistemi sürümü, site içi hareketler ve işlem günlükleri (log kayıtları).</li>
+                            <li><span className="font-semibold">Analiz Sonuçları:</span> Yüklenen dosyalardan üretilen istatistiksel veriler (kelime sayıları, mesajlaşma saatleri vb.).</li>
                         </ul>
                     </section>
 
-                    {/* Data Security */}
+                    {/* 3. Veri Kullanım Amaçları */}
                     <section>
-                        <h2 className="text-lg font-bold text-gray-900 uppercase tracking-wider mb-3">4. Veri Güvenliği ve Saklama</h2>
-                        <div className="bg-gray-50 p-4 border-l-4 border-gray-900 text-base">
-                            <p className="mb-2">
-                                <span className="font-semibold">Otomatik Silinme:</span> Yüklediğiniz sohbet dosyaları, analiz işlemi tamamlandıktan hemen sonra sunucularımızdan
-                                otomatik olarak silinmektedir. Sohbet içerikleriniz kalıcı olarak depolanmaz.
-                            </p>
-                            <p>
-                                Verileriniz endüstri standardı şifreleme yöntemleri (SSL/TLS) ile korunmaktadır.
-                            </p>
+                        <h2 className="text-lg font-bold text-gray-900 uppercase tracking-wider mb-4 border-b border-gray-100 pb-2">3. Verilerin İşlenme Amaçları</h2>
+                        <p className="mb-3">Toplanan veriler, aşağıdaki amaçlarla sınırlı olarak işlenmektedir:</p>
+                        <ul className="list-disc pl-5 space-y-3">
+                            <li>Kullanıcı tarafından talep edilen sohbet analizlerinin gerçekleştirilmesi ve raporlanması.</li>
+                            <li>Platformun güvenliğinin sağlanması ve kötüye kullanımın önlenmesi.</li>
+                            <li>Teknik destek taleplerinin karşılanması ve hataların giderilmesi.</li>
+                            <li>Hizmet kalitesinin ölçülmesi ve kullanıcı deneyiminin iyileştirilmesi.</li>
+                            <li>Yasal yükümlülüklerin yerine getirilmesi (log tutma vb.).</li>
+                        </ul>
+                    </section>
+
+                    {/* 4. Veri Güvenliği ve Sohbet Gizliliği */}
+                    <section>
+                        <h2 className="text-lg font-bold text-gray-900 uppercase tracking-wider mb-4 border-b border-gray-100 pb-2">4. Veri Güvenliği ve Sohbet Gizliliği</h2>
+                        <div className="bg-gray-50 p-6 border border-gray-200">
+                            <ul className="list-disc pl-5 space-y-4">
+                                <li><span className="font-bold underline">Geçici İşleme Prensibi:</span> Yüklenen sohbet dosyaları, analiz işlemi tamamlandıktan hemen sonra (RAM üzerinden) silinir. Kalıcı veritabanlarına kaydedilmez.</li>
+                                <li><span className="font-bold underline">Şifreleme:</span> Veri transferleri SSL/TLS protokolleri ile şifrelenerek gerçekleştirilir.</li>
+                                <li><span className="font-bold underline">Erişim Kısıtlaması:</span> Kullanıcı verilerine sadece yetkili teknik personel, yalnızca zorunlu hallerde (teknik sorun çözümü vb.) erişebilir.</li>
+                            </ul>
                         </div>
                     </section>
 
-                    {/* Contact */}
+                    {/* 5. Veri Paylaşımı */}
                     <section>
-                        <h2 className="text-lg font-bold text-gray-900 uppercase tracking-wider mb-3">5. İletişim</h2>
-                        <p>
-                            Gizlilikle ilgili her türlü sorunuz için: <br />
-                            <a href="mailto:hanwhatschat@gmail.com" className="text-gray-900 underline hover:text-gray-600 font-medium">hanwhatschat@gmail.com</a>
-                        </p>
+                        <h2 className="text-lg font-bold text-gray-900 uppercase tracking-wider mb-4 border-b border-gray-100 pb-2">5. Veri Paylaşımı ve Üçüncü Taraflar</h2>
+                        <ul className="list-disc pl-5 space-y-3">
+                            <li>Kişisel verileriniz, pazarlama veya reklam amacıyla üçüncü taraflarla kesinlikle paylaşılmamaktadır.</li>
+                            <li>Sadece yasal bir zorunluluk (mahkeme kararı vb.) olması durumunda ilgili resmi makamlarla paylaşılabilir.</li>
+                            <li>Altyapı sağlayıcıları (sunucu hizmetleri) ile yapılan sözleşmelerde veri gizliliği esas alınır.</li>
+                        </ul>
                     </section>
 
-                    {/* Footer Note */}
-                    <div className="pt-8 mt-12 border-t border-gray-100 text-center text-sm text-gray-400">
-                        HanChat Analiz Platformu © 2026
+                    {/* 6. Çerezler */}
+                    <section>
+                        <h2 className="text-lg font-bold text-gray-900 uppercase tracking-wider mb-4 border-b border-gray-100 pb-2">6. Çerez (Cookie) Kullanımı</h2>
+                        <ul className="list-disc pl-5 space-y-3">
+                            <li>Sitemizde oturum güvenliğini sağlamak ve tercihlerinizi hatırlamak için zorunlu çerezler kullanılmaktadır.</li>
+                            <li>Analitik çerezler, site trafiğini anonim olarak ölçmek için kullanılabilir.</li>
+                            <li>Tarayıcı ayarlarınızdan çerezleri dilediğiniz zaman engelleyebilirsiniz.</li>
+                        </ul>
+                    </section>
+
+                    {/* 7. Haklarınız */}
+                    <section>
+                        <h2 className="text-lg font-bold text-gray-900 uppercase tracking-wider mb-4 border-b border-gray-100 pb-2">7. Kullanıcı Hakları</h2>
+                        <p className="mb-3">KVKK ve ilgili mevzuatlar uyarınca haklarınız:</p>
+                        <ul className="list-disc pl-5 space-y-3">
+                            <li>Kişisel verilerinizin işlenip işlenmediğini öğrenme,</li>
+                            <li>İşlenen veriler hakkında bilgi talep etme,</li>
+                            <li>Verilerin düzeltilmesini veya silinmesini isteme,</li>
+                            <li>Veri işlemeye itiraz etme hakkına sahipsiniz.</li>
+                        </ul>
+                    </section>
+
+                    {/* 8. İletişim */}
+                    <section>
+                        <h2 className="text-lg font-bold text-gray-900 uppercase tracking-wider mb-4 border-b border-gray-100 pb-2">8. İletişim</h2>
+                        <ul className="list-disc pl-5 space-y-3">
+                            <li>Bu politika veya verilerinizle ilgili her türlü sorunuz için bizimle iletişime geçebilirsiniz.</li>
+                            <li><strong>E-posta:</strong> hanwhatschat@gmail.com</li>
+                            <li><strong>Adres:</strong> İstanbul, Türkiye</li>
+                        </ul>
+                    </section>
+
+                    {/* Footer */}
+                    <div className="pt-8 mt-12 border-t-2 border-gray-900 text-sm text-gray-500">
+                        <p>HanChat Yazılım ve Teknoloji Hizmetleri</p>
+                        <p>Bu belge en son 13.01.2026 tarihinde güncellenmiştir.</p>
                     </div>
                 </div>
             </div>
