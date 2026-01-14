@@ -28,11 +28,8 @@ function App() {
   const [analysisStats, setAnalysisStats] = useState<any>(null);
 
   const handleAnalysisComplete = (stats: any) => {
-    console.log("Analysis Complete! Stats received:", stats);
-    window.alert("Story Mode Triggered! (Debug)");
     setAnalysisStats(stats);
     setShowStory(true);
-    console.log("Showing Story Mode...");
   };
 
   // Check for token on load
@@ -149,7 +146,7 @@ function App() {
             <div className="flex items-center gap-6">
               <div className="hidden sm:block text-right">
                 <div className="text-xs text-slate-500 font-medium uppercase tracking-wider mb-0.5">Hoş geldin</div>
-                <div className="font-bold text-white text-lg leading-none">{username} (DEBUG V1)</div>
+                <div className="font-bold text-white text-lg leading-none">{username}</div>
               </div>
 
               <div className="h-8 w-[1px] bg-white/10 hidden sm:block"></div>
