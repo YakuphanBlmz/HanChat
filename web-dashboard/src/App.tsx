@@ -149,7 +149,7 @@ function App() {
             <div className="flex items-center gap-6">
               <div className="hidden sm:block text-right">
                 <div className="text-xs text-slate-500 font-medium uppercase tracking-wider mb-0.5">Hoş geldin</div>
-                <div className="font-bold text-white text-lg leading-none">{username}</div>
+                <div className="font-bold text-white text-lg leading-none">{username} (DEBUG V1)</div>
               </div>
 
               <div className="h-8 w-[1px] bg-white/10 hidden sm:block"></div>
