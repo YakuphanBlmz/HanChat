@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { X, ChevronRight } from 'lucide-react';
+import { X, ChevronRight, Play, Pause } from 'lucide-react';
 
 interface StoryViewerProps {
     stats: any;
@@ -10,7 +10,23 @@ interface StoryViewerProps {
 export function StoryViewer({ stats, onClose }: StoryViewerProps) {
     console.log("StoryViewer Mounted with stats:", stats);
     const [currentIndex, setCurrentIndex] = useState(0);
+    const [isPaused, setIsPaused] = useState(false);
     const [progress, setProgress] = useState(0);
+
+    // Helper to find top sender manually since backend doesn't provide a specific title for it
+    const getTopSender = () => {
+        if (!stats?.stats) return { name: 'Bilinmiyor', value: 0 };
+        let max = -1;
+        let winner = 'Bilinmiyor';
+        Object.entries(stats.stats).forEach(([name, data]: [string, any]) => {
+            if (data.message_count > max) {
+                max = data.message_count;
+                winner = name;
+            }
+        });
+        return { name: winner, value: max };
+    };
+    const topSender = getTopSender();
 
     // Prepare slides based on stats
     const slides = [
@@ -25,8 +41,8 @@ export function StoryViewer({ stats, onClose }: StoryViewerProps) {
             type: 'stat',
             title: 'En Çok Konuşan',
             emoji: '🗣️',
-            data: stats.titles?.['En Gevezesi 📢']?.winner || 'Bilinmiyor',
-            sub: stats.titles?.['En Gevezesi 📢']?.value,
+            data: topSender.name,
+            sub: `${topSender.value} Mesaj`,
             desc: 'Hiç susmamış maşallah!',
             bg: 'from-orange-500 via-red-500 to-pink-600'
         },
@@ -35,7 +51,7 @@ export function StoryViewer({ stats, onClose }: StoryViewerProps) {
             title: 'Gece Kuşu',
             emoji: '🦉',
             data: stats.titles?.['Gece Kuşu 🦉']?.winner || 'Bilinmiyor',
-            sub: stats.titles?.['Gece Kuşu 🦉']?.value,
+            sub: `${stats.titles?.['Gece Kuşu 🦉']?.value || 0} Mesaj`,
             desc: 'Geceleri uyumak nedir bilmiyor...',
             bg: 'from-slate-800 via-purple-900 to-black'
         },
@@ -43,8 +59,8 @@ export function StoryViewer({ stats, onClose }: StoryViewerProps) {
             type: 'stat',
             title: 'Emoji Canavarı',
             emoji: '😂',
-            data: stats.titles?.['Emoji Canavarı 😂']?.winner || 'Bilinmiyor',
-            sub: stats.titles?.['Emoji Canavarı 😂']?.value,
+            data: stats.titles?.['Emoji Canavarı 😍']?.winner || 'Bilinmiyor',
+            sub: `${stats.titles?.['Emoji Canavarı 😍']?.value || 0} Emoji`,
             desc: 'Duygularını emojilerle anlatmayı seviyor!',
             bg: 'from-yellow-400 via-orange-500 to-red-500'
         },
@@ -53,7 +69,7 @@ export function StoryViewer({ stats, onClose }: StoryViewerProps) {
             title: 'Hızlı Cevapçı',
             emoji: '⚡',
             data: stats.titles?.['Hızlı Silahşör 🤠']?.winner || 'Bilinmiyor',
-            sub: stats.titles?.['Hızlı Silahşör 🤠']?.value,
+            sub: `${stats.titles?.['Hızlı Silahşör 🤠']?.value || 0} Kez (5sn altı)`,
             desc: 'Yazarken parmakları alev alıyor!',
             bg: 'from-cyan-400 via-blue-500 to-indigo-600'
         },
@@ -68,6 +84,8 @@ export function StoryViewer({ stats, onClose }: StoryViewerProps) {
     ];
 
     useEffect(() => {
+        if (isPaused) return;
+
         const timer = setInterval(() => {
             setProgress((old) => {
                 if (old >= 100) {
@@ -79,12 +97,12 @@ export function StoryViewer({ stats, onClose }: StoryViewerProps) {
                         return 100;
                     }
                 }
-                return old + 1; // 1% every 30ms -> 3000ms total
+                return old + 1;
             });
-        }, 50); // 5 seconds per slide (50ms * 100 steps)
+        }, 100); // 10 seconds per slide (100ms * 100 steps)
 
         return () => clearInterval(timer);
-    }, [currentIndex, slides.length]);
+    }, [currentIndex, slides.length, isPaused]);
 
     const handleNext = () => {
         if (currentIndex < slides.length - 1) {
@@ -130,6 +148,12 @@ export function StoryViewer({ stats, onClose }: StoryViewerProps) {
                 </div>
 
                 {/* Header Actions */}
+                <div className="absolute top-8 left-4 z-40 flex gap-4">
+                    <button onClick={() => setIsPaused(!isPaused)} className="text-white/80 hover:text-white transition-colors">
+                        {isPaused ? <Play size={28} /> : <Pause size={28} />}
+                    </button>
+                </div>
+
                 <div className="absolute top-8 right-4 z-40 flex gap-4">
                     <button onClick={onClose} className="text-white/80 hover:text-white transition-colors">
                         <X size={28} />
