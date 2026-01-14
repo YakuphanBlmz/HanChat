@@ -32,11 +32,11 @@ export function FunAnalysis({ onAnalysisComplete }: { onAnalysisComplete?: (stat
         e.stopPropagation();
         if (e.dataTransfer.files && e.dataTransfer.files[0]) {
             const droppedFile = e.dataTransfer.files[0];
-            if (droppedFile.name.endsWith('.txt')) {
+            if (droppedFile.name.endsWith('.txt') || droppedFile.name.endsWith('.zip')) {
                 setFile(droppedFile);
                 setError(null);
             } else {
-                setError("Lütfen sadece .txt dosyası yükleyin.");
+                setError("Lütfen sadece .txt veya .zip dosyası yükleyin.");
             }
         }
     };
@@ -360,7 +360,7 @@ export function FunAnalysis({ onAnalysisComplete }: { onAnalysisComplete?: (stat
                     {/* File Upload */}
                     <input
                         type="file"
-                        accept=".txt"
+                        accept=".txt,.zip"
                         onChange={handleFileChange}
                         className="hidden"
                         id="file-upload"

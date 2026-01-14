@@ -322,6 +322,45 @@ async def analyze_file(file: UploadFile = File(...), current_user: dict = Depend
     try:
         content = await file.read()
         text = ""
+        filename = file.filename
+
+        # Check for ZIP
+        if filename.lower().endswith('.zip') or file.content_type == 'application/zip' or file.content_type == 'application/x-zip-compressed':
+            try:
+                import zipfile
+                import io
+                with zipfile.ZipFile(io.BytesIO(content)) as z:
+                    file_list = z.namelist()
+                    # Filter for typical chat files (exclude MacOS hidden files etc)
+                    txt_files = [f for f in file_list if f.endswith('.txt') and not f.startswith('__MACOSX') and not f.startswith('.')]
+                    
+                    if not txt_files:
+                        raise HTTPException(status_code=400, detail="Zip dosyasında geçerli bir .txt bulunamadı")
+                    
+                    target_txt = None
+                    # 1. Priority: Exact match with zip filename (e.g. "Chat.zip" -> "Chat.txt")
+                    zip_stem = os.path.splitext(filename)[0]
+                    for f in txt_files:
+                        # Check exact match or containing match
+                        if f == f"{zip_stem}.txt":
+                            target_txt = f
+                            break
+                    
+                    # 2. Priority: Standard WhatsApp export name "_chat.txt"
+                    if not target_txt and "_chat.txt" in txt_files:
+                        target_txt = "_chat.txt"
+                        
+                    # 3. Fallback: Take the first found txt file
+                    if not target_txt:
+                        target_txt = txt_files[0]
+                        
+                    print(f"DEBUG: Extracting {target_txt} from zip")
+                    with z.open(target_txt) as f:
+                        content = f.read()
+            except Exception as e:
+                print(f"Zip extraction error: {e}")
+                raise HTTPException(status_code=400, detail=f"Zip dosyası işlenirken hata oluştu: {str(e)}")
+
         try: text = content.decode("utf-8")
         except: 
             try: text = content.decode("utf-16")
