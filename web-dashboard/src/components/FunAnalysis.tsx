@@ -613,7 +613,7 @@ function AIAnalysisSection({ result, groupType }: { result: any, groupType?: str
                         <textarea
                             value={prompt}
                             onChange={(e) => setPrompt(e.target.value)}
-                            placeholder={groupType ? "Grup hakkında eklemek istediğin bir şey var mı? (Opsiyonel)" : "Örn: Enes benim çocukluk arkadaşım..."}
+                            placeholder={groupType ? "Grup hakkında eklemek istediğin bir şey var mı? (Opsiyonel)" : "Örn: Biz üniversiteden tanışıyoruz, samimi bir arkadaşlığımız var..."}
                             className="w-full p-4 rounded-xl border border-indigo-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none min-h-[120px] bg-white/80 backdrop-blur-sm"
                         />
 
