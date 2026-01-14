@@ -81,7 +81,7 @@ export function StoryViewer({ stats, onClose }: StoryViewerProps) {
                 }
                 return old + 1; // 1% every 30ms -> 3000ms total
             });
-        }, 30); // 3 seconds per slide
+        }, 50); // 5 seconds per slide (50ms * 100 steps)
 
         return () => clearInterval(timer);
     }, [currentIndex, slides.length]);
@@ -95,12 +95,25 @@ export function StoryViewer({ stats, onClose }: StoryViewerProps) {
         }
     };
 
+    const handlePrev = () => {
+        if (currentIndex > 0) {
+            setCurrentIndex(prev => prev - 1);
+            setProgress(0);
+        }
+    };
+
     const currentSlide = slides[currentIndex];
 
     return (
         <div className="fixed inset-0 z-[100] bg-black flex items-center justify-center p-0 sm:p-4 backdrop-blur-xl">
             {/* Mobile-like Container */}
             <div className={`relative w-full h-full sm:w-[400px] sm:h-[800px] rounded-none sm:rounded-3xl overflow-hidden shadow-2xl bg-gradient-to-br ${currentSlide.bg} transition-colors duration-700`}>
+
+                {/* Navigation Overlays */}
+                <div className="absolute inset-0 flex z-30">
+                    <div className="w-[30%] h-full" onClick={handlePrev} />
+                    <div className="w-[70%] h-full" onClick={handleNext} />
+                </div>
 
                 {/* Progress Bars */}
                 <div className="absolute top-4 left-2 right-2 flex gap-1 z-20">
@@ -117,7 +130,7 @@ export function StoryViewer({ stats, onClose }: StoryViewerProps) {
                 </div>
 
                 {/* Header Actions */}
-                <div className="absolute top-8 right-4 z-20 flex gap-4">
+                <div className="absolute top-8 right-4 z-40 flex gap-4">
                     <button onClick={onClose} className="text-white/80 hover:text-white transition-colors">
                         <X size={28} />
                     </button>
@@ -125,8 +138,7 @@ export function StoryViewer({ stats, onClose }: StoryViewerProps) {
 
                 {/* Content */}
                 <div
-                    className="absolute inset-0 flex flex-col items-center justify-center p-8 text-center"
-                    onClick={handleNext}
+                    className="absolute inset-0 flex flex-col items-center justify-center p-8 text-center pointer-events-none"
                 >
                     {/* Dynamic Animation Wrapper */}
                     <div key={currentIndex} className="animate-in fade-in zoom-in slide-in-from-bottom-10 duration-500 w-full flex flex-col items-center">
@@ -157,7 +169,7 @@ export function StoryViewer({ stats, onClose }: StoryViewerProps) {
                         {currentSlide.type === 'outro' && (
                             <button
                                 onClick={onClose}
-                                className="mt-12 bg-white text-black font-bold py-4 px-10 rounded-full shadow-xl hover:scale-110 transition-transform flex items-center gap-2 group"
+                                className="mt-12 bg-white text-black font-bold py-4 px-10 rounded-full shadow-xl hover:scale-110 transition-transform flex items-center gap-2 group pointer-events-auto relative z-40"
                             >
                                 {currentSlide.action}
                                 <ChevronRight className="group-hover:translate-x-1 transition-transform" />
