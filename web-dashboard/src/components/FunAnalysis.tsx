@@ -73,7 +73,6 @@ export function FunAnalysis({ onAnalysisComplete }: { onAnalysisComplete?: (stat
 
             const data = await response.json();
             setResult(data);
-            setResult(data);
             if (onAnalysisComplete) {
                 // window.alert("Calling onAnalysisComplete from FunAnalysis!");
                 onAnalysisComplete(data);
