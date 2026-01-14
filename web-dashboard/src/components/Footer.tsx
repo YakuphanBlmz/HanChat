@@ -13,12 +13,12 @@ export function Footer({ onOpenPrivacy, onOpenTerms, onOpenFeatures }: FooterPro
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-8">
                     {/* Brand Section */}
-                    <div className="space-y-4">
-                        <div className="flex items-center gap-2">
+                    <div className="space-y-4 text-center md:text-left">
+                        <div className="flex items-center justify-center md:justify-start gap-2">
                             <div className="w-8 h-8 bg-gradient-to-tr from-blue-500 to-purple-600 rounded-lg flex items-center justify-center text-white font-bold text-xl">H</div>
                             <span className="text-2xl font-bold text-white tracking-tight">HanChat</span>
                         </div>
-                        <p className="text-sm text-slate-400 max-w-xs">
+                        <p className="text-sm text-slate-400 max-w-xs mx-auto md:mx-0">
                             Yapay zeka destekli WhatsApp analiz ve iletişim platformu.
                             Sohbetlerinizi analiz edin, gizli detayları keşfedin.
                         </p>
@@ -57,9 +57,9 @@ export function Footer({ onOpenPrivacy, onOpenTerms, onOpenFeatures }: FooterPro
                     </div>
 
                     {/* Contact & Social */}
-                    <div className="space-y-4 md:text-right">
+                    <div className="space-y-4 text-center md:text-right">
                         <h3 className="text-sm font-bold text-white uppercase tracking-wider">İletişim & Sosyal</h3>
-                        <div className="flex gap-4 md:justify-end">
+                        <div className="flex gap-4 justify-center md:justify-end">
                             <a href="https://github.com/YakuphanBlmz" target="_blank" rel="noreferrer" className="bg-slate-800 p-2 rounded-lg hover:bg-blue-600 hover:text-white transition-all">
                                 <Github size={20} />
                             </a>
