@@ -1,6 +1,6 @@
 
-import React, { useState, useEffect } from 'react';
-import { X, ChevronRight, Heart, Share2, Star, Zap, Clock, MessageCircle, Mic, Smile } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { X, ChevronRight } from 'lucide-react';
 
 interface StoryViewerProps {
     stats: any;
