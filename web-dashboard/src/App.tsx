@@ -191,7 +191,21 @@ function App() {
               onClick={() => setShowHowToUse(true)}
               className="flex items-center justify-center w-40 gap-2.5 px-5 py-2.5 rounded-xl font-medium transition-all duration-300 whitespace-nowrap border bg-white/5 text-slate-400 hover:text-white hover:bg-white/10 border-white/5 hover:border-white/10"
             >
-              <span className="text-xl">❓</span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+                <path d="M12 17h.01" />
+              </svg>
               Nasıl Kullanılır
             </button>
 
