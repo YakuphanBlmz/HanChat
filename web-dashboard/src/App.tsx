@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { FunAnalysis } from './components/FunAnalysis';
 import { Contact } from './components/Contact';
-import { BarChart2, LogOut, Mail, Shield, CircleHelp } from 'lucide-react';
+import { BarChart2, LogOut, Mail, Shield, Info } from 'lucide-react';
 import { Login } from './components/Login';
 import { Register } from './components/Register';
 import { ForgotPassword } from './components/ForgotPassword';
@@ -191,7 +191,7 @@ function App() {
               onClick={() => setShowHowToUse(true)}
               className="flex items-center justify-center w-40 gap-2.5 px-5 py-2.5 rounded-xl font-medium transition-all duration-300 whitespace-nowrap border bg-white/5 text-slate-400 hover:text-white hover:bg-white/10 border-white/5 hover:border-white/10"
             >
-              <CircleHelp size={18} />
+              <Info size={18} />
               Nasıl Kullanılır
             </button>
 
