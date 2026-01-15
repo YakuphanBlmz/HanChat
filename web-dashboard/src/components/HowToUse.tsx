@@ -142,6 +142,41 @@ export function HowToUse({ onClose }: HowToUseProps) {
                             </div>
                         </div>
                     )}
+
+                    {activeTab === 'desktop' && (
+                        <div className="space-y-6 animate-in slide-in-from-bottom-2 duration-300">
+                            <div className="bg-yellow-50 p-4 rounded-xl border border-yellow-100 text-sm text-yellow-800 mb-6 flex items-start gap-3">
+                                <Monitor className="flex-shrink-0 mt-0.5" size={16} />
+                                <div>
+                                    <strong>Önemli Bilgi:</strong> WhatsApp Web veya Masaüstü uygulamasında maalesef "Sohbeti Dışa Aktar" özelliği bulunmamaktadır. Bu işlem sadece telefondan yapılabilir.
+                                </div>
+                            </div>
+
+                            <div className="flex gap-4">
+                                <div className="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold flex-shrink-0">1</div>
+                                <div>
+                                    <h3 className="font-bold text-gray-900 mb-1">Telefondan Dışa Aktarın</h3>
+                                    <p className="text-gray-600 text-sm">Önce Android veya iPhone sekmesindeki adımları izleyerek sohbet dosyasını oluşturun.</p>
+                                </div>
+                            </div>
+
+                            <div className="flex gap-4">
+                                <div className="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold flex-shrink-0">2</div>
+                                <div>
+                                    <h3 className="font-bold text-gray-900 mb-1">Bilgisayara Gönderin</h3>
+                                    <p className="text-gray-600 text-sm">Oluşan `.zip` veya `.txt` dosyasını kendinize Email, Telegram, Google Drive veya USB kablo ile gönderip bilgisayarınıza kaydedin.</p>
+                                </div>
+                            </div>
+
+                            <div className="flex gap-4">
+                                <div className="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold flex-shrink-0">3</div>
+                                <div>
+                                    <h3 className="font-bold text-gray-900 mb-1">HanChat'e Yükleyin</h3>
+                                    <p className="text-gray-600 text-sm">Şu an bulunduğunuz ekrandaki yükleme alanına sürükleyip bırakın.</p>
+                                </div>
+                            </div>
+                        </div>
+                    )}
                 </div>
 
                 {/* Footer */}
