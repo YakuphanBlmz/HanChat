@@ -384,8 +384,8 @@ export function FunAnalysis({ onAnalysisComplete }: { onAnalysisComplete?: (stat
                         ) : (
                             <>
                                 <Upload className="text-gray-400 mb-4" size={48} />
-                                <span className="text-gray-600 font-medium text-lg">Dosya Seç veya Sürükle</span>
-                                <span className="text-gray-400 text-sm mt-2">WhatsApp Sohbeti Dışa Aktar &gt; Medyasız (.txt)</span>
+                                <span className="text-gray-600 font-medium text-lg">Dosya Seç veya Sürükle (TXT veya ZIP)</span>
+                                <span className="text-gray-400 text-sm mt-2">WhatsApp Sohbeti Dışa Aktar &gt; Medyasız (.txt veya .zip)</span>
                             </>
                         )}
                     </label>
