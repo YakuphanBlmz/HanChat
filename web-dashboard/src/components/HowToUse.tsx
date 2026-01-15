@@ -1,5 +1,5 @@
 
-import { X, Smartphone, Monitor, Apple, Android } from 'lucide-react';
+import { X, Smartphone, Apple, Monitor } from 'lucide-react';
 import { useState } from 'react';
 
 interface HowToUseProps {
@@ -47,6 +47,16 @@ export function HowToUse({ onClose }: HowToUseProps) {
                         <Apple size={18} /> iPhone (iOS)
                         {activeTab === 'ios' && (
                             <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gray-900" />
+                        )}
+                    </button>
+                    <button
+                        onClick={() => setActiveTab('desktop')}
+                        className={`flex-1 py-4 text-sm font-semibold flex items-center justify-center gap-2 transition-colors relative ${activeTab === 'desktop' ? 'text-blue-600 bg-blue-50/50' : 'text-gray-500 hover:bg-gray-50'
+                            }`}
+                    >
+                        <Monitor size={18} /> Bilgisayar
+                        {activeTab === 'desktop' && (
+                            <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-500" />
                         )}
                     </button>
                 </div>
