@@ -57,7 +57,7 @@ def send_reset_email(to_email: str, reset_token: str):
     """
     Sends a password reset email via Brevo.
     """
-    reset_link = f"https://han-chat.vercel.app/reset-password?token={reset_token}"
+    reset_link = f"https://hanchat.vercel.app/reset-password?token={reset_token}"
     
     subject = "HanChat Şifre Sıfırlama"
     body = f"""

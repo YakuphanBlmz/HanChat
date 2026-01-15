@@ -30,7 +30,7 @@ export function PrivacyPolicy({ onClose }: PrivacyPolicyProps) {
                         <h3 className="font-bold text-gray-900 mb-2">1. Giriş ve Kapsam</h3>
                         <ul className="list-disc pl-4 space-y-1">
                             <li>HanChat ("Platform" veya "Geliştirici"), kullanıcılarının ("Kullanıcı" veya "Siz") gizliliğini korumayı en temel ilke olarak kabul etmiştir.</li>
-                            <li>Bu politika, <a href="https://han-chat.vercel.app/" target="_blank" rel="noreferrer" className="text-blue-600 hover:underline">https://han-chat.vercel.app/</a> web sitesi ve ilgili hizmetler üzerinden toplanan verilerin işlenme esaslarını düzenler.</li>
+                            <li>Bu politika, <a href="https://hanchat.vercel.app/" target="_blank" rel="noreferrer" className="text-blue-600 hover:underline">https://hanchat.vercel.app/</a> web sitesi ve ilgili hizmetler üzerinden toplanan verilerin işlenme esaslarını düzenler.</li>
                             <li>Hizmetlerimizi kullanarak, verilerinizin bu politikada belirtilen şekillerde işlenmesine rıza göstermiş olursunuz.</li>
                         </ul>
                     </section>
