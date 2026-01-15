@@ -221,7 +221,6 @@ function App() {
         onOpenPrivacy={() => setShowPrivacyPolicy(true)}
         onOpenTerms={() => setShowTermsOfUse(true)}
         onOpenFeatures={() => setShowFeatures(true)}
-        onOpenHowToUse={() => setShowHowToUse(true)}
       />
 
       {/* Privacy Policy Modal */}

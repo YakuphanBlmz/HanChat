@@ -5,10 +5,9 @@ interface FooterProps {
     onOpenPrivacy: () => void;
     onOpenTerms: () => void;
     onOpenFeatures: () => void;
-    onOpenHowToUse: () => void;
 }
 
-export function Footer({ onOpenPrivacy, onOpenTerms, onOpenFeatures, onOpenHowToUse }: FooterProps) {
+export function Footer({ onOpenPrivacy, onOpenTerms, onOpenFeatures }: FooterProps) {
     return (
         <footer className="bg-slate-900 text-slate-300 py-12 border-t border-slate-800 mt-auto">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
