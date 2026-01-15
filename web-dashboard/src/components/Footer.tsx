@@ -32,14 +32,6 @@ export function Footer({ onOpenPrivacy, onOpenTerms, onOpenFeatures, onOpenHowTo
                             <li><a href="/" className="hover:text-blue-400 transition-colors">Ana Sayfa</a></li>
                             <li>
                                 <button
-                                    onClick={(e) => { e.preventDefault(); onOpenHowToUse(); }}
-                                    className="hover:text-amber-400 transition-colors text-left font-bold text-amber-500"
-                                >
-                                    Nasıl Kullanılır?
-                                </button>
-                            </li>
-                            <li>
-                                <button
                                     onClick={(e) => { e.preventDefault(); onOpenPrivacy(); }}
                                     className="hover:text-blue-400 transition-colors text-left"
                                 >
