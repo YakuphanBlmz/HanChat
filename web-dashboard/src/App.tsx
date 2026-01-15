@@ -12,6 +12,7 @@ import { PrivacyPolicy } from './components/PrivacyPolicy';
 import { TermsOfUse } from './components/TermsOfUse';
 import { Features } from './components/Features';
 import { StoryViewer } from './components/StoryViewer';
+import { HowToUse } from './components/HowToUse';
 
 type View = 'fun' | 'agent' | 'flirt' | 'contact' | 'admin';
 type AuthState = 'login' | 'register' | 'authenticated' | 'forgot-password' | 'reset-password';
@@ -24,6 +25,7 @@ function App() {
   const [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false);
   const [showTermsOfUse, setShowTermsOfUse] = useState(false);
   const [showFeatures, setShowFeatures] = useState(false);
+  const [showHowToUse, setShowHowToUse] = useState(false);
   const [showStory, setShowStory] = useState(false);
   const [analysisStats, setAnalysisStats] = useState<any>(null);
 
@@ -211,6 +213,7 @@ function App() {
         onOpenPrivacy={() => setShowPrivacyPolicy(true)}
         onOpenTerms={() => setShowTermsOfUse(true)}
         onOpenFeatures={() => setShowFeatures(true)}
+        onOpenHowToUse={() => setShowHowToUse(true)}
       />
 
       {/* Privacy Policy Modal */}
@@ -226,6 +229,11 @@ function App() {
       {/* Features Modal */}
       {showFeatures && (
         <Features onClose={() => setShowFeatures(false)} />
+      )}
+
+      {/* How To Use Modal */}
+      {showHowToUse && (
+        <HowToUse onClose={() => setShowHowToUse(false)} />
       )}
 
       {/* Story Viewer Modal */}
