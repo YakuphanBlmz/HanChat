@@ -183,6 +183,8 @@ function App() {
                 : 'bg-white/5 text-slate-400 hover:text-white hover:bg-white/10 border-white/5 hover:border-white/10'
                 }`}
             >
+              <Mail size={18} />
+              İletişim
             </button>
 
             <button
