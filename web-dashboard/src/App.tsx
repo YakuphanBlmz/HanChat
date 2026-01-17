@@ -84,8 +84,7 @@ function App() {
     localStorage.removeItem('username');
     localStorage.removeItem('is_admin');
     localStorage.removeItem('token'); // Legacy cleanup
-    setIsLoggedIn(false);
-    setIsLoginOpen(true);
+
     setIsAdmin(false);
     setUsername(null);
     setAuthState('login');
@@ -94,6 +93,8 @@ function App() {
     // Also reset view
     setCurrentView('fun');
   };
+
+  const confirmLogout = handleLogout;
 
   // Listen for global unauthorized events
   useEffect(() => {
