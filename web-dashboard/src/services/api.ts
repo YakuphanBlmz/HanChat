@@ -46,5 +46,9 @@ export const api = {
     getSenderAnalysis: async (name: string) => {
         const response = await axios.get(`${API_URL}/sender/${name}`);
         return response.data;
+    },
+    verifySession: async () => {
+        const response = await axios.get(`${API_URL}/users/me`);
+        return response.data;
     }
 };
