@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException, UploadFile, File, Depends, status, BackgroundTasks
+from fastapi import FastAPI, HTTPException, UploadFile, File, Depends, status, BackgroundTasks, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from pydantic import BaseModel
@@ -7,6 +7,11 @@ from datetime import timedelta, datetime
 import os
 import google.generativeai as genai
 from starlette.concurrency import run_in_threadpool
+
+# Rate Limiting
+from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi.util import get_remote_address
+from slowapi.errors import RateLimitExceeded
 
 from src.analyzer import ChatAnalyzer
 from src.agent_analyzer import AgentAnalyzer
@@ -25,7 +30,26 @@ from src.auth import (
     ACCESS_TOKEN_EXPIRE_MINUTES
 )
 
+limiter = Limiter(key_func=get_remote_address)
 app = FastAPI(title="WIA-Bot API", description="API for HanChat - WhatsApp Intelligence & Automation")
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+
+# --- Security Helpers ---
+MAX_FILE_SIZE_MB = 200
+MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024
+
+async def validate_file_size(file: UploadFile, content_length: Optional[int] = None):
+    # 1. Check Content-Length header if available (Fast Fail)
+    if content_length and content_length > MAX_FILE_SIZE_BYTES:
+        raise HTTPException(
+            status_code=413, 
+            detail=f"Dosya çok büyük. Maksimum {MAX_FILE_SIZE_MB}MB yüklenebilir."
+        )
+        
+    # 2. Since we read into memory, we accept the risk until read, but we can check after read or rely on spooling.
+    # For extra safety in a streaming approach, we would chunk-read, but for now we'll check after read or rely on header.
+    return True
 
 # --- Security & Auth ---
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/login")
@@ -79,7 +103,8 @@ app.add_middleware(
 
 # --- Auth Endpoints ---
 @app.post("/auth/register")
-async def register(user_data: dict):
+@limiter.limit("5/minute")
+async def register(request: Request, user_data: dict):
     db = DatabaseManager()
     if not user_data.get('username') or not user_data.get('password') or not user_data.get('email'):
         raise HTTPException(status_code=400, detail="Eksik bilgi")
@@ -92,7 +117,8 @@ async def register(user_data: dict):
     return {"message": "Kayıt başarılı", "status": "success"}
 
 @app.post("/auth/login")
-async def login(form_data: OAuth2PasswordRequestForm = Depends()):
+@limiter.limit("10/minute")
+async def login(request: Request, form_data: OAuth2PasswordRequestForm = Depends()):
     db = DatabaseManager()
     user = db.get_user(form_data.username)
     if not user or not verify_password(form_data.password, user['hashed_password']):
@@ -327,9 +353,19 @@ def get_upload_content_admin(upload_id: int, current_user: dict = Depends(get_cu
     return result
 
 @app.post("/analyze/file")
-async def analyze_file(file: UploadFile = File(...), current_user: dict = Depends(get_current_user)):
+async def analyze_file(request: Request, file: UploadFile = File(...), current_user: dict = Depends(get_current_user)):
     try:
+        # Check Header First
+        content_length = request.headers.get('content-length')
+        if content_length:
+             await validate_file_size(file, int(content_length))
+
         content = await file.read()
+        
+        # Double Check Actual Size
+        if len(content) > MAX_FILE_SIZE_BYTES:
+             raise HTTPException(status_code=413, detail=f"Dosya çok büyük. Limit: {MAX_FILE_SIZE_MB}MB")
+
         text = ""
         filename = file.filename
 
