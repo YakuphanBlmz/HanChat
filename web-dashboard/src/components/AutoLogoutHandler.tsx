@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { AlertTriangle, Clock } from 'lucide-react';
+import { Clock } from 'lucide-react';
 
 interface AutoLogoutHandlerProps {
     onLogout: () => void;
@@ -11,7 +11,7 @@ const WARNING_THRESHOLD_MS = 3 * 60 * 1000; // 3 Minutes (Warning appears)
 const LOGOUT_THRESHOLD_MS = 5 * 60 * 1000;  // 5 Minutes (Logout happens)
 
 export const AutoLogoutHandler: React.FC<AutoLogoutHandlerProps> = ({ onLogout, isActive }) => {
-    const [lastActivity, setLastActivity] = useState<number>(Date.now());
+    const [, setLastActivity] = useState<number>(Date.now());
     const [showWarning, setShowWarning] = useState(false);
     const [timeLeft, setTimeLeft] = useState(0);
 

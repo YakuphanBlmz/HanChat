@@ -8,11 +8,12 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
+      strategies: 'injectManifest',
+      srcDir: 'src',
+      filename: 'sw.js',
       injectManifest: {
-        swSrc: 'src/sw.js',
         swDest: 'dist/sw.js',
       },
-      strategies: 'injectManifest',
       manifest: {
         id: '/',
         name: 'HanChat',
