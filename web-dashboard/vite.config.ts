@@ -8,6 +8,7 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
+      filename: 'manifest.json',
       injectManifest: {
         swSrc: 'src/sw.js',
         swDest: 'dist/sw.js',

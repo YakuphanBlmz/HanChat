@@ -89,10 +89,13 @@ function App() {
       setIsAdmin(localStorage.getItem('is_admin') === 'true');
       setAuthState('authenticated');
 
-      // Verify with backend
-      api.verifySession().catch(() => {
-        console.warn("Session verification failed");
-        // Interceptor will handle logout if 401
+      // Verify with backend immediately
+      api.verifySession().catch((err) => {
+        console.warn("Session verification failed:", err);
+        // Explicitly check for 401 and logout
+        if (err.response && err.response.status === 401) {
+          handleLogout();
+        }
       });
     }
 
