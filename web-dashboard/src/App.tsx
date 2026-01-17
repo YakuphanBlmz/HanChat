@@ -25,6 +25,7 @@ function App() {
   const [authState, setAuthState] = useState<AuthState>('login');
   const [username, setUsername] = useState<string | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isVerifying, setIsVerifying] = useState(true); // Block render until verified
   const [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false);
   const [showTermsOfUse, setShowTermsOfUse] = useState(false);
   const [showFeatures, setShowFeatures] = useState(false);
@@ -71,6 +72,7 @@ function App() {
     // If URL is /reset-password or has token passed, show reset screen
     if (path === '/reset-password' || params.get('token')) {
       setAuthState('reset-password');
+      setIsVerifying(false);
       return;
     }
 
@@ -84,19 +86,22 @@ function App() {
     const user = localStorage.getItem('username');
 
     if (token && user) {
-      // Optimistically set auth state
-      setUsername(user);
-      setIsAdmin(localStorage.getItem('is_admin') === 'true');
-      setAuthState('authenticated');
-
-      // Verify with backend immediately
-      api.verifySession().catch((err) => {
-        console.warn("Session verification failed:", err);
-        // Explicitly check for 401 and logout
-        if (err.response && err.response.status === 401) {
+      // Verify with backend BEFORE showing dashboard
+      api.verifySession()
+        .then(() => {
+          setUsername(user);
+          setIsAdmin(localStorage.getItem('is_admin') === 'true');
+          setAuthState('authenticated');
+        })
+        .catch((err) => {
+          console.warn("Session verification failed:", err);
           handleLogout();
-        }
-      });
+        })
+        .finally(() => {
+          setIsVerifying(false);
+        });
+    } else {
+      setIsVerifying(false);
     }
 
     return () => { };
