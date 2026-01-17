@@ -60,9 +60,18 @@ async def get_current_admin_user(current_user: dict = Depends(get_current_user))
     return current_user
 
 # --- CORS ---
+origins = [
+    "https://hanchat.com.tr",
+    "https://www.hanchat.com.tr",
+    "http://localhost:3000",
+    "http://localhost:8000",
+    "http://127.0.0.1:3000",
+    "http://127.0.0.1:8000",
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

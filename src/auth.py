@@ -6,7 +6,12 @@ import os
 
 # Secret key for JWT encoding/decoding
 # In production, this should be an environment variable!
-SECRET_KEY = os.getenv("JWT_SECRET", "supersecretkey_hanchat_2025_secure_salt_replace_this")
+# Secret key for JWT encoding/decoding
+# Prioritize environment variable, fallback only for dev/legacy with a warning
+SECRET_KEY = os.getenv("JWT_SECRET")
+if not SECRET_KEY:
+    print("WARNING: JWT_SECRET not found in environment. Using insecure default. SETUP .ENV!")
+    SECRET_KEY = "supersecretkey_hanchat_fallback_insecure"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 # 1 day
 
