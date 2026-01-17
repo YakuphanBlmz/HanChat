@@ -67,6 +67,10 @@ export function FunAnalysis({ onAnalysisComplete }: { onAnalysisComplete?: (stat
             });
 
             if (!response.ok) {
+                if (response.status === 401) {
+                    window.dispatchEvent(new Event('auth:unauthorized'));
+                    throw new Error("Oturum geçersiz.");
+                }
                 const errData = await response.json().catch(() => ({}));
                 throw new Error(errData.detail || `Analysis failed: ${response.status}`);
             }

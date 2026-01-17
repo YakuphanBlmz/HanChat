@@ -3,6 +3,17 @@ import axios from 'axios';
 // Use environment variable for API URL in production, fallback to /api (relative path for Nginx proxy)
 export const API_URL = import.meta.env.VITE_API_URL || '/api';
 
+// Add global interceptor for 401s
+axios.interceptors.response.use(
+    response => response,
+    error => {
+        if (error.response && error.response.status === 401) {
+            window.dispatchEvent(new Event('auth:unauthorized'));
+        }
+        return Promise.reject(error);
+    }
+);
+
 export const api = {
     getStats: async () => {
         const response = await axios.get(`${API_URL}/stats`);

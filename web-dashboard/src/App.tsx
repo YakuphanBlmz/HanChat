@@ -60,6 +60,15 @@ function App() {
       setIsAdmin(localStorage.getItem('is_admin') === 'true');
       setAuthState('authenticated');
     }
+
+    // Global Event Listener for invalid sessions (401)
+    const handleUnauthorized = () => {
+      handleLogout();
+      alert("Oturumunuzun süresi doldu veya hesabınızla ilgili bir değişiklik yapıldı. Lütfen tekrar giriş yapın.");
+    };
+
+    window.addEventListener('auth:unauthorized', handleUnauthorized);
+    return () => window.removeEventListener('auth:unauthorized', handleUnauthorized);
   }, []);
 
   const handleLoginSuccess = (token: string, user: string, admin: boolean) => {
