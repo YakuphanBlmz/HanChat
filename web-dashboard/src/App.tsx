@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { get, del } from 'idb-keyval'; // IndexedDB helper
+import { api } from './services/api';
 import { FunAnalysis } from './components/FunAnalysis';
 import { Contact } from './components/Contact';
 import { BarChart2, LogOut, Mail, Shield } from 'lucide-react';
@@ -81,10 +82,18 @@ function App() {
 
     const token = localStorage.getItem('access_token');
     const user = localStorage.getItem('username');
+
     if (token && user) {
+      // Optimistically set auth state
       setUsername(user);
       setIsAdmin(localStorage.getItem('is_admin') === 'true');
       setAuthState('authenticated');
+
+      // Verify with backend
+      api.verifySession().catch(() => {
+        console.warn("Session verification failed");
+        // Interceptor will handle logout if 401
+      });
     }
 
     return () => { };
