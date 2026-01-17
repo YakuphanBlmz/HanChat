@@ -15,7 +15,6 @@ export default defineConfig({
       strategies: 'injectManifest',
       manifest: {
         id: '/',
-        filename: 'manifest.json',
         name: 'HanChat',
         short_name: 'HanChat',
         description: 'WhatsApp Sohbet Analizcisi',
