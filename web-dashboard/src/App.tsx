@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { get, del } from 'idb-keyval'; // IndexedDB helper
 import { FunAnalysis } from './components/FunAnalysis';
 import { Contact } from './components/Contact';
 import { BarChart2, LogOut, Mail, Shield } from 'lucide-react';
@@ -29,11 +30,36 @@ function App() {
   const [showHowToUse, setShowHowToUse] = useState(false);
   const [showStory, setShowStory] = useState(false);
   const [analysisStats, setAnalysisStats] = useState<any>(null);
+  const [sharedFile, setSharedFile] = useState<File | null>(null);
 
   const handleAnalysisComplete = (stats: any) => {
     setAnalysisStats(stats);
     setShowStory(true);
   };
+
+  // Check for PWA Shared File
+  useEffect(() => {
+    const checkSharedFile = async () => {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('shared_action') === 'true') {
+        try {
+          const file = await get('shared-file');
+          if (file) {
+            console.log("Found shared file:", file.name);
+            setSharedFile(file);
+            setCurrentView('fun');
+            // Clean up
+            await del('shared-file');
+            // Remove query param
+            window.history.replaceState({}, '', '/');
+          }
+        } catch (err) {
+          console.error("Error reading shared file:", err);
+        }
+      }
+    };
+    checkSharedFile();
+  }, []);
 
   // Check for token on load
   useEffect(() => {
@@ -251,7 +277,7 @@ function App() {
       </div>
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-24 space-y-8 flex-grow w-full z-10 mb-8">
-        {currentView === 'fun' && <FunAnalysis onAnalysisComplete={handleAnalysisComplete} />}
+        {currentView === 'fun' && <FunAnalysis onAnalysisComplete={handleAnalysisComplete} initialFile={sharedFile} />}
         {currentView === 'contact' && <Contact />}
         {currentView === 'admin' && <AdminPanel />}
       </main>

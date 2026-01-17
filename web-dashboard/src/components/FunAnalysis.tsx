@@ -1,10 +1,15 @@
-import { useState, type DragEvent, useMemo } from 'react';
+import { useState, useEffect, type DragEvent, useMemo } from 'react';
 import { Upload, Smile, FileText, X, Info, Award, MessageCircle, Clock, Heart, Zap, Users, ChevronDown, ChevronUp } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar } from 'recharts';
 import { API_URL } from '../services/api';
 
-export function FunAnalysis({ onAnalysisComplete }: { onAnalysisComplete?: (stats: any) => void }) {
-    const [file, setFile] = useState<File | null>(null);
+export function FunAnalysis({ onAnalysisComplete, initialFile }: { onAnalysisComplete?: (stats: any) => void, initialFile?: File | null }) {
+    const [file, setFile] = useState<File | null>(initialFile || null);
+
+    // Sync if prop changes (e.g. late load)
+    useEffect(() => {
+        if (initialFile) setFile(initialFile);
+    }, [initialFile]);
     const [result, setResult] = useState<any | null>(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
