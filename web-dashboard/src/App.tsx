@@ -13,6 +13,7 @@ import { TermsOfUse } from './components/TermsOfUse';
 import { Features } from './components/Features';
 import { StoryViewer } from './components/StoryViewer';
 import { HowToUse } from './components/HowToUse';
+import { AutoLogoutHandler } from './components/AutoLogoutHandler';
 
 type View = 'fun' | 'agent' | 'flirt' | 'contact' | 'admin';
 type AuthState = 'login' | 'register' | 'authenticated' | 'forgot-password' | 'reset-password';
@@ -112,6 +113,10 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gray-50 font-sans text-gray-900 relative flex flex-col">
+      <AutoLogoutHandler
+        isActive={authState === 'authenticated'}
+        onLogout={confirmLogout}
+      />
       {/* Hero Header */}
       {/* Hero Header */}
       <div className="bg-[#0B1120] text-white pb-32 border-b border-white/5 relative overflow-hidden">
