@@ -61,14 +61,7 @@ function App() {
       setAuthState('authenticated');
     }
 
-    // Global Event Listener for invalid sessions (401)
-    const handleUnauthorized = () => {
-      handleLogout();
-      alert("Oturumunuzun süresi doldu veya hesabınızla ilgili bir değişiklik yapıldı. Lütfen tekrar giriş yapın.");
-    };
-
-    window.addEventListener('auth:unauthorized', handleUnauthorized);
-    return () => window.removeEventListener('auth:unauthorized', handleUnauthorized);
+    return () => { };
   }, []);
 
   const handleLoginSuccess = (token: string, user: string, admin: boolean) => {
@@ -86,15 +79,31 @@ function App() {
 
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
 
-  const confirmLogout = () => {
+  const handleLogout = () => {
     localStorage.removeItem('access_token');
     localStorage.removeItem('username');
     localStorage.removeItem('is_admin');
-    setUsername(null);
+    localStorage.removeItem('token'); // Legacy cleanup
+    setIsLoggedIn(false);
+    setIsLoginOpen(true);
     setIsAdmin(false);
+    setUsername(null);
     setAuthState('login');
     setShowLogoutConfirm(false);
+
+    // Also reset view
+    setCurrentView('fun');
   };
+
+  // Listen for global unauthorized events
+  useEffect(() => {
+    const handleUnauthorized = () => {
+      handleLogout();
+      alert("Oturumunuzun süresi doldu veya hesabınızla ilgili bir değişiklik yapıldı. Lütfen tekrar giriş yapın.");
+    };
+    window.addEventListener('auth:unauthorized', handleUnauthorized);
+    return () => window.removeEventListener('auth:unauthorized', handleUnauthorized);
+  }, []);
 
   const cancelLogout = () => {
     setShowLogoutConfirm(false);
